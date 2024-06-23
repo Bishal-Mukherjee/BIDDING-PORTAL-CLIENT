@@ -1,7 +1,7 @@
 import { isEmpty } from 'lodash';
 import { Helmet } from 'react-helmet-async';
-import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import { useParams, useLocation } from 'react-router-dom';
 
 import { Tab, Box, Tabs, Grid, Stack, Backdrop, Typography, CircularProgress } from '@mui/material';
 
@@ -15,6 +15,7 @@ import { TaskDetails } from './task-details';
 
 export const TaskDetailedView = () => {
   const params = useParams();
+  const location = useLocation();
 
   const { isLoading, getTaskById, selectedTask, selectedTaskBids } = useTaskStore();
 
@@ -25,6 +26,12 @@ export const TaskDetailedView = () => {
   const handleChangeTab = (event, newValue) => {
     setTabIndex(newValue);
   };
+
+  useEffect(() => {
+    if (location.state?.resourceType === 'bid') {
+      setTabIndex(1);
+    }
+  }, [location.state.resourceType]);
 
   useEffect(() => {
     if (params.taskId) {

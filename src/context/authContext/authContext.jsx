@@ -5,7 +5,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { useMemo, useState, useEffect, useContext, createContext } from 'react';
 
 import { setAccessToken } from 'src/utils';
-import { auth, database } from 'src/firebase/config';
+import { auth, firestore } from 'src/firebase/config';
 
 const AuthContext = createContext();
 
@@ -19,7 +19,7 @@ export function AuthProvider({ children }) {
 
   const initializeUser = async (currentUser) => {
     if (currentUser) {
-      const document = await getDoc(doc(database, 'users', currentUser.email));
+      const document = await getDoc(doc(firestore, 'users', currentUser.email));
       setUser(document.data());
       setIsEmailVerified(currentUser.emailVerified);
       setAccessToken('accessToken', currentUser.accessToken);

@@ -1,10 +1,10 @@
 import { doc, query, where, setDoc, getDocs, collection } from 'firebase/firestore';
 
-import { database } from 'src/firebase/config';
+import { firestore } from 'src/firebase/config';
 
 export const apiGetUsersByDesignation = async (designation = 'CLIENT') => {
   try {
-    const usersRef = collection(database, 'users');
+    const usersRef = collection(firestore, 'users');
     const q = query(usersRef, where('designation', '==', designation));
     const querySnapshot = await getDocs(q);
     if (querySnapshot.empty) {
@@ -20,7 +20,7 @@ export const apiGetUsersByDesignation = async (designation = 'CLIENT') => {
 
 export const apiAddClientDoc = async ({ email, firstName, lastName, phoneNumber }) => {
   try {
-    await setDoc(doc(database, 'users', email), {
+    await setDoc(doc(firestore, 'users', email), {
       firstName,
       lastName,
       phoneNumber,

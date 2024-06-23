@@ -11,7 +11,7 @@ import {
   createUserWithEmailAndPassword,
 } from 'firebase/auth';
 
-import { auth, database } from '../config';
+import { auth, firestore } from '../config';
 
 export const doCreateUserWithEmailAndPassword = async (
   email,
@@ -22,7 +22,7 @@ export const doCreateUserWithEmailAndPassword = async (
   isCompany,
   companyWebsite
 ) => {
-  await setDoc(doc(database, 'users', email), {
+  await setDoc(doc(firestore, 'users', email), {
     firstName,
     lastName,
     phoneNumber,
@@ -49,7 +49,7 @@ export const doSignInWithGoogle = async () => {
   const result = await signInWithPopup(auth, provider);
   const { user } = result;
 
-  const document = await getDoc(doc(database, 'users', user.email));
+  const document = await getDoc(doc(firestore, 'users', user.email));
 
   if (!document.data()) {
     doDeleteUser(user);

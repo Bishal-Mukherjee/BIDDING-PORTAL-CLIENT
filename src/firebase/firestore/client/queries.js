@@ -2,11 +2,11 @@
 
 import { query, where, getDocs, updateDoc, collection } from 'firebase/firestore';
 
-import { database } from 'src/firebase/config';
+import { firestore } from 'src/firebase/config';
 
 export const apiUpdateUserAddress = async ({ email, address }) => {
   try {
-    const usersRef = collection(database, 'users');
+    const usersRef = collection(firestore, 'users');
     const q = query(usersRef, where('email', '==', email));
     const querySnapshot = await getDocs(q);
     if (querySnapshot.empty) {
