@@ -12,6 +12,7 @@ import HvacLogo from 'src/assets/images/hvac-logo.png';
 import { HEADER } from './config-layout';
 import { MenuPopover } from './menu-popover';
 import { AccountPopover } from './account-popover';
+import { NotificationsPopover } from './notifications-popover';
 
 // ----------------------------------------------------------------------
 
@@ -137,6 +138,7 @@ export default function Header({ onOpenNav }) {
                 ml: 'auto',
               }}
             />
+            <NotificationsPopover />
             <AccountPopover />
           </Stack>
         </Stack>

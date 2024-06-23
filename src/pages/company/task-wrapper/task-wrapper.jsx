@@ -100,7 +100,7 @@ export const TaskWrapper = () => {
                       alignItems: 'center',
                     }}
                   >
-                    As you have accepted this task, please submit your bid within&snbsp;
+                    As you have accepted this task, please submit your bid within&nbsp;
                     <Typography component="span" sx={{ fontWeight: 600 }}>
                       {EXPIRY_IN_HOURS - remainingTime <= 0 ? 0 : EXPIRY_IN_HOURS - remainingTime}{' '}
                       hours
