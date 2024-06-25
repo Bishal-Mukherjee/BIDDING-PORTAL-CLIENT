@@ -4,19 +4,19 @@ import { Chip } from '@mui/material';
 
 const StatusColors = {
   created: {
-    background: '#ADD8E6',
+    background: '#ADD8E680',
     text: '#00008B',
   },
   assigned: {
-    background: '#90EE90',
+    background: '#90EE9080',
     text: '#006400',
   },
   'in-progress': {
-    background: '#FFFFE0',
+    background: '#FFFFE080',
     text: '#9B870C',
   },
   completed: {
-    background: '#D3D3D3',
+    background: '#D3D3D380',
     text: '#696969',
   },
 };
@@ -35,8 +35,7 @@ export const StatusChip = ({ variant }) => (
       height: 24,
       backgroundColor: StatusColors[variant]?.background,
       color: StatusColors[variant]?.text,
-      fontWeight: 600,
-      fontFamily: 'Poppins',
+      fontWeight: 700,
       textTransform: 'uppercase',
     }}
   />

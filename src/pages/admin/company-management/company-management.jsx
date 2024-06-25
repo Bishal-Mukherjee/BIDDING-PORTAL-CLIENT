@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import React, { useState, useEffect } from 'react';
 
+import { alpha, useTheme } from '@mui/material/styles';
 import {
   Box,
   Stack,
@@ -13,12 +14,15 @@ import {
   CircularProgress,
 } from '@mui/material';
 
+import { bgGradient } from 'src/theme/css';
 import { useAdminManagementStore } from 'src/stores/admin';
 
 import Iconify from 'src/components/iconify/iconify';
 import { CompanyDataTable } from 'src/components/admin';
 
 export const CompanyManagement = () => {
+  const theme = useTheme();
+
   const { getAllCompanies, isLoading } = useAdminManagementStore();
 
   const [searchQuery, setSearchQuery] = useState({
@@ -40,12 +44,20 @@ export const CompanyManagement = () => {
   }, [getAllCompanies]);
 
   return (
-    <>
+    <Box
+      sx={{
+        ...bgGradient({
+          color: alpha(theme.palette.background.default, 0.9),
+          //   imgUrl: '/assets/background/overlay_4.jpg',
+        }),
+        height: 1,
+      }}
+    >
       <Helmet>
         <title> Admin | Client Management </title>
       </Helmet>
 
-      <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={isLoading}>
+      <Backdrop sx={{ color: '#fff', zIndex: (t) => t.zIndex.drawer + 1 }} open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>
 
@@ -82,6 +94,6 @@ export const CompanyManagement = () => {
 
         <CompanyDataTable searchQuery={searchQuery} />
       </Container>
-    </>
+    </Box>
   );
 };

@@ -2,15 +2,16 @@ import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 
-import { Box, Grid, Paper, styled, Typography } from '@mui/material';
+import { alpha } from '@mui/material/styles';
+import { Box, Card, Grid, styled, Typography } from '@mui/material';
 
 import { useTaskStore } from 'src/stores/company';
 
 import { TaskCard } from '../task-card/task-card';
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+const Item = styled(Card)(({ theme }) => ({
   ...theme.typography.body2,
+  bgcolor: alpha(theme.palette.grey[900], 0.72),
   padding: theme.spacing(1),
   textAlign: 'center',
   color: theme.palette.text.secondary,
@@ -46,7 +47,7 @@ export const SearchableTaskList = ({ searchQuery, appliedStatusFilter }) => {
 
       {isEmpty(filteredData) && (
         <Box sx={{ width: '100%' }} mt={4}>
-          <Typography variant="body2" textAlign="center" fontFamily="Wix Madefor Display">
+          <Typography variant="body1" textAlign="center">
             No tasks found
           </Typography>
         </Box>
@@ -54,7 +55,7 @@ export const SearchableTaskList = ({ searchQuery, appliedStatusFilter }) => {
 
       <Grid container spacing={2} flexWrap="wrap" sx={{ px: { lg: 8 }, mt: 0 }}>
         {filteredData.map((task) => (
-          <Grid key={`task-${task.id}`} item md={4} sm={12} xs={12} minHeight={250} maxHeight={250}>
+          <Grid key={`task-${task.id}`} item md={4} sm={12} xs={12} minHeight={250} maxHeight={400}>
             <Item elevation={2} py={4} px={4} sx={{ height: '100%' }}>
               <TaskCard
                 id={task.id}
@@ -62,7 +63,8 @@ export const SearchableTaskList = ({ searchQuery, appliedStatusFilter }) => {
                 title={task.title}
                 description={task.description}
                 status={task.status}
-                images={task.images}
+                previewImage={task.previewImage}
+                createdAt={task.createdAt}
                 activationDate={task.activationDate}
                 hideTaskExpiry={hideTaskExpiry}
                 handleTaskSelection={() => setSelectedTask(task.id)}

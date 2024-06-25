@@ -169,7 +169,7 @@ export const TaskEditView = () => {
                       alignItems="center"
                       gap={2}
                     >
-                      <Typography color="#00008B" fontFamily="Poppins" fontSize={14}>
+                      <Typography color="#00008B" variant="subtitle1">
                         Task #{selectedTask?.id}
                       </Typography>
                       <TaskActiveBadge isActive={selectedTask?.isActive} />
@@ -217,11 +217,7 @@ export const TaskEditView = () => {
                         borderColor={isDragActive ? '#007B55' : '#919EAB'}
                         display={selectedTask?.isActive ? 'flex' : 'none'}
                       >
-                        <Typography
-                          textAlign="center"
-                          color="#d90429"
-                          fontFamily="Wix Madefor Display"
-                        >
+                        <Typography textAlign="center" color="#d90429" variant="subtitle1">
                           Task is active, further image uploads are restricted.
                         </Typography>
                       </Stack>
@@ -264,7 +260,7 @@ export const TaskEditView = () => {
                                   {showLoader ? (
                                     <CircularProgress size={15} sx={{ color: 'black' }} />
                                   ) : (
-                                    <Typography textAlign="center" color="#6c757d">
+                                    <Typography textAlign="center" color="#6c757d" variant='body1'>
                                       Drag &apos;n&apos; drop some new images here, <br /> or click
                                       to select image ( optional )
                                     </Typography>
@@ -303,24 +299,24 @@ export const TaskEditView = () => {
 
                 <Stack direction="column" justifyContent="center" mt={4} width="100%">
                   <Stack direction="row" alignItems="center" gap={2}>
-                    <Typography color="#6c757d" fontFamily="Wix Madefor Display">
+                    <Typography color="#6c757d" variant="body2">
                       Created on:
                     </Typography>
-                    <Typography color="#212529" fontFamily="Poppins" fontWeight={500}>
+                    <Typography color="#212529" fontWeight={500}>
                       {dayjs(selectedTask?.createdAt).format('MMM DD, YYYY')}
                     </Typography>
                   </Stack>
 
                   <Stack direction="row" alignItems="center" gap={2}>
-                    <Typography color="#6c757d" fontFamily="Wix Madefor Display">
+                    <Typography color="#6c757d" variant="body2">
                       Assigned to:
                     </Typography>
                     {isEmpty(selectedTask?.assignedTo) ? (
-                      <Typography color="#212529" fontFamily="Poppins" fontWeight={500}>
+                      <Typography color="#212529" fontWeight={500}>
                         No assignee found
                       </Typography>
                     ) : (
-                      <Typography color="#212529" fontFamily="Poppins" fontWeight={500}>
+                      <Typography color="#212529" fontWeight={500}>
                         {selectedTask?.assignedTo}
                       </Typography>
                     )}

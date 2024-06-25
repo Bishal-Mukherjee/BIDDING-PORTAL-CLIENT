@@ -183,7 +183,7 @@ export const TaskEditView = () => {
                       alignItems="center"
                       gap={2}
                     >
-                      <Typography color="#00008B" fontFamily="Poppins" fontSize={14}>
+                      <Typography color="#00008B" variant="subtitle1">
                         Task #{selectedTask?.id}
                       </Typography>
                       <TaskActiveBadge isActive={selectedTask?.isActive} />
@@ -347,24 +347,24 @@ export const TaskEditView = () => {
 
                 <Stack direction="column" justifyContent="center" mt={4} width="100%">
                   <Stack direction="row" alignItems="center" gap={2}>
-                    <Typography color="#6c757d" fontFamily="Wix Madefor Display">
+                    <Typography color="#6c757d" variant="body2">
                       Created on:
                     </Typography>
-                    <Typography color="#212529" fontFamily="Poppins" fontWeight={500}>
+                    <Typography color="#212529" fontWeight={500}>
                       {dayjs(selectedTask?.createdAt).format('MMM DD, YYYY')}
                     </Typography>
                   </Stack>
 
                   <Stack direction="row" alignItems="center" gap={2}>
-                    <Typography color="#6c757d" fontFamily="Wix Madefor Display">
+                    <Typography color="#6c757d" variant="body2">
                       Assigned to:
                     </Typography>
                     {isEmpty(selectedTask?.assignedTo) ? (
-                      <Typography color="#212529" fontFamily="Poppins" fontWeight={500}>
+                      <Typography color="#212529" fontWeight={500}>
                         No assignee found
                       </Typography>
                     ) : (
-                      <Typography color="#212529" fontFamily="Poppins" fontWeight={500}>
+                      <Typography color="#212529" fontWeight={500}>
                         {selectedTask?.assignedTo}
                       </Typography>
                     )}

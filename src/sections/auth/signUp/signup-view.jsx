@@ -232,7 +232,7 @@ export function SignUpView({ setNavigationTab }) {
                   icon={<Iconify icon="ic:baseline-radio-button-unchecked" />}
                   onClick={() => setIsCompany(!isCompany)}
                 />{' '}
-                <Typography sx={{ fontFamily: 'Wix Madefor Display', color: '#6c757d' }}>
+                <Typography sx={{ color: '#6c757d' }} variant="body2">
                   {' '}
                   Are you a company ?{' '}
                 </Typography>

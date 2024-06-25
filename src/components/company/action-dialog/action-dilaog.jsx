@@ -80,9 +80,7 @@ export const ActionDialog = () => {
           px={3}
           py={2}
         >
-          <Typography sx={{ fontFamily: 'Wix Madefor Display' }} variant="h4">
-            Accept or Reject
-          </Typography>
+          <Typography variant="h4">Accept or Reject</Typography>
 
           <IconButton onClick={() => setOpen(false)}>
             <Iconify icon="mdi:close" />
@@ -90,14 +88,14 @@ export const ActionDialog = () => {
         </Stack>
 
         <DialogContent>
-          <DialogContentText sx={{ fontFamily: 'Wix Madefor Display' }}>
+          <DialogContentText variant="body1">
             Would you like to accept or reject this task? By accepting you are allowed to place
             bids.
           </DialogContentText>
 
           <Stack direction="row" alignItems="center" mt={4} gap={1}>
             <Iconify icon="ic:twotone-info" />
-            <Typography fontFamily="Wix Madefor Display" fontWeight={500} color="red">
+            <Typography variant="subtitle2" color="red">
               Expires in {BID_EXPIRES_IN} hour(s)
             </Typography>
           </Stack>
