@@ -34,10 +34,7 @@ export const TaskFilter = () => {
   return (
     <>
       <Stack direction="row" alignItems="center">
-        <Chip
-          label={String(appliedFilter).toUpperCase()}
-          sx={{ fontFamily: 'Wix Madefor Display', fontSize: 12 }}
-        />
+        <Chip label={String(appliedFilter).toUpperCase()} sx={{ fontSize: 12 }} />
         <Box sx={{ ml: 1, mr: -0.4 }}>
           <Iconify icon="codicon:circle-filled" width={10} />
         </Box>
@@ -60,7 +57,6 @@ export const TaskFilter = () => {
           <MenuItem
             key={option.label}
             sx={{
-              fontFamily: 'Wix Madefor Display',
               ...(appliedFilter === option.value && {
                 fontWeight: appliedFilter === option.value ? 600 : 400,
                 bgcolor: appliedFilter === option.value ? '#e9ecef' : 'unset',

@@ -2,9 +2,11 @@ import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 
+import { alpha, useTheme } from '@mui/material/styles';
 import {
   Box,
   Grid,
+  Card,
   Stack,
   Paper,
   styled,
@@ -16,21 +18,25 @@ import {
   CircularProgress,
 } from '@mui/material';
 
+import { bgGradient } from 'src/theme/css';
 import { useTaskStore } from 'src/stores/admin';
 
 import Iconify from 'src/components/iconify/iconify';
 import { TaskFilter, SearchableTaskList } from 'src/components/admin';
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+const Item = styled(Card)(({ theme }) => ({
+  //   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
+  bgcolor: alpha(theme.palette.grey[900], 0.72),
   padding: theme.spacing(1),
   textAlign: 'center',
   color: theme.palette.text.secondary,
-  borderRadius: 5,
+  //   borderRadius: 5,
 }));
 
 export function Analytics() {
+  const theme = useTheme();
+
   const navigate = useNavigate();
 
   const { isLoading, getAllTasks, recentTasks, getRecentTasks } = useTaskStore();
@@ -62,12 +68,20 @@ export function Analytics() {
   }, [getRecentTasks]);
 
   return (
-    <>
+    <Box
+      sx={{
+        ...bgGradient({
+          color: alpha(theme.palette.background.default, 0.9),
+        }),
+        height: 1,
+        pb: 100,
+      }}
+    >
       <Helmet>
         <title> Admin | Analytics </title>
       </Helmet>
 
-      <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={isLoading}>
+      <Backdrop sx={{ color: '#fff', zIndex: (t) => t.zIndex.drawer + 1 }} open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>
 
@@ -106,16 +120,10 @@ export function Analytics() {
           <TaskFilter />
         </Stack>
 
-        <Grid
-          container
-          spacing={2}
-          px={{ lg: 8, sm: 0, xs: 0 }}
-          height="calc(100vh - 324px)"
-          mt={0}
-        >
+        <Grid container spacing={2} px={{ lg: 8, sm: 0, xs: 0 }} height={480} mt={0}>
           <Grid item xs={2.6} sx={{ display: { lg: 'block', sm: 'none', xs: 'none' } }}>
-            <Item elevation={4} sx={{ height: '100%' }}>
-              <Typography textAlign="left" fontFamily="Wix Madefor Display" fontWeight={500}>
+            <Item sx={{ height: '100%', pt: 2 }}>
+              <Typography textAlign="left" variant="h6" fontWeight={500}>
                 Recent tickets
               </Typography>
               <Stack
@@ -145,14 +153,13 @@ export function Analytics() {
                     sx={{
                       cursor: 'pointer',
                       ':hover': {
-                        transform: 'scale(1.03)',
+                        transform: 'scale(1.01)',
                       },
                     }}
                   >
                     <Typography
                       key={task.id}
                       textAlign="left"
-                      fontFamily="Wix Madefor Display"
                       fontSize={14}
                       sx={{ cursor: 'pointer' }}
                     >
@@ -169,6 +176,6 @@ export function Analytics() {
           </Grid>
         </Grid>
       </Container>
-    </>
+    </Box>
   );
 }

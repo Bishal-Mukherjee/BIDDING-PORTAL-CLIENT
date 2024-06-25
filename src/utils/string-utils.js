@@ -1,7 +1,7 @@
-export const trimDescription = (description) => {
+export const trimText = (description, limit = 124) => {
   if (description) {
-    if (description.length > 124) {
-      return `${description.slice(0, 124)}...`;
+    if (description.length > limit) {
+      return `${description.slice(0, limit)}...`;
     }
     return description;
   }

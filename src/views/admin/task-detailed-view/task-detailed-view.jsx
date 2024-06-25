@@ -87,7 +87,7 @@ export const TaskDetailedView = () => {
               width="100%"
             >
               <Stack direction="row" alignItems="center" gap={2}>
-                <Typography color="#00008B" fontFamily="Wix Madefor Display">
+                <Typography color="#00008B" variant="subtitle1">
                   Task #{selectedTask?.id}
                 </Typography>
                 <TaskActiveBadge isActive={selectedTask?.isActive} />

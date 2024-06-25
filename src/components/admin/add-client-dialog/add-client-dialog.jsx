@@ -118,9 +118,7 @@ export const AddClientDialog = () => {
           >
             <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
               <Stack direction="column" alignItems="center" gap={2} width="100%">
-                <Typography fontFamily="Wix Madefor Display" fontWeight={600} fontSize={20}>
-                  Add New Client
-                </Typography>
+                <Typography variant="h5">Add New Client</Typography>
 
                 {showAlert.content && (
                   <Alert

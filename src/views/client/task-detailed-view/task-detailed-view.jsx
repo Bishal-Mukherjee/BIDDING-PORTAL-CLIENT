@@ -63,7 +63,7 @@ export const TaskDetailedView = () => {
                   width="100%"
                 >
                   <Stack direction="row" alignItems="center" gap={2}>
-                    <Typography color="#00008B" fontFamily="Wix Madefor Display">
+                    <Typography color="#00008B" variant="subtitle1">
                       Task #{selectedTask?.id}
                     </Typography>
                     <TaskActiveBadge isActive={selectedTask?.isActive} />
@@ -71,13 +71,13 @@ export const TaskDetailedView = () => {
                   <StatusChip variant={selectedTask?.status} />
                 </Stack>
 
-                <Typography sx={{ mt: 4 }} fontSize={20} fontFamily="Poppins">
+                <Typography sx={{ mt: 4 }} variant="h4">
                   {selectedTask?.title}
                 </Typography>
 
                 <Divider sx={{ my: 2, width: { md: '100%', xs: '100%' } }} />
 
-                <Typography sx={{ mt: 0 }} fontSize={16} fontFamily="Wix Madefor Display">
+                <Typography sx={{ mt: 0 }} fontSize={16} variant="body1" textAlign="left">
                   {isEmpty(selectedTask?.description)
                     ? 'No description found'
                     : selectedTask?.description}
@@ -85,24 +85,24 @@ export const TaskDetailedView = () => {
 
                 <Stack direction="column" justifyContent="center" mt={4} width="100%">
                   <Stack direction="row" alignItems="center" gap={2}>
-                    <Typography color="#6c757d" fontFamily="Wix Madefor Display">
+                    <Typography color="#6c757d" variant="body2">
                       Created on:
                     </Typography>
-                    <Typography color="#212529" fontFamily="Poppins" fontWeight={500}>
+                    <Typography color="#212529" fontWeight={500}>
                       {dayjs(selectedTask?.createdAt).format('MMM DD, YYYY')}
                     </Typography>
                   </Stack>
 
                   <Stack direction="row" alignItems="center" gap={2}>
-                    <Typography color="#6c757d" fontFamily="Wix Madefor Display">
+                    <Typography color="#6c757d" variant="body2">
                       Assigned to:
                     </Typography>
                     {isEmpty(selectedTask?.assignedTo) ? (
-                      <Typography color="#212529" fontFamily="Poppins" fontWeight={500}>
+                      <Typography color="#212529" fontWeight={500}>
                         No assignee found
                       </Typography>
                     ) : (
-                      <Typography color="#212529" fontFamily="Poppins" fontWeight={500}>
+                      <Typography color="#212529" fontWeight={500}>
                         {selectedTask?.assignedTo}
                       </Typography>
                     )}
@@ -116,7 +116,7 @@ export const TaskDetailedView = () => {
         <Grid container spacing={2} justifyContent="center" flexWrap="wrap" mt={4}>
           {!isEmpty(selectedTask?.images) && (
             <Grid item xs={12} md={5}>
-              <Typography fontFamily="Wix Madefor Display">Attachments</Typography>
+              <Typography variant="h5">Attachments</Typography>
               <Grid container spacing={2} flexWrap="wrap" mt={0}>
                 {selectedTask?.images?.map((image) => (
                   <Grid item md={4} sm={12} xs={12}>

@@ -5,9 +5,11 @@ import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
-import { Box, Stack, Divider, MenuItem, Typography } from '@mui/material';
+import { alpha } from '@mui/material/styles';
+import { Box, Stack, MenuItem, Typography } from '@mui/material';
 
-import { trimDescription } from 'src/utils';
+import { trimText } from 'src/utils';
+import NoImageSvg from 'src/assets/svgs/no-image.svg';
 
 import Iconify from 'src/components/iconify';
 import { Popover, StatusChip } from 'src/components/commons';
@@ -18,7 +20,8 @@ export const TaskCard = ({
   id,
   title,
   description,
-  images,
+  previewImage,
+  createdAt,
   status,
   activationDate,
   hideTaskExpiry,
@@ -36,78 +39,112 @@ export const TaskCard = ({
   };
 
   return (
-    <Box width="100%" height="100%">
-      <Stack gap={1} px={1} width="100%" height="100%" direction="column">
-        <Stack width="100%" direction="row" gap={1} alignItems="center">
-          <Stack alignItems="center" justifyContent="center" width={16}>
-            <Iconify icon="mingcute:task-2-fill" width={24} />
-          </Stack>
-          <Typography fontFamily="Wix Madefor Display" fontSize={14} textAlign="left">
-            {title}
-          </Typography>
+    <Box sx={{ bgcolor: (theme) => alpha(theme.palette.background.paper, 0) }}>
+      <img
+        src={previewImage || NoImageSvg}
+        alt={previewImage}
+        style={{
+          height: 150,
+          objectFit: previewImage ? 'cover' : 'contain',
+          width: '100%',
+          scale: '0.8',
+          top: 0,
+        }}
+      />
 
-          {BID_EXPIRES_IN > 0 && (
-            <Box ml="auto">
-              <Popover>
-                <MenuItem
-                  onClick={handleViewClick}
-                  sx={{ fontFamily: 'Wix Madefor Display' }}
-                  disableTouchRipple
-                >
-                  <Iconify icon="mdi:eye" sx={{ mr: 2 }} />
-                  View
-                </MenuItem>
-              </Popover>
-            </Box>
-          )}
-        </Stack>
-
-        {isEmpty(description) ? (
-          <Typography variant="body2" fontFamily="Wix Madefor Display">
-            No description found
-          </Typography>
-        ) : (
-          <Box maxHeight={50} sx={{ mb: 2 }}>
-            <Typography textAlign="justify" fontFamily="Wix Madefor Display">
-              {trimDescription(description)}
-            </Typography>
-          </Box>
-        )}
-
-        <Stack
-          width="100%"
-          alignItems="center"
-          justifyContent="space-between"
-          direction="row"
-          gap={1}
-          mt="auto"
-        >
-          <Stack direction="row" alignItems="center" gap={1}>
-            <Iconify icon="fa6-solid:image" />
-            <Typography fontFamily="Wix Madefor Display">{images}</Typography>
-          </Stack>
-          <Stack ml="auto" direction="row" alignItems="center" gap={2}>
-            <StatusChip variant={status} />
-          </Stack>
-        </Stack>
-
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent={hideTaskExpiry ? 'flex-end' : 'space-between'}
+        position="absolute"
+        top={10}
+        width="95%"
+      >
         {!hideTaskExpiry && (
-          <>
-            <Divider my={1} />
-            <Stack direction="row" alignItems="center" gap={1}>
-              <Iconify icon="clarity:clock-solid" />
+          <Stack direction="row" alignItems="center" gap={1}>
+            <Iconify icon="clarity:clock-solid" />
+            {BID_EXPIRES_IN <= 0 ? (
+              <Typography variant="subtitle2" color="red">
+                Bidding expired
+              </Typography>
+            ) : (
+              <Typography variant="subtitle2" color="red">
+                Expires in {BID_EXPIRES_IN} hours
+              </Typography>
+            )}
+          </Stack>
+        )}
+        <StatusChip variant={status} />
+      </Stack>
 
-              {BID_EXPIRES_IN <= 0 ? (
-                <Typography>Bidding has expired for this task</Typography>
-              ) : (
-                <Typography fontFamily="Wix Madefor Display">
-                  Bidding ends in {BID_EXPIRES_IN} hours
-                </Typography>
+      <Stack
+        spacing={1}
+        sx={{ pb: 0, px: 1, mt: 1 }}
+        width="100%"
+        justifyContent="space-between"
+        alignItems="center"
+        direction="row"
+      >
+        <Stack direction="row" gap={1} alignItems="center" width="100%">
+          <Iconify icon="mingcute:task-2-fill" width={28} />
+          <Stack
+            direction="column"
+            alignItems="flex-start"
+            justifyContent="flex-start"
+            width="100%"
+          >
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              width="100%"
+              height={24}
+            >
+              <Typography
+                sx={{ color: '#000000' }}
+                underline="hover"
+                variant="subtitle2"
+                noWrap
+                textAlign="start"
+              >
+                {trimText(title, 32)}
+              </Typography>
+
+              {(BID_EXPIRES_IN > 0 || status === 'assigned') && (
+                <Box ml="auto">
+                  <Popover>
+                    <MenuItem
+                      onClick={handleViewClick}
+                      sx={{ fontFamily: 'Wix Madefor Display' }}
+                      disableTouchRipple
+                    >
+                      <Iconify icon="mdi:eye" sx={{ mr: 2 }} />
+                      View
+                    </MenuItem>
+                  </Popover>
+                </Box>
               )}
             </Stack>
-          </>
-        )}
+
+            <Typography
+              variant="caption"
+              sx={{ color: (theme) => alpha(theme.palette.text.secondary, 0.8) }}
+            >
+              {dayjs(createdAt).format('DD MMM YYYY')}
+            </Typography>
+          </Stack>
+        </Stack>
       </Stack>
+
+      <Box sx={{ px: 1, mt: 1, textAlign: 'left' }}>
+        {isEmpty(description) ? (
+          <Typography variant="body2">No description found</Typography>
+        ) : (
+          <Typography textAlign="justify" variant="body2">
+            {trimText(description)}
+          </Typography>
+        )}
+      </Box>
     </Box>
   );
 };
@@ -116,15 +153,17 @@ TaskCard.propTypes = {
   id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string,
-  images: PropTypes.number,
   status: PropTypes.oneOf(['created', 'assigned', 'in-progress', 'completed']),
   activationDate: PropTypes.string,
   hideTaskExpiry: PropTypes.bool,
   hasAcceptedTasks: PropTypes.bool,
+  previewImage: PropTypes.string,
+  createdAt: PropTypes.instanceOf(Date),
 };
 
 TaskCard.defaultProps = {
   description: '',
-  images: 0,
   status: 'created',
+  previewImage: '',
+  createdAt: new Date(),
 };

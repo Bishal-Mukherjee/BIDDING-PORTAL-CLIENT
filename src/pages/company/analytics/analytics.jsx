@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import React, { useState, useEffect } from 'react';
 
+import { alpha, useTheme } from '@mui/material/styles';
 import {
   Box,
   Stack,
@@ -13,6 +14,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 
+import { bgGradient } from 'src/theme/css';
 import { useTaskStore } from 'src/stores/company';
 import { useAuth } from 'src/context/authContext';
 
@@ -20,6 +22,8 @@ import Iconify from 'src/components/iconify/iconify';
 import { TaskFilter, SearchableTaskList } from 'src/components/company';
 
 export const Analytics = () => {
+  const theme = useTheme();
+
   const { user } = useAuth();
   const { getAllTasks, isLoading, getRecentAcceptances } = useTaskStore();
 
@@ -50,12 +54,20 @@ export const Analytics = () => {
   }, [getRecentAcceptances]);
 
   return (
-    <>
+    <Box
+      sx={{
+        ...bgGradient({
+          color: alpha(theme.palette.background.default, 0.9),
+          //   imgUrl: '/assets/background/overlay_4.jpg',
+        }),
+        height: 1,
+      }}
+    >
       <Helmet>
         <title> Company | Analytics </title>
       </Helmet>
 
-      <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={isLoading}>
+      <Backdrop sx={{ color: '#fff', zIndex: (t) => t.zIndex.drawer + 1 }} open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>
 
@@ -106,6 +118,6 @@ export const Analytics = () => {
 
         <SearchableTaskList searchQuery={searchQuery} appliedStatusFilter={appliedStatusFilter} />
       </Container>
-    </>
+    </Box>
   );
 };

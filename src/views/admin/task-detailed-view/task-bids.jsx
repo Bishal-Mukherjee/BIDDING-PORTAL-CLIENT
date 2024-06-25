@@ -27,7 +27,7 @@ export const TaskBids = () => {
         <Stack direction="row" width="100%" height="100%" spacing={2} mt={2}>
           <Stack direction="column" alignItems="center" width="100%" height="100%">
             {isEmpty(selectedTaskBids) ? (
-              <Typography sx={{ mt: 0 }} fontFamily="Wix Madefor Display">
+              <Typography sx={{ mt: 0 }} variant="subtitle1">
                 No bids found
               </Typography>
             ) : (
@@ -59,9 +59,7 @@ export const TaskBids = () => {
                             <Iconify icon="mdi:company" width={24} />
                           </Stack>
 
-                          <Typography fontFamily="Wix Madefor Display">
-                            {bid?.bidder?.name}
-                          </Typography>
+                          <Typography variant="subtitle1">{bid?.bidder?.name}</Typography>
                         </Stack>
 
                         <Stack
@@ -72,8 +70,10 @@ export const TaskBids = () => {
                           width="33%"
                           height="100%"
                         >
-                          <Typography fontSize={14}>{bid?.currency}</Typography>
-                          <Typography fontSize={14}>{bid?.amount}</Typography>
+                          <Typography fontSize={14} variant="subtitle2">
+                            {bid?.currency}&nbsp;&nbsp;
+                            {bid?.amount}
+                          </Typography>
                         </Stack>
 
                         <Stack width="33%" height="100%">
