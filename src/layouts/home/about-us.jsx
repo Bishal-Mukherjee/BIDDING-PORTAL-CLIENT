@@ -6,6 +6,9 @@ import { Box, Grid, Stack, Button, Divider, Container, Typography } from '@mui/m
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
+import AboutUsImg from 'src/assets/images/about-us.jpg';
+import RepairmanImg from 'src/assets/images/repairman.jpg';
+
 import Iconify from 'src/components/iconify';
 
 const SquareBox = () => <Box width={16} height={16} bgcolor="#7AC142" />;
@@ -81,7 +84,7 @@ export const AboutUs = () => {
           </Grid>
 
           <Grid item md={5}>
-            <img src="src/assets/images/about-us.jpg" alt="about-us" width="100%" />
+            <img src={AboutUsImg} alt="about-us" width="100%" />
           </Grid>
         </Grid>
       </Container>
@@ -112,12 +115,7 @@ export const AboutUs = () => {
             gap={2}
             p={2}
           >
-            <img
-              src="src\assets\images\repairman.jpg"
-              alt="consult"
-              width={60}
-              style={{ borderRadius: 50 }}
-            />
+            <img src={RepairmanImg} alt="repairman" width={60} style={{ borderRadius: 50 }} />
 
             <Stack direction="column" alignItems="flex-start" justifyContent="flex-start">
               <Typography fontSize={14} fontWeight={700} color="#FFFFFF">
