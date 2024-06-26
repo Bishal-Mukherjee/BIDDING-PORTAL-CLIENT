@@ -1,18 +1,12 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from 'react';
 
-import {
-  Box,
-  Grid,
-  Stack,
-  styled,
-  Button,
-  Divider,
-  Typography,
-  Container as MuiContainer,
-} from '@mui/material';
+import { Box, Grid, Stack, Button, Divider, Container, Typography } from '@mui/material';
 
 import { useResponsive } from 'src/hooks/use-responsive';
+
+// import WhyChooseUsAImg from 'src/assets/images/why-choose-us-a.jpg';
 
 import Iconify from 'src/components/iconify';
 
@@ -37,12 +31,12 @@ const featureCards = [
   },
 ];
 
-const Container = styled(MuiContainer)(({ theme }) => ({
-  [theme.breakpoints.up('md')]: {
-    paddingLeft: '0px',
-    paddingRight: '0px',
-  },
-}));
+// const Item = styled(Box)(({ theme }) => ({
+//   padding: theme.spacing(1),
+//   textAlign: 'center',
+//   color: theme.palette.text.secondary,
+//   borderRadius: 5,
+// }));
 
 const SquareBox = () => <Box width={16} height={16} bgcolor="#7AC142" />;
 
@@ -62,43 +56,53 @@ const StyledCard = ({ title, description, icon }) => (
   </Stack>
 );
 
+//	sx={{ mt: 8, pl: { md: 24, sm: 4 }, p: 2 }}
+
 export const WhyChooseUs = () => {
   const mdUp = useResponsive('up', 'md');
-
-  console.log(mdUp);
-
   return (
-    <Container maxWidth="lg" sx={{ pb: 10, position: 'absolute' }}>
-      <Grid
-        container
-        alignItems="flex-start"
-        justifyContent="flex-start"
-        sx={{ pl: mdUp ? 20 : 0 }}
-      >
-        <Grid item md={6} sm={12} xs={12} gap={2}>
-          <Stack direction="row" alignItems="center" gap={2} mt={12}>
+    <Container maxWidth="lg" sx={{ py: 8 }}>
+      <Grid container justifyContent="left">
+        <Grid item md={12} sm={12} xs={12}>
+          <Stack
+            direction="row"
+            justifyContent={mdUp ? 'flex-start' : 'center'}
+            alignItems="center"
+            gap={2}
+          >
             <SquareBox />
             <Typography fontWeight={700}>WHY CHOOSE US</Typography>
           </Stack>
 
-          <Typography variant="h3" mt={4}>
-            It&apos;s simple as 1, 2, 3!
-          </Typography>
+          <Stack
+            direction="row"
+            justifyContent={mdUp ? 'flex-start' : 'center'}
+            alignItems="center"
+            gap={2}
+          >
+            <Typography variant="h3" mt={4}>
+              It&apos;s simple as 1, 2, 3!
+            </Typography>
+          </Stack>
 
           <Divider sx={{ my: 3 }}>
             <Iconify icon="mdi:thumbs-up" width={28} color="#7AC142" />
           </Divider>
 
-          <Stack direction="column" gap={4} alignItems="flex-start">
+          <Grid container spacing={6} justifyContent="center" flexWrap="wrap">
             {featureCards.map((card, index) => (
-              <StyledCard
-                key={index}
-                title={card.title}
-                description={card.description}
-                icon={<Iconify icon={card.icon} width={28} color="#FFFFFF" />}
-              />
+              <Grid item md={6}>
+                <StyledCard
+                  key={index}
+                  title={card.title}
+                  description={card.description}
+                  icon={<Iconify icon={card.icon} width={28} color="#FFFFFF" />}
+                />
+              </Grid>
             ))}
+          </Grid>
 
+          <Stack direction="column" gap={2} alignItems="flex-start">
             <Button
               sx={{
                 minHeight: 48,
@@ -110,6 +114,7 @@ export const WhyChooseUs = () => {
                   color: '#ffffff',
                 },
                 width: '100%',
+                mt: 4,
               }}
             >
               <Typography color="#022a5c">REQUEST ESTIMASTES</Typography>
@@ -117,13 +122,19 @@ export const WhyChooseUs = () => {
           </Stack>
         </Grid>
 
-        {/* <Grid item md={6} sm={12} xs={12} mt={12} p={8}>
-          <img
-            alt="why-choose-us"
-            src="https://hvacnegotiators.com/wp-content/uploads/elementor/thumbs/AircorA-DlrPhoto_Couple_wDealer_outs_300415211249-160823-57bba0fd47ae0-qavjw0xv9er1irfidb4dh1zr6pqfv6hvwvlhhoddzs.jpg"
-            width={480}
-          />
-        </Grid> */}
+        {/* 
+          <Grid
+            item
+            md={4}
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="flex-end"
+            height={100}
+            sx={{ bgcolor: 'yellow' }}
+          >
+             <img alt="why-choose-us" src={WhyChooseUsAImg} width="90%" /> 
+          </Grid> */}
       </Grid>
     </Container>
   );
