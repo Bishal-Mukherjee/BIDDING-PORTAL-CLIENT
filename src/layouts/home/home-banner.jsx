@@ -6,10 +6,9 @@ import { Box, Stack, Button, useTheme, Container, Typography } from '@mui/materi
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
-import Iconify from 'src/components/iconify';
+import HOME_BG from 'src/assets/images/home-bg.jpg';
 
-const HOME_BG =
-  'https://hvacnegotiators.com/wp-content/uploads/2023/08/shutterstock_2159582495-scaled.jpg';
+import Iconify from 'src/components/iconify';
 
 const BG_OVERLAY =
   'linear-gradient(to right, rgba(0, 20, 30, 0.96) 10%, rgba(0, 20, 34, 0.88) 20%, rgba(0, 20, 44, 0.84) 44%, rgba(255, 0, 0, 0))';
@@ -40,6 +39,7 @@ export const HomeBanner = () => {
           backgroundImage: BG_OVERLAY,
           position: 'absolute',
         }}
+        maxWidth="lg"
       >
         <Stack
           my={16}
