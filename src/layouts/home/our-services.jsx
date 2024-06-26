@@ -17,6 +17,10 @@ import {
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
+import ServiceCardA from 'src/assets/images/services/service-card-a.jpg';
+import ServiceCardB from 'src/assets/images/services/service-card-b.jpg';
+import ServiceCardC from 'src/assets/images/services/service-card-c.jpg';
+
 import Iconify from 'src/components/iconify';
 
 const SquareBox = () => <Box width={16} height={16} bgcolor="#7AC142" />;
@@ -37,19 +41,19 @@ const ServicesCard = ({ title, description, img }) => (
 
 const serviceCardData = [
   {
-    img: 'src/assets/images/services/service-card-a.jpg',
+    img: ServiceCardA,
     title: 'Comparison of Cost',
     description:
       'By obtaining estimates from three different HVAC contractors, you can compare the costs of the equipment, labor, and any additional services they may offer. This can give you a clearer picture of the market prices and help you avoid overpaying.',
   },
   {
-    img: 'src/assets/images/services/service-card-b.jpg',
+    img: ServiceCardB,
     title: 'Different Approaches and Solutions',
     description:
       'Different contractors might propose slightly different solutions or equipment options based on their expertise and experience. Having multiple estimates allows you to evaluate these options and choose the one that best fits your needs and budget.',
   },
   {
-    img: 'src/assets/images/services/service-card-c.jpg',
+    img: ServiceCardC,
     title: 'Educational Value',
     description:
       'The estimate process can provide you with valuable education about HVAC systems, different types of equipment, and the installation process. This knowledge can empower you to make informed decisions about your HVAC needs.',
@@ -130,9 +134,7 @@ export const OurServices = () => {
             }}
             onClick={() => navigate('/auth')}
           >
-            <Typography fontSize={18} color="#022a5c">
-              REQUEST ESTIMASTES
-            </Typography>
+            <Typography fontSize={18}>REQUEST ESTIMASTES</Typography>
           </Button>
 
           <Stack
