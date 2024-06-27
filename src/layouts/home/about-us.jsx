@@ -24,8 +24,8 @@ export const AboutUs = () => {
   const mdUp = useResponsive('up', 'md');
   const navigate = useNavigate();
   return (
-    <Box mt={4}>
-      <Container maxWidth="lg" sx={{ py: 8 }}>
+    <>
+      <Container maxWidth="lg" sx={{ py: 8, mt: 4 }}>
         <Grid
           container
           alignItems="center"
@@ -67,7 +67,7 @@ export const AboutUs = () => {
 
             <Button
               sx={{
-                minHeight: 36,
+                minHeight: 40,
                 bgcolor: '#7AC142',
                 color: '#ffffff',
                 borderRadius: 0,
@@ -126,13 +126,12 @@ export const AboutUs = () => {
               </Typography>
             </Stack>
           </Stack>
+
           <Button sx={{ fontWeight: 400, borderRadius: 0 }} variant="contained">
             REQUST ESTIMATES
           </Button>
         </Stack>
       </Stack>
-
-      <Box height={10} />
-    </Box>
+    </>
   );
 };

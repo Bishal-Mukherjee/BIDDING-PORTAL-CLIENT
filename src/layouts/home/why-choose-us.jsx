@@ -31,13 +31,6 @@ const featureCards = [
   },
 ];
 
-// const Item = styled(Box)(({ theme }) => ({
-//   padding: theme.spacing(1),
-//   textAlign: 'center',
-//   color: theme.palette.text.secondary,
-//   borderRadius: 5,
-// }));
-
 const SquareBox = () => <Box width={16} height={16} bgcolor="#7AC142" />;
 
 const StyledCard = ({ title, description, icon }) => (
@@ -55,8 +48,6 @@ const StyledCard = ({ title, description, icon }) => (
     </Stack>
   </Stack>
 );
-
-//	sx={{ mt: 8, pl: { md: 24, sm: 4 }, p: 2 }}
 
 export const WhyChooseUs = () => {
   const mdUp = useResponsive('up', 'md');
@@ -89,7 +80,7 @@ export const WhyChooseUs = () => {
             <Iconify icon="mdi:thumbs-up" width={28} color="#7AC142" />
           </Divider>
 
-          <Grid container spacing={6} justifyContent="center" flexWrap="wrap">
+          <Grid container spacing={8} justifyContent="center" flexWrap="wrap">
             {featureCards.map((card, index) => (
               <Grid item md={6}>
                 <StyledCard
@@ -102,24 +93,21 @@ export const WhyChooseUs = () => {
             ))}
           </Grid>
 
-          <Stack direction="column" gap={2} alignItems="flex-start">
-            <Button
-              sx={{
-                minHeight: 48,
-                bgcolor: '#7AC142',
-                color: '#ffffff',
-                borderRadius: 0,
-                ':hover': {
-                  bgcolor: '#7AC142',
-                  color: '#ffffff',
-                },
-                width: '100%',
-                mt: 4,
-              }}
-            >
-              <Typography color="#022a5c">REQUEST ESTIMASTES</Typography>
-            </Button>
-          </Stack>
+          <Button
+            sx={{
+              mt: 8,
+              width: '100%',
+              minHeight: 44,
+              bgcolor: '#7AC142',
+              color: '#ffffff',
+              borderRadius: 0,
+              ':hover': {
+                bgcolor: '#022a5c',
+              },
+            }}
+          >
+            <Typography>REQUEST ESTIMASTES</Typography>
+          </Button>
         </Grid>
 
         {/* 

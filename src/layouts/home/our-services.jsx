@@ -23,22 +23,6 @@ import ServiceCardC from 'src/assets/images/services/service-card-c.jpg';
 
 import Iconify from 'src/components/iconify';
 
-const SquareBox = () => <Box width={16} height={16} bgcolor="#7AC142" />;
-
-const ServicesCard = ({ title, description, img }) => (
-  <Card sx={{ maxWidth: 360, minHeight: 380, borderRadius: 0 }}>
-    <CardMedia sx={{ height: 200 }} image={img} title={title} />
-    <CardContent>
-      <Typography gutterBottom variant="h5" component="div">
-        {title}
-      </Typography>
-      <Typography variant="body2" color="text.secondary">
-        {description}
-      </Typography>
-    </CardContent>
-  </Card>
-);
-
 const serviceCardData = [
   {
     img: ServiceCardA,
@@ -60,11 +44,31 @@ const serviceCardData = [
   },
 ];
 
+const SquareBox = () => <Box width={16} height={16} bgcolor="#7AC142" />;
+
+const ServicesCard = ({ title, description, img }) => (
+  <Card sx={{ maxWidth: 360, minHeight: 380, borderRadius: 0 }}>
+    <CardMedia
+      sx={{ height: 200, ':hover': { transform: 'scale(1.05)' }, cursor: 'pointer' }}
+      image={img}
+      title={title}
+    />
+    <CardContent>
+      <Typography gutterBottom variant="h5" component="div">
+        {title}
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
+        {description}
+      </Typography>
+    </CardContent>
+  </Card>
+);
+
 export const OurServices = () => {
   const mdUp = useResponsive('up', 'md');
   const navigate = useNavigate();
   return (
-    <Box mt={8} bgcolor="#F9F6EF">
+    <Box mt={4} bgcolor="#F9F6EF">
       <Container maxWidth="lg" sx={{ py: 8 }}>
         <Grid container alignItems="center" gap={8} flexWrap={{ xs: 'wrap', md: 'nowrap' }}>
           <Grid item md={5}>
@@ -116,25 +120,26 @@ export const OurServices = () => {
           mt={8}
           direction="row"
           alignItems="center"
-          gap={2}
+          gap={{ md: 2, xs: 1 }}
+          pl={0}
           flexWrap={{ xs: 'wrap', md: 'nowrap' }}
           width={{ md: '50%', xs: '100%' }}
         >
           <Button
             sx={{
-              minHeight: 48,
+              minHeight: 40,
               bgcolor: '#7AC142',
               color: '#ffffff',
               borderRadius: 0,
+              width: mdUp ? '50%' : '100%',
               ':hover': {
                 bgcolor: '#022a5c',
                 color: '#ffffff',
               },
-              width: mdUp ? '50%' : '100%',
             }}
             onClick={() => navigate('/auth')}
           >
-            <Typography fontSize={18}>REQUEST ESTIMASTES</Typography>
+            <Typography fontSize={14}>REQUEST ESTIMASTES</Typography>
           </Button>
 
           <Stack
