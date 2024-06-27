@@ -31,7 +31,7 @@ import Scrollbar from 'src/components/scrollbar';
 function formatTimestamp(timestamp) {
   const now = dayjs();
   const created = dayjs(timestamp);
-  const diffDays = created.diff(now, 'days');
+  const diffDays = now.diff(created, 'days');
 
   if (diffDays === 0) {
     return created.format('h:mm A');

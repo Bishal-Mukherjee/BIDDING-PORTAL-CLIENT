@@ -2,13 +2,11 @@
 /* eslint-disable react/prop-types */
 
 import PropTypes from 'prop-types';
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
 import { Box, Card, Stack, Rating, Divider, Container, Typography } from '@mui/material';
-
-import AboutUsBgImg from 'src/assets/images/about-us-bg.jpg';
 
 import Iconify from 'src/components/iconify';
 
@@ -106,88 +104,57 @@ const ProcessCard = ({ icon, title, description, step = 1 }) => {
   );
 };
 
-export const OurProcess = () => {
-  const parallaxRef = useRef(null);
+export const OurProcess = () => (
+  <Box bgcolor="#FFFFFFF" sx={{ my: 4 }}>
+    <Container maxWidth="lg" sx={{ py: 8 }}>
+      <Stack direction="row" justifyContent="center" alignItems="center" gap={2}>
+        <SquareBox />
+        <Typography fontWeight={700} color="#04192a">
+          OUR PROCESS
+        </Typography>
+      </Stack>
 
-  useEffect(() => {
-    const parallaxContainer = parallaxRef.current;
+      <Typography variant="h3" mt={2} textAlign="center" color="#04192a">
+        How It Works?
+      </Typography>
 
-    const handleScroll = () => {
-      const scrollTop = window.pageYOffset;
-      parallaxContainer.style.backgroundPositionY = `${scrollTop * 0.5}px`; // Adjust 0.5 for the parallax speed
-    };
+      <Divider sx={{ my: 3 }}>
+        <Iconify icon="fa-solid:tools" width={28} color="#7AC142" />
+      </Divider>
 
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+      <Typography variant="subtitle1" textAlign="center" color="#04192a">
+        Here are three steps outlining how HVAC Negotiators system works:
+      </Typography>
 
-  return (
-    <Box>
-      <Box
-        ref={parallaxRef}
-        sx={{
-          backgroundImage: `url(${AboutUsBgImg})`,
-          backgroundAttachment: 'fixed',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          my: 12,
-        }}
+      <Stack
+        direction="row"
+        justifyContent="center"
+        alignItems="flex-start"
+        flexWrap="wrap"
+        gap={4}
+        mt={4}
       >
-        <Box bgcolor="rgba(249, 246, 239, 0.4)">
-          <Container maxWidth="lg" sx={{ py: 8 }}>
-            <Stack direction="row" justifyContent="center" alignItems="center" gap={2}>
-              <SquareBox />
-              <Typography fontWeight={700} color="#04192a">
-                OUR PROCESS
-              </Typography>
-            </Stack>
+        {processCardData.map((item, index) => (
+          <ProcessCard
+            key={item.title}
+            icon={item.icon}
+            title={item.title}
+            description={item.description}
+            step={index + 1}
+          />
+        ))}
+      </Stack>
 
-            <Typography variant="h3" mt={2} textAlign="center" color="#04192a">
-              How It Works?
-            </Typography>
+      <Typography variant="body1" textAlign="center" mt={4} color="#04192a">
+        &quot;At HVAC Negotiators, we deliver a 5-star experience:&quot;
+      </Typography>
 
-            <Divider sx={{ my: 3 }}>
-              <Iconify icon="fa-solid:tools" width={28} color="#7AC142" />
-            </Divider>
-
-            <Typography variant="subtitle1" textAlign="center" color="#04192a">
-              Here are three steps outlining how HVAC Negotiators system works:
-            </Typography>
-
-            <Stack
-              direction="row"
-              justifyContent="center"
-              alignItems="flex-start"
-              flexWrap="wrap"
-              gap={4}
-              mt={4}
-            >
-              {processCardData.map((item, index) => (
-                <ProcessCard
-                  key={item.title}
-                  icon={item.icon}
-                  title={item.title}
-                  description={item.description}
-                  step={index + 1}
-                />
-              ))}
-            </Stack>
-
-            <Typography variant="body1" textAlign="center" mt={4} color="#04192a">
-              &quot;At HVAC Negotiators, we deliver a 5-star experience:&quot;
-            </Typography>
-
-            <Stack direction="row" justifyContent="center" alignItems="center" mt={2}>
-              <Rating value={5} readOnly sx={{ gap: 2 }} size="large" />
-            </Stack>
-          </Container>
-        </Box>
-      </Box>
-    </Box>
-  );
-};
+      <Stack direction="row" justifyContent="center" alignItems="center" mt={2}>
+        <Rating value={5} readOnly sx={{ gap: 2 }} size="large" />
+      </Stack>
+    </Container>
+  </Box>
+);
 
 ProcessCard.propTypes = {
   step: PropTypes.number,
