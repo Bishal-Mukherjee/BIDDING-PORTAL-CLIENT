@@ -1,5 +1,8 @@
-import React from 'react';
+/* eslint-disable import/no-extraneous-dependencies */
 import PropTypes from 'prop-types';
+import React, { useEffect } from 'react';
+import { motion, useAnimation } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 import { Box, Grid, Stack, Divider, Container, Typography } from '@mui/material';
 
@@ -30,21 +33,48 @@ const featureCards = [
 
 const SquareBox = () => <Box width={16} height={16} bgcolor="#7AC142" />;
 
-const FeatureCard = ({ title, description, icon }) => (
-  <Stack direction="row" alignItems="flex-start" gap={2} minHeight={100}>
-    <Stack bgcolor="#022a5c" p={1} mt={1}>
-      {icon}
-    </Stack>
-    <Stack direction="column" gap={1} width="90%" height="100%">
-      <Typography variant="body1" fontWeight={400} fontSize={20}>
-        {title}
-      </Typography>
-      <Typography variant="body1" textAlign="justify" fontSize={16}>
-        {description}
-      </Typography>
-    </Stack>
-  </Stack>
-);
+const FeatureCard = ({ title, description, icon }) => {
+  const control = useAnimation();
+  const [ref, inView] = useInView({
+    threshold: 0.3, // Adjust this value to control when the animation triggers
+    triggerOnce: true,
+  });
+
+  useEffect(() => {
+    if (inView) {
+      control.start('visible');
+    } else {
+      control.start('hidden');
+    }
+  }, [control, inView]);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={control}
+      variants={{
+        visible: { opacity: 1, y: 0 },
+        hidden: { opacity: 0, y: 50 },
+      }}
+      transition={{ duration: 0.5 }}
+    >
+      <Stack direction="row" alignItems="flex-start" gap={2} minHeight={100}>
+        <Stack bgcolor="#022a5c" p={1} mt={1}>
+          {icon}
+        </Stack>
+        <Stack direction="column" gap={1} width="90%" height="100%">
+          <Typography variant="body1" fontWeight={400} fontSize={20}>
+            {title}
+          </Typography>
+          <Typography variant="body1" textAlign="justify" fontSize={16}>
+            {description}
+          </Typography>
+        </Stack>
+      </Stack>
+    </motion.div>
+  );
+};
 
 export const WhyChooseUs = () => {
   const mdUp = useResponsive('up', 'md');
@@ -79,9 +109,8 @@ export const WhyChooseUs = () => {
 
           <Grid container spacing={8} justifyContent="center" flexWrap="wrap">
             {featureCards.map((card, index) => (
-              <Grid item md={6}>
+              <Grid item md={6} key={index}>
                 <FeatureCard
-                  key={index}
                   title={card.title}
                   description={card.description}
                   icon={<Iconify icon={card.icon} width={28} color="#FFFFFF" />}
@@ -89,22 +118,6 @@ export const WhyChooseUs = () => {
               </Grid>
             ))}
           </Grid>
-
-          {/* <Button
-            sx={{
-              mt: 8,
-              width: '100%',
-              minHeight: 44,
-              bgcolor: '#7AC142',
-              color: '#ffffff',
-              borderRadius: 0,
-              ':hover': {
-                bgcolor: '#022a5c',
-              },
-            }}
-          >
-            <Typography>REQUEST ESTIMASTES</Typography>
-          </Button> */}
         </Grid>
       </Grid>
     </Container>

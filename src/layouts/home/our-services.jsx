@@ -1,6 +1,10 @@
-import React from 'react';
+/* eslint-disable import/no-extraneous-dependencies */
+
 import PropTypes from 'prop-types';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion, useAnimation } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 import {
   Box,
@@ -46,23 +50,46 @@ const serviceCardData = [
 
 const SquareBox = () => <Box width={16} height={16} bgcolor="#7AC142" />;
 
-const ServiceCard = ({ title, description, img }) => (
-  <Card sx={{ maxWidth: 360, minHeight: 380, borderRadius: 0 }}>
-    <CardMedia
-      sx={{ height: 200, ':hover': { transform: 'scale(1.05)' }, cursor: 'pointer' }}
-      image={img}
-      title={title}
-    />
-    <CardContent>
-      <Typography gutterBottom variant="h5" component="div">
-        {title}
-      </Typography>
-      <Typography variant="body2" color="text.secondary" textAlign="justify">
-        {description}
-      </Typography>
-    </CardContent>
-  </Card>
-);
+const ServiceCard = ({ title, description, img, initialX }) => {
+  const control = useAnimation();
+  const [ref, inView] = useInView({
+    threshold: 0.4,
+    triggerOnce: true,
+  });
+
+  useEffect(() => {
+    if (inView) {
+      control.start('visible');
+    }
+  }, [control, inView]);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, x: initialX }}
+      animate={control}
+      variants={{
+        visible: { opacity: 1, x: 0, transition: { duration: 0.8 } },
+      }}
+    >
+      <Card sx={{ maxWidth: 360, minHeight: 380, borderRadius: 0 }}>
+        <CardMedia
+          sx={{ height: 200, ':hover': { transform: 'scale(1.05)' }, cursor: 'pointer' }}
+          image={img}
+          title={title}
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            {title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" textAlign="justify">
+            {description}
+          </Typography>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+};
 
 export const OurServices = () => {
   const mdUp = useResponsive('up', 'md');
@@ -106,12 +133,13 @@ export const OurServices = () => {
           mt={8}
           gap={4}
         >
-          {serviceCardData.map((data) => (
+          {serviceCardData.map((data, index) => (
             <ServiceCard
               key={data.title}
               title={data.title}
               description={data.description}
               img={data.img}
+              initialX={index % 2 === 0 ? -20 : 20}
             />
           ))}
         </Stack>
@@ -173,4 +201,5 @@ ServiceCard.propTypes = {
   img: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string,
+  initialX: PropTypes.number,
 };
