@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
-import { Box, Grid, Stack, Button, Divider, Container, Typography } from '@mui/material';
+import { Box, Grid, Stack, Divider, Container, Typography } from '@mui/material';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
@@ -22,7 +22,7 @@ const ListItem = ({ content }) => (
 
 export const AboutUs = () => {
   const mdUp = useResponsive('up', 'md');
-  const navigate = useNavigate();
+  //   const navigate = useNavigate();
   return (
     <>
       <Container maxWidth="lg" sx={{ py: 8, mt: 4 }}>
@@ -65,7 +65,7 @@ export const AboutUs = () => {
               <ListItem content="Promoting eco-friendly HVAC options." />
             </Stack>
 
-            <Button
+            {/* <Button
               sx={{
                 minHeight: 40,
                 bgcolor: '#7AC142',
@@ -80,7 +80,7 @@ export const AboutUs = () => {
               onClick={() => navigate('/auth')}
             >
               <Typography fontSize={14}>More About Us</Typography>
-            </Button>
+            </Button> */}
           </Grid>
 
           <Grid item md={5}>
@@ -127,9 +127,9 @@ export const AboutUs = () => {
             </Stack>
           </Stack>
 
-          <Button sx={{ fontWeight: 400, borderRadius: 0 }} variant="contained">
+          {/* <Button sx={{ fontWeight: 400, borderRadius: 0 }} variant="contained">
             REQUST ESTIMATES
-          </Button>
+          </Button> */}
         </Stack>
       </Stack>
     </>
