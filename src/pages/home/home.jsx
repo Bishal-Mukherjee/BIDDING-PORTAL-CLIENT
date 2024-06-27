@@ -9,6 +9,7 @@ import {
   OurProcess,
   OurServices,
   WhyChooseUs,
+  Testimonials,
 } from 'src/layouts/home';
 
 export const Home = () => (
@@ -23,6 +24,7 @@ export const Home = () => (
     <OurServices />
     <AboutUs />
     <OurProcess />
+    <Testimonials />
     <Footer />
   </>
 );
