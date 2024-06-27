@@ -1,12 +1,9 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import { Box, Grid, Stack, Button, Divider, Container, Typography } from '@mui/material';
+import { Box, Grid, Stack, Divider, Container, Typography } from '@mui/material';
 
 import { useResponsive } from 'src/hooks/use-responsive';
-
-// import WhyChooseUsAImg from 'src/assets/images/why-choose-us-a.jpg';
 
 import Iconify from 'src/components/iconify';
 
@@ -33,7 +30,7 @@ const featureCards = [
 
 const SquareBox = () => <Box width={16} height={16} bgcolor="#7AC142" />;
 
-const StyledCard = ({ title, description, icon }) => (
+const FeatureCard = ({ title, description, icon }) => (
   <Stack direction="row" alignItems="flex-start" gap={2} minHeight={100}>
     <Stack bgcolor="#022a5c" p={1} mt={1}>
       {icon}
@@ -42,7 +39,7 @@ const StyledCard = ({ title, description, icon }) => (
       <Typography variant="body1" fontWeight={400} fontSize={20}>
         {title}
       </Typography>
-      <Typography variant="body1" fontSize={16}>
+      <Typography variant="body1" textAlign="justify" fontSize={16}>
         {description}
       </Typography>
     </Stack>
@@ -83,7 +80,7 @@ export const WhyChooseUs = () => {
           <Grid container spacing={8} justifyContent="center" flexWrap="wrap">
             {featureCards.map((card, index) => (
               <Grid item md={6}>
-                <StyledCard
+                <FeatureCard
                   key={index}
                   title={card.title}
                   description={card.description}
@@ -93,7 +90,7 @@ export const WhyChooseUs = () => {
             ))}
           </Grid>
 
-          <Button
+          {/* <Button
             sx={{
               mt: 8,
               width: '100%',
@@ -107,23 +104,15 @@ export const WhyChooseUs = () => {
             }}
           >
             <Typography>REQUEST ESTIMASTES</Typography>
-          </Button>
+          </Button> */}
         </Grid>
-
-        {/* 
-          <Grid
-            item
-            md={4}
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            alignItems="flex-end"
-            height={100}
-            sx={{ bgcolor: 'yellow' }}
-          >
-             <img alt="why-choose-us" src={WhyChooseUsAImg} width="90%" /> 
-          </Grid> */}
       </Grid>
     </Container>
   );
+};
+
+FeatureCard.propTypes = {
+  icon: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string,
 };

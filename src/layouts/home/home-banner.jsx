@@ -1,14 +1,14 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
-import { Box, Stack, Button, useTheme, Container, Typography } from '@mui/material';
+import { Box, Stack, useTheme, Container, Typography } from '@mui/material';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
 import HOME_BG from 'src/assets/images/home-bg.jpg';
 
-import Iconify from 'src/components/iconify';
+// import Iconify from 'src/components/iconify';
 
 const BG_OVERLAY =
   'linear-gradient(to right, rgba(0, 20, 30, 0.96) 10%, rgba(0, 20, 34, 0.88) 20%, rgba(0, 20, 44, 0.84) 44%, rgba(255, 0, 0, 0))';
@@ -17,7 +17,7 @@ const SquareBox = () => <Box width={12} height={12} bgcolor="#7AC142" />;
 
 export const HomeBanner = () => {
   const theme = useTheme();
-  const navigate = useNavigate();
+  //   const navigate = useNavigate();
 
   const mdUp = useResponsive('up', 'md');
   const titleFontSize = theme.breakpoints.up('lg') ? 50 : theme.breakpoints.up('md') ? 40 : 30;
@@ -42,7 +42,7 @@ export const HomeBanner = () => {
         maxWidth="lg"
       >
         <Stack
-          my={16}
+          mt={20}
           pl={mdUp ? 20 : 0}
           direction="column"
           gap={4}
@@ -87,7 +87,7 @@ export const HomeBanner = () => {
             borderColor="#7AC142"
             pl={2}
           >
-            <Typography color="#FFFFFFD6" lineHeight={1.6} variant="subtitle1">
+            <Typography color="#FFFFFFD6" lineHeight={1.6} variant="subtitle1" textAlign="justify">
               At HVAC Negotiators, we believe in simplicity and efficiency. That&lsquo;s why;
               we&lsquo;ve streamlined the entire HVAC buying experience into three straight forward
               steps - a process designed to save you time, provide clarity, and ensure you get the
@@ -95,7 +95,7 @@ export const HomeBanner = () => {
             </Typography>
           </Stack>
 
-          <Stack
+          {/* <Stack
             mt={2}
             direction="row"
             alignItems="center"
@@ -140,7 +140,7 @@ export const HomeBanner = () => {
                 (425) 653-1717
               </Typography>
             </Stack>
-          </Stack>
+          </Stack> */}
         </Stack>
       </Container>
     </Box>

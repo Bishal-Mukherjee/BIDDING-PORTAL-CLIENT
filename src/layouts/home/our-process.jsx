@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { Box, Card, Stack, Rating, Divider, Container, Typography } from '@mui/material';
 
@@ -121,3 +122,10 @@ export const OurProcess = () => (
     <Box height={10} />
   </Box>
 );
+
+ProcessCard.propTypes = {
+  step: PropTypes.number,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  icon: PropTypes.string.isRequired,
+};

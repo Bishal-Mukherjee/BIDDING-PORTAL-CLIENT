@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -46,7 +46,7 @@ const serviceCardData = [
 
 const SquareBox = () => <Box width={16} height={16} bgcolor="#7AC142" />;
 
-const ServicesCard = ({ title, description, img }) => (
+const ServiceCard = ({ title, description, img }) => (
   <Card sx={{ maxWidth: 360, minHeight: 380, borderRadius: 0 }}>
     <CardMedia
       sx={{ height: 200, ':hover': { transform: 'scale(1.05)' }, cursor: 'pointer' }}
@@ -57,7 +57,7 @@ const ServicesCard = ({ title, description, img }) => (
       <Typography gutterBottom variant="h5" component="div">
         {title}
       </Typography>
-      <Typography variant="body2" color="text.secondary">
+      <Typography variant="body2" color="text.secondary" textAlign="justify">
         {description}
       </Typography>
     </CardContent>
@@ -107,7 +107,7 @@ export const OurServices = () => {
           gap={4}
         >
           {serviceCardData.map((data) => (
-            <ServicesCard
+            <ServiceCard
               key={data.title}
               title={data.title}
               description={data.description}
@@ -167,4 +167,10 @@ export const OurServices = () => {
       </Container>
     </Box>
   );
+};
+
+ServiceCard.propTypes = {
+  img: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string,
 };

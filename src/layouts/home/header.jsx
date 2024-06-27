@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import {
   Box,
@@ -25,6 +26,7 @@ const Container = styled(MuiContainer)(({ theme }) => ({
 
 export const Header = () => {
   const isMd = useResponsive('up', 'md');
+  const navigate = useNavigate();
   return (
     <Box width="100%" bgcolor="#ffffff">
       <Container maxWidth="lg">
@@ -106,14 +108,15 @@ export const Header = () => {
           <Grid
             item
             md={4}
-            display={{ xs: 'none', md: 'flex' }}
-            justifyContent="flex-end"
+            xs={12}
+            display="flex"
+            justifyContent={{ md: 'flex-end', sm: 'center', xs: 'center' }}
             alignItems="center"
           >
             <Button
               sx={{
                 minWidth: 200,
-                minHeight: 48,
+                minHeight: { md: 48 },
                 bgcolor: '#7AC142',
                 color: '#ffffff',
                 borderRadius: 0,
@@ -122,8 +125,9 @@ export const Header = () => {
                   color: '#ffffff',
                 },
               }}
+              onClick={() => navigate('/auth')}
             >
-              <Typography fontSize={18}>CONTACT FORM</Typography>
+              <Typography fontSize={18}>LOGIN</Typography>
             </Button>
           </Grid>
         </Grid>

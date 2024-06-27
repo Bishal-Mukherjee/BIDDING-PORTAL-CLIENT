@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 
 import {
   Header,
+  Footer,
   AboutUs,
   HomeBanner,
   OurProcess,
@@ -22,5 +23,6 @@ export const Home = () => (
     <OurServices />
     <AboutUs />
     <OurProcess />
+    <Footer />
   </>
 );
