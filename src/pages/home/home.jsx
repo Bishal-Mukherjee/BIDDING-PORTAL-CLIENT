@@ -1,7 +1,14 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
-import { Header, AboutUs, HomeBanner, OurServices, WhyChooseUs } from 'src/layouts/home';
+import {
+  Header,
+  AboutUs,
+  HomeBanner,
+  OurProcess,
+  OurServices,
+  WhyChooseUs,
+} from 'src/layouts/home';
 
 export const Home = () => (
   <>
@@ -14,7 +21,6 @@ export const Home = () => (
     <WhyChooseUs />
     <OurServices />
     <AboutUs />
+    <OurProcess />
   </>
 );
-
-export default Home;
