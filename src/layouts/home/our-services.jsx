@@ -26,6 +26,7 @@ import ServiceCardB from 'src/assets/images/services/service-card-b.jpg';
 import ServiceCardC from 'src/assets/images/services/service-card-c.jpg';
 
 import Iconify from 'src/components/iconify';
+import { SquareBox } from 'src/components/commons';
 
 const serviceCardData = [
   {
@@ -47,8 +48,6 @@ const serviceCardData = [
       'The estimate process can provide you with valuable education about HVAC systems, different types of equipment, and the installation process. This knowledge can empower you to make informed decisions about your HVAC needs.',
   },
 ];
-
-const SquareBox = () => <Box width={16} height={16} bgcolor="#7AC142" />;
 
 const ServiceCard = ({ title, description, img, initialX }) => {
   const control = useAnimation();
@@ -91,7 +90,7 @@ const ServiceCard = ({ title, description, img, initialX }) => {
   );
 };
 
-export const OurServices = () => {
+const OurServices = () => {
   const mdUp = useResponsive('up', 'md');
   const navigate = useNavigate();
   return (
@@ -177,7 +176,7 @@ export const OurServices = () => {
             justifyContent="center"
             sx={{ width: mdUp ? '50%' : '100%' }}
           >
-            <Iconify icon="ant-design:phone-filled" color="#7AC142" />
+            <Iconify icon="ic:sharp-phone" color="#7AC142" />
             <Typography
               variant="subtitle1"
               color="#022a5c"
@@ -203,3 +202,5 @@ ServiceCard.propTypes = {
   description: PropTypes.string,
   initialX: PropTypes.number,
 };
+
+export default OurServices;

@@ -4,11 +4,12 @@ import React, { useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
-import { Box, Grid, Stack, Divider, Container, Typography } from '@mui/material';
+import { Grid, Stack, Divider, Container, Typography } from '@mui/material';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
 import Iconify from 'src/components/iconify';
+import { SquareBox } from 'src/components/commons';
 
 const featureCards = [
   {
@@ -30,8 +31,6 @@ const featureCards = [
       "After your consultation, our team springs into action. Within 72 hours, you'll receive a minimum of 3 estimates from top 5-star-rated Heating and Air Conditioning companies in your area. These estimates are more than just numbers; they are comprehensive solutions meticulously tailored to match your HVAC specifications, all with a focus on helping you achieve significant cost savings. Now, the power is firmly in your hands. You can confidently compare, analyze, and choose the estimate that aligns perfectly with your vision and budget, all while realizing substantial cost savings. With these competitive estimates, you have the freedom to make an informed decision that suits your specific needs and preferences while keeping more of your hard-earned money where it belongs.",
   },
 ];
-
-const SquareBox = () => <Box width={16} height={16} bgcolor="#7AC142" />;
 
 const FeatureCard = ({ title, description, icon }) => {
   const control = useAnimation();
@@ -76,7 +75,7 @@ const FeatureCard = ({ title, description, icon }) => {
   );
 };
 
-export const WhyChooseUs = () => {
+const WhyChooseUs = () => {
   const mdUp = useResponsive('up', 'md');
   return (
     <Container maxWidth="lg" sx={{ py: 8 }}>
@@ -129,3 +128,5 @@ FeatureCard.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string,
 };
+
+export default WhyChooseUs;

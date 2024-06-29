@@ -24,7 +24,7 @@ const Container = styled(MuiContainer)(({ theme }) => ({
   },
 }));
 
-export const Header = () => {
+const Header = () => {
   const isMd = useResponsive('up', 'md');
   const navigate = useNavigate();
   return (
@@ -59,7 +59,7 @@ export const Header = () => {
               spacing={{ md: 0, sm: 0, xs: 3 }}
             >
               <Stack direction="row" spacing={1.4} alignItems="center">
-                <Iconify icon="ant-design:phone-filled" color="#7AC142" />
+                <Iconify icon="ic:sharp-phone" color="#7AC142" />
                 <Typography
                   variant="subtitle1"
                   color="#5F676E"
@@ -116,7 +116,7 @@ export const Header = () => {
             <Button
               sx={{
                 minWidth: 200,
-                minHeight: { md: 48 },
+                minHeight: 40,
                 bgcolor: '#7AC142',
                 color: '#ffffff',
                 borderRadius: 0,
@@ -135,3 +135,5 @@ export const Header = () => {
     </Box>
   );
 };
+
+export default Header;

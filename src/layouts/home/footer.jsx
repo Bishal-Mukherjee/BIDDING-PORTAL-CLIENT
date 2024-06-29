@@ -16,15 +16,15 @@ const ContactListItem = ({ icon, text }) => (
   </Stack>
 );
 
-export const Footer = () => (
+const Footer = () => (
   <Grid
     container
     justifyContent={{ md: 'center', xs: 'center' }}
     alignItems="center"
     gap={4}
-    sx={{ bgcolor: '#04192a', minHeight: 240, py: 2 }}
+    sx={{ bgcolor: '#04192a', minHeight: 240, p: 4 }}
   >
-    <Grid item md={4}>
+    <Grid item md={4} sm={12} xs={12}>
       <Stack
         width="100%"
         height="100%"
@@ -44,7 +44,7 @@ export const Footer = () => (
       </Stack>
     </Grid>
 
-    <Grid item md={4}>
+    <Grid item md={4} sm={12} xs={12}>
       <Stack
         direction={{ md: 'row', sm: 'column' }}
         alignItems="flex-start"
@@ -56,7 +56,7 @@ export const Footer = () => (
             Contact Info:
           </Typography>
           <ContactListItem icon="mdi:location" text="3409 McDougall Avenue" />
-          <ContactListItem icon="ant-design:phone-filled" text="(425) 653-1717" />
+          <ContactListItem icon="ic:sharp-phone" text="(425) 653-1717" />
           <ContactListItem icon="material-symbols:mail" text="info@hvacnegotiators.com" />
         </Stack>
 
@@ -76,3 +76,5 @@ ContactListItem.propTypes = {
   icon: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
 };
+
+export default Footer;

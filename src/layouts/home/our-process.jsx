@@ -9,6 +9,7 @@ import { useInView } from 'react-intersection-observer';
 import { Box, Card, Stack, Rating, Divider, Container, Typography } from '@mui/material';
 
 import Iconify from 'src/components/iconify';
+import { SquareBox } from 'src/components/commons';
 
 const processCardData = [
   {
@@ -30,8 +31,6 @@ const processCardData = [
       'Within 72 hours, HVAC Negotiators will contact you with the estimates from the various companies for you to select, making this process as painless and easy as possible. No sales, just selection.',
   },
 ];
-
-const SquareBox = () => <Box width={16} height={16} bgcolor="#7AC142" />;
 
 const ProcessCard = ({ icon, title, description, step = 1 }) => {
   const control = useAnimation();
@@ -104,7 +103,7 @@ const ProcessCard = ({ icon, title, description, step = 1 }) => {
   );
 };
 
-export const OurProcess = () => (
+const OurProcess = () => (
   <Box bgcolor="#FFFFFFF" sx={{ my: 4 }}>
     <Container maxWidth="lg" sx={{ py: 8 }}>
       <Stack direction="row" justifyContent="center" alignItems="center" gap={2}>
@@ -162,3 +161,5 @@ ProcessCard.propTypes = {
   description: PropTypes.string.isRequired,
   icon: PropTypes.string.isRequired,
 };
+
+export default OurProcess;
