@@ -4,29 +4,11 @@ import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
-import {
-  Box,
-  Grid,
-  Stack,
-  styled,
-  Divider,
-  Backdrop,
-  Typography,
-  CircularProgress,
-} from '@mui/material';
+import { Box, Grid, Stack, Divider, Backdrop, Typography, CircularProgress } from '@mui/material';
 
 import { useTaskStore } from 'src/stores/client';
 
-import { StatusChip, ImageViewer, TaskActiveBadge } from 'src/components/commons';
-
-const Item = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-  borderRadius: 5,
-}));
+import { StatusChip, AttachmentList, TaskActiveBadge } from 'src/components/commons';
 
 export const TaskDetailedView = () => {
   const params = useParams();
@@ -118,13 +100,7 @@ export const TaskDetailedView = () => {
             <Grid item xs={12} md={5}>
               <Typography variant="h5">Attachments</Typography>
               <Grid container spacing={2} flexWrap="wrap" mt={0}>
-                {selectedTask?.images?.map((image) => (
-                  <Grid item md={4} sm={12} xs={12}>
-                    <Item elevation={2} py={4} px={4}>
-                      <ImageViewer imageURL={image} hideDeleteIcon />
-                    </Item>
-                  </Grid>
-                ))}
+                <AttachmentList images={selectedTask?.images} />
               </Grid>
             </Grid>
           )}

@@ -61,7 +61,6 @@ export const MenuPopover = () => {
                 color: '#000000',
                 textDecoration: 'none',
                 fontWeight: 'bold',
-                fontFamily: 'Wix Madefor Display',
               }}
               to={link.pathname}
             >

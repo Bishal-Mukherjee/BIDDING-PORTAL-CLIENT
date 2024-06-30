@@ -58,7 +58,7 @@ export const PlaceBidDialog = () => {
     <>
       <Button
         variant="contained"
-        sx={{ bgcolor: '#022a5c', fontFamily: 'Wix Madefor Display' }}
+        sx={{ bgcolor: '#022a5c' }}
         onClick={handleClickOpen}
         startIcon={<Iconify icon="pepicons-pencil:raise-hand-circle-filled" />}
       >
@@ -67,9 +67,7 @@ export const PlaceBidDialog = () => {
 
       <Dialog open={open} maxWidth="sm" fullWidth>
         <DialogTitle>
-          <Typography sx={{ fontFamily: 'Wix Madefor Display', fontSize: 20, fontWeight: 700 }}>
-            Place a bid
-          </Typography>
+          <Typography sx={{ fontSize: 20, fontWeight: 700 }}>Place a bid</Typography>
         </DialogTitle>
         <DialogContent>
           <Stack mt={2} width="100%">

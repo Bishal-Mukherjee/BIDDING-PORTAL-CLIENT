@@ -17,7 +17,7 @@ import {
 
 import { useTaskStore } from 'src/stores/company';
 
-import { TaskActiveBadge } from 'src/components/commons';
+import { AttachmentList, TaskActiveBadge } from 'src/components/commons';
 import { ActionDialog, ViewBidDialog, PlaceBidDialog } from 'src/components/company';
 
 const EXPIRY_IN_HOURS = 72; // need to place a bid within 72 hours
@@ -146,13 +146,7 @@ export const TaskWrapper = () => {
           {!isEmpty(selectedTask?.task?.images) && (
             <Grid item xs={12} md={5}>
               <Typography variant="h5">Attachments</Typography>
-              <Grid container spacing={2} flexWrap="wrap" mt={0}>
-                {selectedTask?.task?.images?.map((image) => (
-                  <Grid item md={4} sm={12} xs={12}>
-                    <img src={image} alt="" width="100%" height={150} />
-                  </Grid>
-                ))}
-              </Grid>
+              <AttachmentList images={selectedTask?.task?.images} />
             </Grid>
           )}
         </Grid>

@@ -6,6 +6,8 @@ import { Box, Grid, Stack, Divider, Typography } from '@mui/material';
 
 import { useTaskStore } from 'src/stores/admin';
 
+import { AttachmentList } from 'src/components/commons';
+
 export const TaskDetails = () => {
   const { selectedTask } = useTaskStore();
   return (
@@ -62,13 +64,7 @@ export const TaskDetails = () => {
         {!isEmpty(selectedTask?.images) && (
           <Grid item xs={12} md={6}>
             <Typography variant="h5">Attachments</Typography>
-            <Grid container spacing={2} flexWrap="wrap" mt={0}>
-              {selectedTask?.images?.map((image) => (
-                <Grid item md={4} sm={12} xs={12}>
-                  <img src={image} alt="" width="100%" height={150} />
-                </Grid>
-              ))}
-            </Grid>
+            <AttachmentList images={selectedTask?.images} />
           </Grid>
         )}
       </Grid>

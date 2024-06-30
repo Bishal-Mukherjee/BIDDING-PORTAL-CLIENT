@@ -42,7 +42,7 @@ export const TaskCard = ({
     <Box sx={{ bgcolor: (theme) => alpha(theme.palette.background.paper, 0) }}>
       <img
         src={previewImage || NoImageSvg}
-        alt={previewImage}
+        alt="attachment_img"
         style={{
           height: 150,
           objectFit: previewImage ? 'cover' : 'contain',
@@ -113,12 +113,8 @@ export const TaskCard = ({
               {(BID_EXPIRES_IN > 0 || status === 'assigned') && (
                 <Box ml="auto">
                   <Popover>
-                    <MenuItem
-                      onClick={handleViewClick}
-                      sx={{ fontFamily: 'Wix Madefor Display' }}
-                      disableTouchRipple
-                    >
-                      <Iconify icon="mdi:eye" sx={{ mr: 2 }} />
+                    <MenuItem onClick={handleViewClick} disableTouchRipple>
+                      <Iconify icon="mdi:eye" sx={{ mr: 1 }} />
                       View
                     </MenuItem>
                   </Popover>

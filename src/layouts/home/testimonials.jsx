@@ -20,6 +20,7 @@ import {
 import AboutUsBgImg from 'src/assets/images/about-us-bg.jpg';
 
 import Iconify from 'src/components/iconify';
+import { SquareBox } from 'src/components/commons';
 
 const testimonialsData = [
   {
@@ -44,8 +45,6 @@ const testimonialsData = [
     rating: 5,
   },
 ];
-
-const SquareBox = () => <Box width={16} height={16} bgcolor="#7AC142" />;
 
 const TestimonialCard = ({ name, avatar, text, title, rating }) => {
   const control = useAnimation();
@@ -106,7 +105,7 @@ const TestimonialCard = ({ name, avatar, text, title, rating }) => {
   );
 };
 
-export const Testimonials = () => {
+const Testimonials = () => {
   const parallaxRef = useRef(null);
 
   useEffect(() => {
@@ -187,3 +186,5 @@ TestimonialCard.propTypes = {
   title: PropTypes.string.isRequired,
   avatar: PropTypes.string.isRequired,
 };
+
+export default Testimonials;

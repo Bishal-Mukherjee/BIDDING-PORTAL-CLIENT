@@ -15,7 +15,7 @@ import {
   Box,
   Grid,
   Stack,
-  styled,
+  //   styled,
   Switch,
   Tooltip,
   Backdrop,
@@ -31,21 +31,12 @@ import { useTaskStore } from 'src/stores/admin';
 import { apiUpdateTask, apiPutActivateTask } from 'src/services/admin';
 
 import Iconify from 'src/components/iconify';
-import { StatusChip, ImageViewer, TaskActiveBadge } from 'src/components/commons';
+import { StatusChip, AttachmentList, TaskActiveBadge } from 'src/components/commons';
 
 const validationSchema = yup.object().shape({
   title: yup.string().required('Title is required'),
   description: yup.string(),
 });
-
-const Item = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-  borderRadius: 5,
-}));
 
 export const TaskEditView = () => {
   const params = useParams();
@@ -58,6 +49,7 @@ export const TaskEditView = () => {
   const [existingFiles, setExistingFiles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [submitLoader, setSubmitLoader] = useState(false);
+  const [showFileUploadError, setShowFileUploadError] = useState(false);
 
   const formik = useFormik({
     validationSchema,
@@ -85,6 +77,13 @@ export const TaskEditView = () => {
     const uploadPromises = acceptedFiles.map(
       (file) =>
         new Promise((resolve, reject) => {
+          if (!file.type.startsWith('image/')) {
+            setShowLoader(false);
+            setShowFileUploadError(true);
+            reject(new Error('Invalid file type. Only images are allowed.'));
+            return;
+          }
+
           const id = uuid();
           const storageRef = ref(storage, `/images/${id}`);
           const uploadTask = uploadBytesResumable(storageRef, file);
@@ -297,15 +296,34 @@ export const TaskEditView = () => {
                                   ) : (
                                     <>
                                       {selectedTask?.isActive ? (
-                                        <Typography textAlign="center" color="#d90429">
-                                          {' '}
-                                          Task is active, further image uploads are restricted.{' '}
+                                        <Typography
+                                          textAlign="center"
+                                          color="#d90429"
+                                          variant="subtitle2"
+                                        >
+                                          Task is active, further image uploads are restricted.
                                         </Typography>
                                       ) : (
-                                        <Typography textAlign="center" color="#6c757d">
-                                          Drag &apos;n&apos; drop some new images here, <br /> or
-                                          click to select image ( optional )
-                                        </Typography>
+                                        <>
+                                          {showFileUploadError ? (
+                                            <Typography
+                                              textAlign="center"
+                                              color="#d90429"
+                                              variant="subtitle2"
+                                            >
+                                              Invalid file type. Only images are allowed.
+                                            </Typography>
+                                          ) : (
+                                            <Typography
+                                              textAlign="center"
+                                              color="#6c757d"
+                                              variant="subtitle2"
+                                            >
+                                              Drag &apos;n&apos; drop some files here, <br /> or
+                                              click to select files ( optional )
+                                            </Typography>
+                                          )}
+                                        </>
                                       )}
                                     </>
                                   )}
@@ -318,17 +336,11 @@ export const TaskEditView = () => {
                     )}
 
                     <Grid container gap={6} flexWrap="wrap">
-                      {existingFiles?.map((image, index) => (
-                        <Grid item md={4} sm={12} xs={12} minHeight={140} maxHeight={140}>
-                          <Item elevation={2} py={4} px={4}>
-                            <ImageViewer
-                              imageURL={image}
-                              onDelete={() => onDelete(index)}
-                              hideDeleteIcon={selectedTask?.isActive}
-                            />
-                          </Item>
-                        </Grid>
-                      ))}
+                      <AttachmentList
+                        images={existingFiles}
+                        onDelete={onDelete}
+                        hideDeleteIcon={selectedTask?.isActive}
+                      />
                     </Grid>
 
                     <LoadingButton

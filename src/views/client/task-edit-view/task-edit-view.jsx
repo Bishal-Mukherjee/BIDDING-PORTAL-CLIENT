@@ -11,16 +11,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 
 import { LoadingButton } from '@mui/lab';
-import {
-  Box,
-  Grid,
-  Stack,
-  styled,
-  Backdrop,
-  TextField,
-  Typography,
-  CircularProgress,
-} from '@mui/material';
+import { Box, Grid, Stack, Backdrop, TextField, Typography, CircularProgress } from '@mui/material';
 
 import { storage } from 'src/firebase/config';
 import { useTaskStore } from 'src/stores/client';
@@ -28,21 +19,12 @@ import { apiUpdateTask } from 'src/services/client';
 
 import Iconify from 'src/components/iconify';
 import { TaskDeleteDialog } from 'src/components/client';
-import { StatusChip, ImageViewer, TaskActiveBadge } from 'src/components/commons';
+import { StatusChip, AttachmentList, TaskActiveBadge } from 'src/components/commons';
 
 const validationSchema = yup.object().shape({
   title: yup.string().required('Title is required'),
   description: yup.string(),
 });
-
-const Item = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-  borderRadius: 5,
-}));
 
 export const TaskEditView = () => {
   const params = useParams();
@@ -54,6 +36,7 @@ export const TaskEditView = () => {
   const [existingFiles, setExistingFiles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [submitLoader, setSubmitLoader] = useState(false);
+  const [showFileUploadError, setShowFileUploadError] = useState(false);
 
   const formik = useFormik({
     validationSchema,
@@ -83,6 +66,13 @@ export const TaskEditView = () => {
     const uploadPromises = acceptedFiles.map(
       (file) =>
         new Promise((resolve, reject) => {
+          if (!file.type.startsWith('image/')) {
+            setShowLoader(false);
+            setShowFileUploadError(true);
+            reject(new Error('Invalid file type. Only images are allowed.'));
+            return;
+          }
+
           const id = uuid();
           const storageRef = ref(storage, `/images/${id}`);
           const uploadTask = uploadBytesResumable(storageRef, file);
@@ -260,10 +250,26 @@ export const TaskEditView = () => {
                                   {showLoader ? (
                                     <CircularProgress size={15} sx={{ color: 'black' }} />
                                   ) : (
-                                    <Typography textAlign="center" color="#6c757d" variant='body1'>
-                                      Drag &apos;n&apos; drop some new images here, <br /> or click
-                                      to select image ( optional )
-                                    </Typography>
+                                    <>
+                                      {showFileUploadError ? (
+                                        <Typography
+                                          textAlign="center"
+                                          color="#d90429"
+                                          variant="subtitle2"
+                                        >
+                                          Invalid file type. Only images are allowed.
+                                        </Typography>
+                                      ) : (
+                                        <Typography
+                                          textAlign="center"
+                                          color="#6c757d"
+                                          variant="subtitle2"
+                                        >
+                                          Drag &apos;n&apos; drop some files here, <br /> or click
+                                          to select files ( optional )
+                                        </Typography>
+                                      )}
+                                    </>
                                   )}
                                 </>
                               )}
@@ -274,13 +280,11 @@ export const TaskEditView = () => {
                     )}
 
                     <Grid container gap={6} flexWrap="wrap">
-                      {existingFiles?.map((image, index) => (
-                        <Grid item md={4} sm={12} xs={12}>
-                          <Item elevation={2} py={4} px={4}>
-                            <ImageViewer imageURL={image} onDelete={() => onDelete(index)} />
-                          </Item>
-                        </Grid>
-                      ))}
+                      <AttachmentList
+                        images={existingFiles}
+                        onDelete={onDelete}
+                        hideDeleteIcon={selectedTask?.isActive}
+                      />
                     </Grid>
 
                     <LoadingButton

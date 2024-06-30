@@ -33,12 +33,7 @@ export const ViewBidDialog = () => {
   return (
     <>
       <Stack direction="column" m={0} alignItems="flex-end">
-        <Button
-          onClick={handleOpen}
-          variant="contained"
-          color="inherit"
-          sx={{ fontFamily: 'Wix Madefor Display' }}
-        >
+        <Button onClick={handleOpen} variant="contained" color="inherit">
           Your Bid
         </Button>
       </Stack>

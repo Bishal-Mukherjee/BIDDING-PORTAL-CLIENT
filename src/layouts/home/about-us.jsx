@@ -1,11 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable react/prop-types */
 
-import React, { useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import React, { useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
-import { Box, Grid, Stack, Divider, Container, Typography } from '@mui/material';
+import { Grid, Stack, Divider, Container, Typography } from '@mui/material';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
@@ -13,8 +13,7 @@ import AboutUsImg from 'src/assets/images/about-us.jpg';
 import RepairmanImg from 'src/assets/images/repairman.jpg';
 
 import Iconify from 'src/components/iconify';
-
-const SquareBox = () => <Box width={16} height={16} bgcolor="#7AC142" />;
+import { SquareBox } from 'src/components/commons';
 
 const ListItem = ({ content }) => (
   <Stack direction="row" gap={2} alignItems="center">
@@ -23,10 +22,8 @@ const ListItem = ({ content }) => (
   </Stack>
 );
 
-export const AboutUs = () => {
+const AboutUs = () => {
   const mdUp = useResponsive('up', 'md');
-
-  const parallaxRef = useRef(null);
 
   const control = useAnimation();
   const [ref, inView] = useInView({
@@ -41,20 +38,6 @@ export const AboutUs = () => {
       control.start('visible');
     }
   }, [control, inView]);
-
-  useEffect(() => {
-    const parallaxContainer = parallaxRef.current;
-
-    const handleScroll = () => {
-      const scrollTop = window.pageYOffset;
-      parallaxContainer.style.backgroundPositionY = `${scrollTop * 0.5}px`; // Adjust 0.5 for the parallax speed
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
 
   return (
     <>
@@ -129,7 +112,7 @@ export const AboutUs = () => {
         alignItems="center"
         mt={4}
         bgcolor="#04192a"
-        minHeight={200}
+        minHeight={208}
         gap={{ md: 12, xs: 4 }}
         flexWrap={{ xs: 'wrap', md: 'nowrap' }}
         p={4}
@@ -165,3 +148,9 @@ export const AboutUs = () => {
     </>
   );
 };
+
+ListItem.propTypes = {
+  content: PropTypes.string.isRequired,
+};
+
+export default AboutUs;
