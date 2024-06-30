@@ -113,12 +113,8 @@ export const TaskCard = ({
               {(BID_EXPIRES_IN > 0 || status === 'assigned') && (
                 <Box ml="auto">
                   <Popover>
-                    <MenuItem
-                      onClick={handleViewClick}
-                      sx={{ fontFamily: 'Wix Madefor Display' }}
-                      disableTouchRipple
-                    >
-                      <Iconify icon="mdi:eye" sx={{ mr: 2 }} />
+                    <MenuItem onClick={handleViewClick} disableTouchRipple>
+                      <Iconify icon="mdi:eye" sx={{ mr: 1 }} />
                       View
                     </MenuItem>
                   </Popover>

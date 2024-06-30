@@ -64,7 +64,7 @@ export const ActionDialog = () => {
     <>
       <Button
         variant="contained"
-        sx={{ bgcolor: '#022a5c', fontFamily: 'Wix Madefor Display' }}
+        sx={{ bgcolor: '#022a5c' }}
         onClick={handleClickOpen}
         disabled={BID_EXPIRES_IN <= 0}
       >

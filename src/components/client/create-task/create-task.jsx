@@ -42,6 +42,7 @@ export const CreateAnIssue = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [showLoader, setShowLoader] = useState(false);
+  const [showFileUploadError, setShowFileUploadError] = useState(false);
 
   const formik = useFormik({
     validationSchema,
@@ -87,6 +88,13 @@ export const CreateAnIssue = () => {
     const uploadPromises = acceptedFiles.map(
       (file) =>
         new Promise((resolve, reject) => {
+          if (!file.type.startsWith('image/')) {
+            setShowLoader(false);
+            setShowFileUploadError(true);
+            reject(new Error('Invalid file type. Only images are allowed.'));
+            return;
+          }
+
           const id = uuid();
           const storageRef = ref(storage, `/images/${id}`);
           const uploadTask = uploadBytesResumable(storageRef, file);
@@ -208,10 +216,18 @@ export const CreateAnIssue = () => {
                           {showLoader ? (
                             <CircularProgress size={15} sx={{ color: 'black' }} />
                           ) : (
-                            <Typography textAlign="center" color="#6c757d">
-                              Drag &apos;n&apos; drop some files here, <br /> or click to select
-                              files ( optional )
-                            </Typography>
+                            <>
+                              {showFileUploadError ? (
+                                <Typography textAlign="center" color="#d90429" variant="subtitle2">
+                                  Invalid file type. Only images are allowed.
+                                </Typography>
+                              ) : (
+                                <Typography textAlign="center" color="#6c757d" variant="subtitle2">
+                                  Drag &apos;n&apos; drop some files here, <br /> or click to select
+                                  files ( optional )
+                                </Typography>
+                              )}
+                            </>
                           )}
                         </>
                       )}

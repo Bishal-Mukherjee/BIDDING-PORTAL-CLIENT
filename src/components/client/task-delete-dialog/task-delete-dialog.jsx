@@ -53,9 +53,9 @@ export const TaskDeleteDialog = () => {
       </Button>
 
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-        <DialogTitle textAlign="center">Are you sure?</DialogTitle>
+        <DialogTitle textAlign="center" variant='h5'>Are you sure?</DialogTitle>
         <DialogContent>
-          <DialogContentText textAlign="center">
+          <DialogContentText textAlign="center" color="text.secondary" variant="body2">
             Are you sure you want to delete task{' '}
             <Typography color="primary" component="span">
               #{selectedTask?.id}

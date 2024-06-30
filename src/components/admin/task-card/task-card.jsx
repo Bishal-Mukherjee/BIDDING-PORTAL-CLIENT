@@ -77,21 +77,12 @@ export const TaskCard = ({
 
         <Box ml="auto">
           <Popover>
-            <MenuItem
-              onClick={handleViewClick}
-              sx={{ fontFamily: 'Wix Madefor Display' }}
-              disableTouchRipple
-            >
-              <Iconify icon="mdi:eye" sx={{ mr: 2 }} />
+            <MenuItem onClick={handleViewClick} disableTouchRipple>
+              <Iconify icon="mdi:eye" sx={{ mr: 1 }} />
               View
             </MenuItem>
-            <MenuItem
-              onClick={handleEditClick}
-              sx={{ fontFamily: 'Wix Madefor Display' }}
-              disableTouchRipple
-              disabled={isActive}
-            >
-              <Iconify icon="solar:pen-bold" sx={{ mr: 2 }} />
+            <MenuItem onClick={handleEditClick} disableTouchRipple disabled={isActive}>
+              <Iconify icon="solar:pen-bold" sx={{ mr: 1 }} />
               Edit
             </MenuItem>
           </Popover>
