@@ -38,7 +38,7 @@ export const TaskCard = ({
     <Box sx={{ bgcolor: (theme) => alpha(theme.palette.background.paper, 0) }}>
       <img
         src={previewImage || NoImageSvg}
-        alt={previewImage}
+        alt="attachment_img"
         style={{
           height: 150,
           objectFit: previewImage ? 'cover' : 'contain',

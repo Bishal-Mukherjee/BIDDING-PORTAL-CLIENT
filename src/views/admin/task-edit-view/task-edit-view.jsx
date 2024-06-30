@@ -15,7 +15,7 @@ import {
   Box,
   Grid,
   Stack,
-  styled,
+  //   styled,
   Switch,
   Tooltip,
   Backdrop,
@@ -31,21 +31,12 @@ import { useTaskStore } from 'src/stores/admin';
 import { apiUpdateTask, apiPutActivateTask } from 'src/services/admin';
 
 import Iconify from 'src/components/iconify';
-import { StatusChip, ImageViewer, TaskActiveBadge } from 'src/components/commons';
+import { StatusChip, AttachmentList, TaskActiveBadge } from 'src/components/commons';
 
 const validationSchema = yup.object().shape({
   title: yup.string().required('Title is required'),
   description: yup.string(),
 });
-
-const Item = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-  borderRadius: 5,
-}));
 
 export const TaskEditView = () => {
   const params = useParams();
@@ -318,17 +309,11 @@ export const TaskEditView = () => {
                     )}
 
                     <Grid container gap={6} flexWrap="wrap">
-                      {existingFiles?.map((image, index) => (
-                        <Grid item md={4} sm={12} xs={12} minHeight={140} maxHeight={140}>
-                          <Item elevation={2} py={4} px={4}>
-                            <ImageViewer
-                              imageURL={image}
-                              onDelete={() => onDelete(index)}
-                              hideDeleteIcon={selectedTask?.isActive}
-                            />
-                          </Item>
-                        </Grid>
-                      ))}
+                      <AttachmentList
+                        images={existingFiles}
+                        onDelete={onDelete}
+                        hideDeleteIcon={selectedTask?.isActive}
+                      />
                     </Grid>
 
                     <LoadingButton
