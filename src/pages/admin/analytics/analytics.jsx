@@ -101,7 +101,7 @@ export function Analytics() {
         </Typography>
       </Stack>
 
-      <Container maxWidth>
+      <Container maxWidth sx={{ mb: 80 }}>
         <Box component={Paper} elevation={5} sx={{ mx: { lg: 8 }, mt: 4, mb: 2 }}>
           <OutlinedInput
             value={searchQuery.value}
@@ -111,7 +111,7 @@ export function Analytics() {
                 <Iconify icon="material-symbols:search" />
               </InputAdornment>
             }
-            placeholder="Search tickets"
+            placeholder="Search tickets..."
             fullWidth
           />
         </Box>

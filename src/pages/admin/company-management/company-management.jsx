@@ -18,7 +18,7 @@ import { bgGradient } from 'src/theme/css';
 import { useAdminManagementStore } from 'src/stores/admin';
 
 import Iconify from 'src/components/iconify/iconify';
-import { CompanyDataTable } from 'src/components/admin';
+import { CompanyDataTable as DataTable } from 'src/components/admin';
 
 export const CompanyManagement = () => {
   const theme = useTheme();
@@ -87,12 +87,12 @@ export const CompanyManagement = () => {
                 <Iconify icon="material-symbols:search" />
               </InputAdornment>
             }
-            placeholder="Search users"
+            placeholder="Search companies..."
             fullWidth
           />
         </Box>
 
-        <CompanyDataTable searchQuery={searchQuery} />
+        <DataTable searchQuery={searchQuery} />
       </Container>
     </Box>
   );

@@ -36,7 +36,7 @@ export const useTaskStore = create((set) => ({
     const combinedTaskData = {
       ...(isEmpty(response.task) ? {} : { task: response.task }),
       ...(isEmpty(response.taskAcceptance) ? {} : { taskAcceptance: response.taskAcceptance }),
-      ...(isEmpty(response.bid) ? {} : { bid: response.bid }),
+      ...(isEmpty(response.bids) ? {} : { bids: response.bids }),
     };
 
     if (response) set((state) => ({ ...state, selectedTask: combinedTaskData, isLoading: false }));

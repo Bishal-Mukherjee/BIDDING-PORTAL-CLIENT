@@ -88,7 +88,7 @@ export function Analytics() {
                 <Iconify icon="material-symbols:search" />
               </InputAdornment>
             }
-            placeholder="Search tickets"
+            placeholder="Search tickets..."
             fullWidth
           />
         </Box>

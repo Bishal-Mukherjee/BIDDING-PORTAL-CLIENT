@@ -110,16 +110,14 @@ export const TaskCard = ({
                 {trimText(title, 32)}
               </Typography>
 
-              {(BID_EXPIRES_IN > 0 || status === 'assigned') && (
-                <Box ml="auto">
-                  <Popover>
-                    <MenuItem onClick={handleViewClick} disableTouchRipple>
-                      <Iconify icon="mdi:eye" sx={{ mr: 1 }} />
-                      View
-                    </MenuItem>
-                  </Popover>
-                </Box>
-              )}
+              <Box ml="auto">
+                <Popover>
+                  <MenuItem onClick={handleViewClick} disableTouchRipple>
+                    <Iconify icon="mdi:eye" sx={{ mr: 1 }} />
+                    View
+                  </MenuItem>
+                </Popover>
+              </Box>
             </Stack>
 
             <Typography
