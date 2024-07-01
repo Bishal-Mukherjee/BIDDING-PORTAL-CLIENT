@@ -18,7 +18,7 @@ import { bgGradient } from 'src/theme/css';
 import { useAdminManagementStore } from 'src/stores/admin';
 
 import Iconify from 'src/components/iconify/iconify';
-import { ClientDataTable, AddClientDialog } from 'src/components/admin';
+import { AddClientDialog, ClientDataTable as DataTable } from 'src/components/admin';
 
 export const ClientManagement = () => {
   const theme = useTheme();
@@ -87,7 +87,7 @@ export const ClientManagement = () => {
                 <Iconify icon="material-symbols:search" />
               </InputAdornment>
             }
-            placeholder="Search users"
+            placeholder="Search clients..."
             fullWidth
           />
         </Box>
@@ -96,7 +96,7 @@ export const ClientManagement = () => {
           <AddClientDialog />
         </Stack>
 
-        <ClientDataTable searchQuery={searchQuery} />
+        <DataTable searchQuery={searchQuery} />
       </Container>
     </Box>
   );

@@ -85,12 +85,21 @@ export const TaskWrapper = () => {
                   {isEmpty(selectedTask?.taskAcceptance) ? (
                     <ActionDialog />
                   ) : (
-                    <>{!isEmpty(selectedTask?.bid) ? <ViewBidDialog /> : <PlaceBidDialog />}</>
+                    <Stack direction="row" alignItems="center" gap={1}>
+                      {isEmpty(selectedTask?.bids) ? (
+                        <PlaceBidDialog />
+                      ) : (
+                        <>
+                          <ViewBidDialog />
+                          {selectedTask?.bids?.length < 3 && <PlaceBidDialog />}
+                        </>
+                      )}
+                    </Stack>
                   )}
                 </Stack>
 
                 {selectedTask?.taskAcceptance?.status === 'accepted' &&
-                isEmpty(selectedTask?.bid) ? (
+                isEmpty(selectedTask?.bids) ? (
                   <Alert
                     severity="error"
                     sx={{

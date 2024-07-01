@@ -2,21 +2,8 @@ import PropTypes from 'prop-types';
 
 import { Chip } from '@mui/material';
 
-const StatusColors = {
-  accepted: {
-    background: '#90EE90',
-    text: '#006400',
-  },
-  rejected: {
-    background: '#f9bec7',
-    text: '#d90429',
-  },
-};
-
-const StatusLabel = {
-  accepted: 'ACCEPTED',
-  rejected: 'REJECTED',
-};
+import { StatusLabel } from 'src/constants';
+import { StatusColors } from 'src/theme/status-colors';
 
 export const BidStatusChip = ({ variant }) => (
   <Chip
@@ -25,13 +12,11 @@ export const BidStatusChip = ({ variant }) => (
       height: 24,
       backgroundColor: StatusColors[variant]?.background,
       color: StatusColors[variant]?.text,
-      fontWeight: 600,
-      fontFamily: 'Poppins',
-      textTransform: 'uppercase',
+      fontWeight: 700,
     }}
   />
 );
 
 BidStatusChip.propTypes = {
-  variant: PropTypes.oneOf(['accepted', 'rejected']),
+  variant: PropTypes.oneOf(['pending', 'accepted', 'rejected']),
 };

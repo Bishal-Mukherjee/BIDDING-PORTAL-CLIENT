@@ -3,15 +3,9 @@ import PropTypes from 'prop-types';
 
 import { Chip, Stack, Popover, Tooltip, MenuItem, IconButton } from '@mui/material';
 
-import Iconify from 'src/components/iconify';
+import { StatusLabel, STATUS_MENU_OPTIONS as MENU_OPTIONS } from 'src/constants';
 
-const MENU_OPTIONS = [
-  { id: 1, label: 'Created', value: 'created' },
-  { id: 2, label: 'Assigned', value: 'assigned' },
-  { id: 3, label: 'In Progress', value: 'in-progress' },
-  { id: 4, label: 'Completed', value: 'completed' },
-  { id: 5, label: 'Accepted', value: 'accepted' },
-];
+import Iconify from 'src/components/iconify';
 
 export const TaskFilter = ({ appliedFilter, setAppliedFilter }) => {
   const [open, setOpen] = useState(null);
@@ -27,10 +21,7 @@ export const TaskFilter = ({ appliedFilter, setAppliedFilter }) => {
   return (
     <>
       <Stack direction="row" alignItems="center">
-        <Chip
-          label={String(appliedFilter).toUpperCase()}
-          sx={{ fontFamily: 'Wix Madefor Display', fontSize: 12, mr: 1 }}
-        />
+        <Chip label={StatusLabel[appliedFilter]} sx={{ fontSize: 12, mr: 1 }} />
         <Iconify icon="codicon:circle-filled" width={10} />
         <Tooltip title="Filter tasks by">
           <IconButton onClick={handleOpen}>
@@ -51,7 +42,6 @@ export const TaskFilter = ({ appliedFilter, setAppliedFilter }) => {
           <MenuItem
             key={option.label}
             sx={{
-              fontFamily: 'Wix Madefor Display',
               ...(appliedFilter === option.value && {
                 fontWeight: appliedFilter === option.value ? 600 : 400,
                 bgcolor: appliedFilter === option.value ? '#e9ecef' : 'unset',
