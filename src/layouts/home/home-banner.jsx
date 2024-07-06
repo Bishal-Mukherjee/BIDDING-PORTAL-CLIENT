@@ -9,8 +9,10 @@ import HOME_BG from 'src/assets/images/home-bg.jpg';
 
 import { SquareBox } from 'src/components/commons';
 
+import { ContactUsDialog } from './contact-us-dialog';
+
 const BG_OVERLAY =
-  'linear-gradient(to right, rgba(0, 20, 30, 0.96) 10%, rgba(0, 20, 30, 0.90) 20%, rgba(0, 20, 40, 0.80) 44%, rgba(255, 0, 0, 0))';
+  'linear-gradient(to right, rgba(0, 20, 30, 0.96) 10%, rgba(0, 20, 30, 0.90) 20%, rgba(255, 0, 0, 0))';
 
 const HomeBanner = () => {
   const theme = useTheme();
@@ -83,6 +85,7 @@ const HomeBanner = () => {
                 get the best deal for your needs.
               </Typography>
             </Stack>
+            <ContactUsDialog />
           </Stack>
         </Container>
       </Box>

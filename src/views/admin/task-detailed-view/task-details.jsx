@@ -68,6 +68,23 @@ export const TaskDetails = () => {
           </Grid>
         )}
       </Grid>
+
+      <Grid container spacing={2} justifyContent="center" flexWrap="wrap" px={2} mt={2}>
+        {!isEmpty(selectedTask?.videos) && (
+          <Grid item xs={12} md={6}>
+            <Grid container gap={2}>
+              {selectedTask?.videos?.map((video, index) => (
+                <Grid item md={6} sm={12} xs={12}>
+                  <video width="100%" controls key={`video-${index}`}>
+                    <track kind="captions" />
+                    <source src={video} type="video/mp4" />
+                  </video>
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
+        )}
+      </Grid>
     </>
   );
 };

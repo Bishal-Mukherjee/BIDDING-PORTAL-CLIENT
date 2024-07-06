@@ -56,7 +56,18 @@ export const SearchableTaskList = ({ searchQuery, appliedStatusFilter }) => {
       <Grid container spacing={2} flexWrap="wrap" sx={{ px: { lg: 8 }, mt: 0 }}>
         {filteredData.map((task) => (
           <Grid key={`task-${task.id}`} item md={4} sm={12} xs={12} minHeight={250} maxHeight={400}>
-            <Item elevation={2} py={4} px={4} sx={{ height: '100%' }}>
+            <Item
+              elevation={2}
+              py={4}
+              px={4}
+              sx={{
+                height: '100%',
+                cursor: 'pointer',
+                ':hover': {
+                  transform: 'scale(1.01)',
+                },
+              }}
+            >
               <TaskCard
                 id={task.id}
                 name={task.name}

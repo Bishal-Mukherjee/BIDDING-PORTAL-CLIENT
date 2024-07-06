@@ -3,15 +3,9 @@ import { useState } from 'react';
 import { Box, Chip, Stack, Popover, Tooltip, MenuItem, IconButton } from '@mui/material';
 
 import { useTaskStore } from 'src/stores/admin';
+import { StatusLabel, STATUS_MENU_OPTIONS as MENU_OPTIONS } from 'src/constants';
 
 import Iconify from 'src/components/iconify';
-
-const MENU_OPTIONS = [
-  { id: 1, label: 'Created', value: 'created' },
-  { id: 2, label: 'Assigned', value: 'assigned' },
-  { id: 3, label: 'In Progress', value: 'in-progress' },
-  { id: 4, label: 'Completed', value: 'completed' },
-];
 
 export const TaskFilter = () => {
   const { getAllTasks } = useTaskStore();
@@ -34,7 +28,7 @@ export const TaskFilter = () => {
   return (
     <>
       <Stack direction="row" alignItems="center">
-        <Chip label={String(appliedFilter).toUpperCase()} sx={{ fontSize: 12 }} />
+        <Chip label={StatusLabel[appliedFilter]} sx={{ fontSize: 12 }} />
         <Box sx={{ ml: 1, mr: -0.4 }}>
           <Iconify icon="codicon:circle-filled" width={10} />
         </Box>

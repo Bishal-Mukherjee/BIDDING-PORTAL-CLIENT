@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { isEmpty } from 'lodash';
 import React, { useState } from 'react';
 
 import {
@@ -17,6 +18,8 @@ import {
 
 import { useTaskStore } from 'src/stores/company';
 
+import Iconify from 'src/components/iconify';
+
 export const ViewBidDialog = () => {
   const { selectedTask } = useTaskStore();
 
@@ -34,11 +37,11 @@ export const ViewBidDialog = () => {
     <>
       <Stack direction="column" m={0} alignItems="flex-end">
         <Button onClick={handleOpen} variant="contained" color="inherit">
-          Your Bid
+          Your Bids
         </Button>
       </Stack>
 
-      <Dialog open={open} maxWidth="sm" fullWidth onClose={handleClose}>
+      <Dialog open={open} maxWidth="md" fullWidth onClose={handleClose}>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -46,24 +49,42 @@ export const ViewBidDialog = () => {
                 <TableCell>ID</TableCell>
                 <TableCell align="right">Amount</TableCell>
                 <TableCell align="right">Placed On</TableCell>
+                <TableCell align="right">Attachment</TableCell>
+                <TableCell align="right">Quality</TableCell>
                 <TableCell align="right">Status</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell component="th" scope="row">
-                  {selectedTask?.bid?.id}
-                </TableCell>
-                <TableCell align="right">{selectedTask?.bid?.amount}</TableCell>
-                <TableCell align="right">
-                  {dayjs(selectedTask?.bid?.createdAt).format('DD MMM YYYY')}
-                </TableCell>
-                <TableCell align="right">
-                  <Typography textTransform="uppercase" fontSize={14}>
-                    {selectedTask?.bid?.status}
-                  </Typography>
-                </TableCell>
-              </TableRow>
+              {selectedTask?.bids?.map((bid) => (
+                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  <TableCell component="th" scope="row">
+                    {bid?.id}
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontSize: 12 }}>
+                    {bid?.currency}&nbsp;&nbsp;{bid?.amount}
+                  </TableCell>
+                  <TableCell align="right">{dayjs(bid?.createdAt).format('DD MMM YYYY')}</TableCell>
+                  <TableCell align="center">
+                    {isEmpty(bid?.attachment) ? (
+                      <Typography> - </Typography>
+                    ) : (
+                      <a href={bid?.attachment} target="_blank" rel="noreferrer">
+                        <Iconify icon="fa-solid:file-invoice" color="#000000" />
+                      </a>
+                    )}
+                  </TableCell>
+                  <TableCell align="right">
+                    <Typography textTransform="uppercase" fontSize={14}>
+                      {bid?.quality}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Typography textTransform="uppercase" fontSize={14}>
+                      {bid?.status}
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>

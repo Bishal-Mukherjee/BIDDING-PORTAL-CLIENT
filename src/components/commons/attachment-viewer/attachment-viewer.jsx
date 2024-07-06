@@ -12,6 +12,6 @@ export const ImageViewer = ({ imageURL = '', onDelete, hideDeleteIcon }) => (
         <Iconify icon="typcn:delete" width={24} color="#ffffff" />
       </IconButton>
     )}
-    <img src={imageURL} alt="" style={{ minHeight: 170, maxHeight: 204 }} />
+    <img src={imageURL} alt="" style={{ minHeight: 166, maxHeight: 204 }} />
   </Box>
 );

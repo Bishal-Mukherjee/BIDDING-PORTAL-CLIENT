@@ -35,7 +35,13 @@ export const TaskDetailedView = () => {
         <Grid container spacing={2} justifyContent="center" flexWrap="wrap">
           <Grid item xs={12} md={5}>
             <Stack direction="row" width="100%" height="100%" spacing={2}>
-              <Stack direction="column" alignItems="center" width="100%" height="100%">
+              <Stack
+                direction="column"
+                alignItems="flex-start"
+                justifyContent="flex-start"
+                width="100%"
+                height="100%"
+              >
                 <Stack
                   direction="row"
                   spacing={4}
@@ -53,13 +59,15 @@ export const TaskDetailedView = () => {
                   <StatusChip variant={selectedTask?.status} />
                 </Stack>
 
-                <Typography sx={{ mt: 4 }} variant="h4">
-                  {selectedTask?.title}
-                </Typography>
+                <Box sx={{ width: '100%' }}>
+                  <Typography sx={{ mt: 4 }} variant="h4" textAlign="center">
+                    {selectedTask?.title}
+                  </Typography>
+                </Box>
 
                 <Divider sx={{ my: 2, width: { md: '100%', xs: '100%' } }} />
 
-                <Typography sx={{ mt: 0 }} fontSize={16} variant="body1" textAlign="left">
+                <Typography sx={{ mt: 0 }} fontSize={16} variant="body1">
                   {isEmpty(selectedTask?.description)
                     ? 'No description found'
                     : selectedTask?.description}
@@ -95,16 +103,29 @@ export const TaskDetailedView = () => {
           </Grid>
         </Grid>
 
-        <Grid container spacing={2} justifyContent="center" flexWrap="wrap" mt={4}>
-          {!isEmpty(selectedTask?.images) && (
+        {!isEmpty(selectedTask?.images) && (
+          <Grid container spacing={2} justifyContent="center" flexWrap="wrap" mt={4}>
             <Grid item xs={12} md={5}>
               <Typography variant="h5">Attachments</Typography>
-              <Grid container spacing={2} flexWrap="wrap" mt={0}>
+              <Grid container gap={2} flexWrap="wrap" mt={0}>
                 <AttachmentList images={selectedTask?.images} />
               </Grid>
             </Grid>
-          )}
-        </Grid>
+          </Grid>
+        )}
+
+        {!isEmpty(selectedTask?.videos) && (
+          <Grid container spacing={2} justifyContent="center" flexWrap="wrap">
+            {selectedTask?.videos?.map((video, index) => (
+              <Grid item md={5} xs={12}>
+                <video width={308} height={240} controls key={`video-${index}`}>
+                  <track kind="captions" />
+                  <source src={video} type="video/mp4" />
+                </video>
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Box>
     </>
   );

@@ -85,12 +85,21 @@ export const TaskWrapper = () => {
                   {isEmpty(selectedTask?.taskAcceptance) ? (
                     <ActionDialog />
                   ) : (
-                    <>{!isEmpty(selectedTask?.bid) ? <ViewBidDialog /> : <PlaceBidDialog />}</>
+                    <Stack direction="row" alignItems="center" gap={1}>
+                      {isEmpty(selectedTask?.bids) ? (
+                        <PlaceBidDialog />
+                      ) : (
+                        <>
+                          <ViewBidDialog />
+                          {selectedTask?.bids?.length < 3 && <PlaceBidDialog />}
+                        </>
+                      )}
+                    </Stack>
                   )}
                 </Stack>
 
                 {selectedTask?.taskAcceptance?.status === 'accepted' &&
-                isEmpty(selectedTask?.bid) ? (
+                isEmpty(selectedTask?.bids) ? (
                   <Alert
                     severity="error"
                     sx={{
@@ -147,6 +156,19 @@ export const TaskWrapper = () => {
             <Grid item xs={12} md={5}>
               <Typography variant="h5">Attachments</Typography>
               <AttachmentList images={selectedTask?.task?.images} />
+            </Grid>
+          )}
+        </Grid>
+
+        <Grid container spacing={2} justifyContent="center" flexWrap="wrap" px={2}>
+          {!isEmpty(selectedTask?.videos) && (
+            <Grid item xs={12} md={6}>
+              {selectedTask?.task?.videos?.map((video, index) => (
+                <video width={320} height={240} controls key={`video-${index}`}>
+                  <track kind="captions" />
+                  <source src={video} type="video/mp4" />
+                </video>
+              ))}
             </Grid>
           )}
         </Grid>

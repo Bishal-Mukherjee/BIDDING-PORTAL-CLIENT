@@ -21,9 +21,9 @@ export const TaskCard = ({ id, title, description, status, isActive, previewImag
     navigate(`/client/analytics/${id}`, { state: { mode: 'view' } });
   };
 
-  const handleEditClick = () => {
-    navigate(`/client/analytics/${id}`, { state: { mode: 'edit' } });
-  };
+  //   const handleEditClick = () => {
+  //     navigate(`/client/analytics/${id}`, { state: { mode: 'edit' } });
+  //   };
 
   return (
     <Box sx={{ bgcolor: (theme) => alpha(theme.palette.background.paper, 0) }}>
@@ -85,10 +85,10 @@ export const TaskCard = ({ id, title, description, status, isActive, previewImag
                       <Iconify icon="mdi:eye" sx={{ mr: 1 }} />
                       View
                     </MenuItem>
-                    <MenuItem onClick={handleEditClick} disableTouchRipple disabled={isActive}>
+                    {/* <MenuItem onClick={handleEditClick} disableTouchRipple disabled={isActive}>
                       <Iconify icon="solar:pen-bold" sx={{ mr: 1 }} />
                       Edit
-                    </MenuItem>
+                    </MenuItem> */}
                   </Popover>
                 </Box>
               </Stack>
