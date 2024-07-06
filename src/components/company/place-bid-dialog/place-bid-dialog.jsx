@@ -3,7 +3,7 @@ import { isEmpty } from 'lodash';
 import { v4 as uuid } from 'uuid';
 import { useFormik } from 'formik';
 import { useDropzone } from 'react-dropzone';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 
 import { LoadingButton } from '@mui/lab';
@@ -12,6 +12,7 @@ import {
   Stack,
   Button,
   Drawer,
+  MenuItem,
   TextField,
   Typography,
   IconButton,
@@ -21,12 +22,18 @@ import {
 
 import { storage } from 'src/firebase/config';
 import { useTaskStore } from 'src/stores/company';
+import { QUALITY_MENU_OPTIONS } from 'src/constants';
 import { apiPostCreateBid } from 'src/services/company';
 
 import Iconify from 'src/components/iconify/iconify';
 
 const validationSchema = yup.object().shape({
-  amount: yup.number().typeError('Must be a number').required('Required'),
+  amount: yup
+    .number()
+    .min(1, 'Amount must be greater than 0')
+    .typeError('Must be a number')
+    .required('Required'),
+  quality: yup.string().required('Required'),
 });
 
 export const PlaceBidDialog = () => {
@@ -38,11 +45,13 @@ export const PlaceBidDialog = () => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [showFileUploadError, setShowFileUploadError] = useState(false);
   const [inputErrors, setInputErrors] = useState('');
+  const [prevQualities, setPrevQualities] = useState([]);
 
   const formik = useFormik({
     validationSchema,
     initialValues: {
       amount: 0,
+      quality: '',
     },
     onSubmit: async (values) => {
       if (isEmpty(uploadedFiles)) {
@@ -54,6 +63,7 @@ export const PlaceBidDialog = () => {
         taskId: selectedTask?.task?.id,
         amount: values.amount,
         attachment: uploadedFiles[0],
+        quality: values.quality,
       });
       setIsLoading(false);
       getTaskById({ id: selectedTask?.task?.id });
@@ -118,6 +128,12 @@ export const PlaceBidDialog = () => {
     multiple: false,
   });
 
+  useEffect(() => {
+    if (!isEmpty(selectedTask?.bids)) {
+      setPrevQualities(selectedTask?.bids?.map((bid) => bid?.quality));
+    }
+  }, [selectedTask?.bids]);
+
   return (
     <>
       <Button
@@ -140,11 +156,11 @@ export const PlaceBidDialog = () => {
             </IconButton>
           </Stack>
 
-          <Stack mt={4} width="100%">
-            <form onSubmit={formik.handleSubmit}>
+          <form onSubmit={formik.handleSubmit}>
+            <Stack mt={4} gap={2} width="100%">
               <TextField
                 fullWidth
-                label="Enter bid amount"
+                label="Bid amount"
                 name="amount"
                 value={formik.values.amount}
                 onChange={formik.handleChange}
@@ -152,11 +168,31 @@ export const PlaceBidDialog = () => {
                 helperText={formik.touched.amount && formik.errors.amount}
               />
 
+              <TextField
+                select
+                label="Quality"
+                name="quality"
+                value={formik.values.quality}
+                onChange={formik.handleChange}
+                error={formik.touched.quality && Boolean(formik.errors.quality)}
+                helperText={formik.touched.quality && formik.errors.quality}
+                SelectProps={{ MenuProps: { sx: { ml: 1 } } }}
+              >
+                {QUALITY_MENU_OPTIONS.map((option) => (
+                  <MenuItem
+                    key={`quality-${option.value}`}
+                    value={option.value}
+                    disabled={prevQualities?.includes(option.value)}
+                  >
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+
               <Box
                 sx={{
                   bgcolor: '#F4F6F8',
-                  px: 5,
-                  mt: 2,
+                  px: 4,
                   height: 180,
                   borderRadius: 2,
                   borderStyle: 'dotted',
@@ -212,7 +248,7 @@ export const PlaceBidDialog = () => {
 
               {inputErrors && <FormHelperText error>{inputErrors}</FormHelperText>}
 
-              <Stack direction="row" gap={1} alignItems="center" justifyContent="flex-end" mt={2}>
+              <Stack direction="row" gap={1} alignItems="center" justifyContent="flex-end" mt={0}>
                 <Button onClick={handleClose} color="warning">
                   Cancel
                 </Button>
@@ -225,8 +261,8 @@ export const PlaceBidDialog = () => {
                   Confirm
                 </LoadingButton>
               </Stack>
-            </form>
-          </Stack>
+            </Stack>
+          </form>
         </Box>
       </Drawer>
     </>

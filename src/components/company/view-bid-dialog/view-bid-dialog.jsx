@@ -41,7 +41,7 @@ export const ViewBidDialog = () => {
         </Button>
       </Stack>
 
-      <Dialog open={open} maxWidth="sm" fullWidth onClose={handleClose}>
+      <Dialog open={open} maxWidth="md" fullWidth onClose={handleClose}>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -50,6 +50,7 @@ export const ViewBidDialog = () => {
                 <TableCell align="right">Amount</TableCell>
                 <TableCell align="right">Placed On</TableCell>
                 <TableCell align="right">Attachment</TableCell>
+                <TableCell align="right">Quality</TableCell>
                 <TableCell align="right">Status</TableCell>
               </TableRow>
             </TableHead>
@@ -59,7 +60,9 @@ export const ViewBidDialog = () => {
                   <TableCell component="th" scope="row">
                     {bid?.id}
                   </TableCell>
-                  <TableCell align="right">{bid?.amount}</TableCell>
+                  <TableCell align="right" sx={{ fontSize: 12 }}>
+                    {bid?.currency}&nbsp;&nbsp;{bid?.amount}
+                  </TableCell>
                   <TableCell align="right">{dayjs(bid?.createdAt).format('DD MMM YYYY')}</TableCell>
                   <TableCell align="center">
                     {isEmpty(bid?.attachment) ? (
@@ -69,6 +72,11 @@ export const ViewBidDialog = () => {
                         <Iconify icon="fa-solid:file-invoice" color="#000000" />
                       </a>
                     )}
+                  </TableCell>
+                  <TableCell align="right">
+                    <Typography textTransform="uppercase" fontSize={14}>
+                      {bid?.quality}
+                    </Typography>
                   </TableCell>
                   <TableCell align="right">
                     <Typography textTransform="uppercase" fontSize={14}>

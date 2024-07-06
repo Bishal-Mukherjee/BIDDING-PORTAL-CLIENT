@@ -32,3 +32,19 @@ export const apiAddClientDoc = async ({ email, firstName, lastName, phoneNumber 
     throw error;
   }
 };
+
+export const apiGetClient = async ({ phoneNumber }) => {
+  try {
+    const usersRef = collection(firestore, 'users');
+    const q = query(usersRef, where('phoneNumber', '==', phoneNumber));
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.empty) {
+      throw new Error('User not found');
+    }
+    const users = querySnapshot?.docs?.map((d) => d.data())[0];
+    return users;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

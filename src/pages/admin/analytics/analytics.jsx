@@ -22,7 +22,7 @@ import { bgGradient } from 'src/theme/css';
 import { useTaskStore } from 'src/stores/admin';
 
 import Iconify from 'src/components/iconify/iconify';
-import { TaskFilter, SearchableTaskList } from 'src/components/admin';
+import { TaskFilter, CreateAnIssue, SearchableTaskList } from 'src/components/admin';
 
 const Item = styled(Card)(({ theme }) => ({
   //   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -74,7 +74,6 @@ export function Analytics() {
           color: alpha(theme.palette.background.default, 0.9),
         }),
         height: 1,
-        pb: 100,
       }}
     >
       <Helmet>
@@ -116,7 +115,14 @@ export function Analytics() {
           />
         </Box>
 
-        <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ px: { lg: 8 } }}>
+        <Stack
+          gap={1}
+          direction="row"
+          alignItems="center"
+          justifyContent="flex-end"
+          sx={{ px: { lg: 8 } }}
+        >
+          <CreateAnIssue />
           <TaskFilter />
         </Stack>
 

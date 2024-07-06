@@ -42,6 +42,7 @@ export const TaskBids = () => {
                       <TableCell align="right">Amount</TableCell>
                       <TableCell align="right">Placed On</TableCell>
                       <TableCell align="right">Attachment</TableCell>
+                      <TableCell align="right">Quality</TableCell>
                       <TableCell align="right">Status</TableCell>
                       <TableCell align="right">Action</TableCell>
                     </TableRow>
@@ -66,6 +67,11 @@ export const TaskBids = () => {
                               <Iconify icon="fa-solid:file-invoice" color="#000000" />
                             </a>
                           )}
+                        </TableCell>
+                        <TableCell align="right">
+                          <Typography textTransform="uppercase" fontSize={14}>
+                            {bid?.quality}
+                          </Typography>
                         </TableCell>
                         <TableCell align="right">
                           <BidStatusChip variant={bid?.status} />

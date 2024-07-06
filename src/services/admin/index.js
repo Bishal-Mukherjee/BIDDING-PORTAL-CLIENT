@@ -30,6 +30,34 @@ export const apiGetRecentTasks = async () => {
   }
 };
 
+export const apiPostCreateIssue = async ({
+  firstName,
+  lastName,
+  email,
+  title,
+  description,
+  images,
+  address,
+  videos,
+}) => {
+  try {
+    const response = await apiInstance.post('/admin/createTask', {
+      firstName,
+      lastName,
+      email,
+      title,
+      description,
+      images,
+      address,
+      videos,
+    });
+    return response.data;
+  } catch (err) {
+    console.log(err.message);
+    return null;
+  }
+};
+
 export const apiPutConfirmBid = async ({ taskId, bidId }) => {
   try {
     const response = await apiInstance.put(`/admin/updateSelectBid/${taskId}/${bidId}`);

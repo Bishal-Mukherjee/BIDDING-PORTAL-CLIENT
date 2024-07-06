@@ -159,6 +159,19 @@ export const TaskWrapper = () => {
             </Grid>
           )}
         </Grid>
+
+        <Grid container spacing={2} justifyContent="center" flexWrap="wrap" px={2}>
+          {!isEmpty(selectedTask?.videos) && (
+            <Grid item xs={12} md={6}>
+              {selectedTask?.task?.videos?.map((video, index) => (
+                <video width={320} height={240} controls key={`video-${index}`}>
+                  <track kind="captions" />
+                  <source src={video} type="video/mp4" />
+                </video>
+              ))}
+            </Grid>
+          )}
+        </Grid>
       </Box>
     </>
   );

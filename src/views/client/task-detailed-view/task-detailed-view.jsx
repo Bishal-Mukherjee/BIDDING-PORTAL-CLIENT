@@ -103,16 +103,29 @@ export const TaskDetailedView = () => {
           </Grid>
         </Grid>
 
-        <Grid container spacing={2} justifyContent="center" flexWrap="wrap" mt={4}>
-          {!isEmpty(selectedTask?.images) && (
+        {!isEmpty(selectedTask?.images) && (
+          <Grid container spacing={2} justifyContent="center" flexWrap="wrap" mt={4}>
             <Grid item xs={12} md={5}>
               <Typography variant="h5">Attachments</Typography>
-              <Grid container spacing={2} flexWrap="wrap" mt={0}>
+              <Grid container gap={2} flexWrap="wrap" mt={0}>
                 <AttachmentList images={selectedTask?.images} />
               </Grid>
             </Grid>
-          )}
-        </Grid>
+          </Grid>
+        )}
+
+        {!isEmpty(selectedTask?.videos) && (
+          <Grid container spacing={2} justifyContent="center" flexWrap="wrap">
+            {selectedTask?.videos?.map((video, index) => (
+              <Grid item md={5} xs={12}>
+                <video width={308} height={240} controls key={`video-${index}`}>
+                  <track kind="captions" />
+                  <source src={video} type="video/mp4" />
+                </video>
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Box>
     </>
   );

@@ -19,7 +19,11 @@ import { bgGradient } from 'src/theme/css';
 import { useTaskStore } from 'src/stores/client';
 
 import Iconify from 'src/components/iconify/iconify';
-import { TaskFilter, CreateAnIssue, SearchableTaskList } from 'src/components/client';
+import {
+  TaskFilter,
+  // CreateAnIssue,
+  SearchableTaskList,
+} from 'src/components/client';
 
 export function Analytics() {
   const theme = useTheme();
@@ -101,7 +105,7 @@ export function Analytics() {
           justifyContent="flex-end"
         >
           <Stack spacing={1} direction="row" alignItems="center" justifyContent="flex-end">
-            <CreateAnIssue />
+            {/* <CreateAnIssue /> */}
             <TaskFilter />
           </Stack>
         </Stack>
