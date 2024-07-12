@@ -86,10 +86,11 @@ export const PlaceBidDialog = () => {
     const uploadPromises = acceptedFiles.map(
       (file) =>
         new Promise((resolve, reject) => {
-          if (!file.type.startsWith('image/')) {
+          const fileType = file.type;
+          if (!fileType.includes('image') && !fileType.includes('pdf')) {
             setShowLoader(false);
             setShowFileUploadError(true);
-            reject(new Error('Invalid file type. Only images are allowed.'));
+            reject(new Error('Invalid file type. Only image/pdf are allowed.'));
             return;
           }
 
@@ -229,7 +230,7 @@ export const PlaceBidDialog = () => {
                             <>
                               {showFileUploadError ? (
                                 <Typography textAlign="center" color="#d90429" variant="subtitle2">
-                                  Invalid file type. Only images are allowed.
+                                  Invalid file type. Only image / pdf are allowed.
                                 </Typography>
                               ) : (
                                 <Typography textAlign="center" color="#6c757d" variant="subtitle2">
