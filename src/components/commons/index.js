@@ -7,3 +7,4 @@ export * from './bid-status-chip';
 export * from './task-active-badge';
 export * from './square-box';
 export * from './attachment-list';
+export * from './data-table';

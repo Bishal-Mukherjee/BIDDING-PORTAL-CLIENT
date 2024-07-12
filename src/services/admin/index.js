@@ -116,6 +116,16 @@ export const apiPostCreateClient = async ({
   }
 };
 
+export const apiGetAllInterestedClients = async () => {
+  try {
+    const response = await apiInstance.get('/admin/getInterestedClients');
+    return response.data;
+  } catch (err) {
+    console.log(err.message);
+    return null;
+  }
+};
+
 // export const apiPostCreateIssue = async ({ title, description, images }) => {
 //   try {
 //     const response = await apiInstance.post('/client/createTask', {

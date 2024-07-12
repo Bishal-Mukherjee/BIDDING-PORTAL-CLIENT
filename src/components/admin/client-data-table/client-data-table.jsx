@@ -1,84 +1,42 @@
+import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 
-import {
-  Box,
-  Paper,
-  Table,
-  Tooltip,
-  TableRow,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableContainer,
-} from '@mui/material';
+import { Box } from '@mui/material';
 
+import { trimText } from 'src/utils';
 import { useAdminManagementStore } from 'src/stores/admin';
 
-const formatAddress = (address) => {
-  if (!address) {
-    return {
-      tooltipText: '-',
-      cellValue: '-',
-    };
-  }
-  return {
-    tooltipText: `${address.street}, ${address.city}, ${address.state}`,
-    cellValue: `${address.street}, ${address.city}`,
-  };
-};
+import { DataTable } from 'src/components/commons';
 
-export const ClientDataTable = ({ searchQuery }) => {
+export const ClientDataTable = ({ searchQuery, columns }) => {
   const { clients } = useAdminManagementStore();
 
-  const filteredData = useMemo(
+  const rows = useMemo(
     () =>
-      clients?.filter(
-        (task) =>
-          searchQuery.regex &&
-          (searchQuery.regex.test(task.firstName) ||
-            searchQuery.regex.test(task.lastName) ||
-            searchQuery.regex.test(task.email) ||
-            searchQuery.regex.test(task.phoneNumber))
-      ),
+      clients
+        ?.filter(
+          (task) =>
+            searchQuery.regex &&
+            (searchQuery.regex.test(task.firstName) ||
+              searchQuery.regex.test(task.lastName) ||
+              searchQuery.regex.test(task.email) ||
+              searchQuery.regex.test(task.phoneNumber))
+        )
+        .map((row) => ({
+          phoneNumber: row.phoneNumber,
+          firstName: row.firstName,
+          lastName: row.lastName,
+          email: row.email,
+          address: isEmpty(row?.address) ? '' : `${row?.address?.street}, ${row?.address?.city}`,
+          message: isEmpty(row?.message) ? '' : trimText(row?.message, 50),
+        })),
     [searchQuery, clients]
   );
 
   return (
-    <Box sx={{ mx: { lg: 8 }, mt: 4, mb: 2 }}>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }}>
-          <TableHead>
-            <TableRow>
-              <TableCell>Phone Number</TableCell>
-              <TableCell align="right">First Name</TableCell>
-              <TableCell align="right">Last Name</TableCell>
-              <TableCell align="right">Email</TableCell>
-              <TableCell align="right">Address</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredData?.map((row) => (
-              <TableRow
-                key={row.phoneNumber}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {row.phoneNumber}
-                </TableCell>
-                <TableCell align="right">{row.firstName}</TableCell>
-                <TableCell align="right">{row.lastName}</TableCell>
-                <TableCell align="right">{row.email}</TableCell>
-                <TableCell align="right">
-                  <Tooltip title={formatAddress(row?.address).tooltipText}>
-                    {formatAddress(row?.address).cellValue}
-                  </Tooltip>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+    <Box sx={{ mx: { lg: 0 }, mt: 4, mb: 2 }}>
+      <DataTable columns={columns} rows={rows} />
     </Box>
   );
 };
@@ -88,4 +46,5 @@ ClientDataTable.propTypes = {
     regex: PropTypes.instanceOf(RegExp),
     value: PropTypes.string.isRequired,
   }).isRequired,
+  columns: PropTypes.array.isRequired,
 };
