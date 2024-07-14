@@ -10,6 +10,8 @@ import { useRouter } from 'src/routes/hooks';
 
 import { useAuth } from 'src/context/authContext';
 
+import { MetaInfoDialog } from 'src/components/company';
+
 import Main from './components/main';
 import Header from './components/header';
 
@@ -34,6 +36,7 @@ export function CompanyLayout({ children }) {
       <Box sx={{ minHeight: 1, display: 'flex', mt: { lg: 0, sm: 4, xs: 4 } }}>
         <Main>{children}</Main>
       </Box>
+      <MetaInfoDialog />
     </>
   );
 }
