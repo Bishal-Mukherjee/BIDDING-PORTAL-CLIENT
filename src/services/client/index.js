@@ -58,3 +58,27 @@ export const apiUpdateTask = async ({ id, title, description, images }) => {
     return null;
   }
 };
+
+export const apiPostInterestedClient = async ({
+  firstName,
+  lastName,
+  email,
+  phoneNumber,
+  message,
+  postalCode,
+}) => {
+  try {
+    const response = await apiInstance.post(`/client/postInterestedClient`, {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      message,
+      postalCode,
+    });
+    return response.data;
+  } catch (err) {
+    console.log(err.message);
+    return null;
+  }
+};

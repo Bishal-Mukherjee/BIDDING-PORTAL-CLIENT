@@ -146,7 +146,7 @@ export function Analytics() {
                     component={Paper}
                     elevation={0}
                     width="100%"
-                    height={36}
+                    height={32}
                     overflow="hidden"
                     justifyItems="space-between"
                     direction="row"

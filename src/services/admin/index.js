@@ -68,9 +68,11 @@ export const apiPutConfirmBid = async ({ taskId, bidId }) => {
   }
 };
 
-export const apiPutActivateTask = async ({ id }) => {
+export const apiPutActivateTask = async ({ id, suggestedBidders }) => {
   try {
-    const response = await apiInstance.put(`/admin/updateActivateTask/${id}`);
+    const response = await apiInstance.post(`/admin/updateActivateTask/${id}`, {
+      suggestedBidders,
+    });
     return response.data;
   } catch (err) {
     console.log(err.message);
@@ -107,6 +109,16 @@ export const apiPostCreateClient = async ({
       lastName,
       phoneNumber,
     });
+    return response.data;
+  } catch (err) {
+    console.log(err.message);
+    return null;
+  }
+};
+
+export const apiGetAllInterestedClients = async () => {
+  try {
+    const response = await apiInstance.get('/admin/getInterestedClients');
     return response.data;
   } catch (err) {
     console.log(err.message);

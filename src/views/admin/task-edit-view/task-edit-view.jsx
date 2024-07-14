@@ -31,6 +31,7 @@ import { useTaskStore } from 'src/stores/admin';
 import { apiUpdateTask, apiPutActivateTask } from 'src/services/admin';
 
 import Iconify from 'src/components/iconify';
+import { SuggestedBiddersDialog } from 'src/components/admin';
 import { StatusChip, AttachmentList, TaskActiveBadge } from 'src/components/commons';
 
 const validationSchema = yup.object().shape({
@@ -47,6 +48,7 @@ export const TaskEditView = () => {
   const [showLoader, setShowLoader] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [existingFiles, setExistingFiles] = useState([]);
+  const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [submitLoader, setSubmitLoader] = useState(false);
   const [showFileUploadError, setShowFileUploadError] = useState(false);
@@ -128,9 +130,13 @@ export const TaskEditView = () => {
     setExistingFiles([...images]);
   };
 
-  const handleActivateTask = async () => {
+  const handleActivateTask = async (suggestedBidders) => {
+    setOpen(false);
     setIsLoading(true);
-    await apiPutActivateTask({ id: selectedTask.id });
+    await apiPutActivateTask({
+      id: selectedTask.id,
+      suggestedBidders: suggestedBidders?.map((b) => b.value),
+    });
     getTaskById({ id: selectedTask.id });
     setIsLoading(false);
   };
@@ -193,8 +199,8 @@ export const TaskEditView = () => {
                       <Tooltip title={selectedTask?.isActive ? '' : 'Activate Task'}>
                         <Switch
                           disabled={selectedTask?.isActive}
-                          onChange={handleActivateTask}
-                          checked={selectedTask?.isActive}
+                          onClick={() => setOpen(true)}
+                          checked={selectedTask?.isActive || false}
                         />
                       </Tooltip>
                     </Stack>
@@ -387,6 +393,11 @@ export const TaskEditView = () => {
           </Grid>
         </Grid>
       </Box>
+      <SuggestedBiddersDialog
+        open={open}
+        onClose={() => setOpen(false)}
+        setSelectedBidders={(bidders) => handleActivateTask(bidders)}
+      />
     </>
   );
 };
