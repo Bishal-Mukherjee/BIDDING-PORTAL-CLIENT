@@ -82,7 +82,7 @@ export const CreateAnIssue = () => {
         setIsLoading(false);
         formik.resetForm();
         setUploadedFiles([]);
-		setUploadedLinks({ images: [], videos: [] });
+        setUploadedLinks({ images: [], videos: [] });
         getAllTasks({});
         setOpen(false);
       } catch (err) {
@@ -177,6 +177,7 @@ export const CreateAnIssue = () => {
   });
 
   const handleClientSelection = async (params) => {
+    setSelectedClient({});
     if (!isEmpty(params)) {
       const client = await apiGetClient({ phoneNumber: params.value });
       setSelectedClient(client);
@@ -373,11 +374,13 @@ export const CreateAnIssue = () => {
                 <CountChip label="Videos" value={uploadedLinks?.videos?.length} />
               </Stack>
 
-              <AddressDialog
-                user={selectedClient}
-                handleAddAddress={handleAddAddress}
-                disabled={isEmpty(selectedClient)}
-              />
+              {!isEmpty(selectedClient) && (
+                <AddressDialog
+                  user={selectedClient}
+                  handleAddAddress={handleAddAddress}
+                  disabled={isEmpty(selectedClient)}
+                />
+              )}
 
               <LoadingButton
                 fullWidth

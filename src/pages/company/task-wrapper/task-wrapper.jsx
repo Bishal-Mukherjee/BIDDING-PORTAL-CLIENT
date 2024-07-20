@@ -1,8 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import dayjs from 'dayjs';
 import { isEmpty } from 'lodash';
-import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 
 import {
   Box,
@@ -16,9 +17,15 @@ import {
 } from '@mui/material';
 
 import { useTaskStore } from 'src/stores/company';
+import { apiGetProfileByEmail } from 'src/firebase/firestore/commons';
 
 import { AttachmentList, TaskActiveBadge } from 'src/components/commons';
-import { ActionDialog, ViewBidDialog, PlaceBidDialog } from 'src/components/company';
+import {
+  ActionDialog,
+  ViewBidDialog,
+  PlaceBidDialog,
+  ClientDetailsDialog,
+} from 'src/components/company';
 
 const EXPIRY_IN_HOURS = 72; // need to place a bid within 72 hours
 
@@ -30,11 +37,28 @@ export const TaskWrapper = () => {
   const activationTime = dayjs(selectedTask?.task?.activationDate);
   const remainingTime = dayjs().diff(activationTime, 'hours');
 
+  const [open, setOpen] = useState(false);
+  const [clientInfo, setClientInfo] = useState({});
+
+  const isAssigned = selectedTask?.task?.status === 'assigned';
+
+  const handleGetClientInfo = async () => {
+    if (selectedTask?.task) {
+      const { email } = selectedTask.task;
+      const response = await apiGetProfileByEmail({ email });
+      setClientInfo(response);
+    }
+  };
+
   useEffect(() => {
     if (params.taskId) {
       getTaskById({ id: params.taskId });
     }
   }, [getTaskById, params.taskId]);
+
+  useEffect(() => {
+    handleGetClientInfo();
+  }, [selectedTask]);
 
   return (
     <>
@@ -140,11 +164,18 @@ export const TaskWrapper = () => {
                     </Typography>
                   </Stack>
 
-                  <Stack direction="row" alignItems="center" gap={2}>
-                    <Typography color="#6c757d" variant="body2">
-                      Client details:
-                    </Typography>
-                  </Stack>
+                  {isAssigned && (
+                    <Stack direction="row" alignItems="center" gap={2}>
+                      <Typography color="#6c757d" variant="body2">
+                        Client details:
+                      </Typography>
+                      <Box onClick={() => setOpen(true)} sx={{ cursor: 'pointer' }}>
+                        <Typography color="#212529" fontWeight={500}>
+                          {clientInfo?.firstName} {clientInfo?.lastName}
+                        </Typography>
+                      </Box>
+                    </Stack>
+                  )}
                 </Stack>
               </Stack>
             </Stack>
@@ -172,6 +203,8 @@ export const TaskWrapper = () => {
             </Grid>
           )}
         </Grid>
+
+        <ClientDetailsDialog open={open} setOpen={setOpen} clientDetails={clientInfo} />
       </Box>
     </>
   );
