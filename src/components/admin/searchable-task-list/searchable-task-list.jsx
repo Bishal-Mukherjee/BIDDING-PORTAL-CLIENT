@@ -44,7 +44,7 @@ export const SearchableTaskList = ({ searchQuery }) => {
       {isEmpty(filteredData) && (
         <Box sx={{ width: '100%' }} mt={4}>
           <Typography variant="body1" textAlign="center">
-            No tasks found
+            No tickets found
           </Typography>
         </Box>
       )}

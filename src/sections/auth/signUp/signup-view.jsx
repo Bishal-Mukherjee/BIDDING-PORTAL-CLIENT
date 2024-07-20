@@ -41,11 +41,10 @@ const validationSchema = yup.object().shape({
   phoneNumber: yup
     .string()
     .required('Phone number is required')
-    .test('is-valid-phone', 'Invalid phone number', (value) => {
-      const phoneUtil = PhoneNumberUtil.getInstance();
+    .test('is-valid-us-phone', 'Invalid phone number', (value) => {
       try {
-        const phoneNumber = phoneUtil.parseAndKeepRawInput(value);
-        return phoneUtil.isValidNumber(phoneNumber);
+        const util = PhoneNumberUtil.getInstance();
+        return util.isValidNumberForRegion(util.parse(value, 'US'), 'US');
       } catch (e) {
         return false;
       }

@@ -1,19 +1,36 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import dayjs from 'dayjs';
 import { isEmpty } from 'lodash';
-import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 
 import { Box, Grid, Stack, Divider, Backdrop, Typography, CircularProgress } from '@mui/material';
 
 import { useTaskStore } from 'src/stores/client';
+import { apiGetProfileByEmail } from 'src/firebase/firestore/commons';
 
+import { CompanyDetailsDialog } from 'src/components/client';
 import { StatusChip, AttachmentList, TaskActiveBadge } from 'src/components/commons';
 
 export const TaskDetailedView = () => {
   const params = useParams();
 
   const { selectedTask, isLoading, getTaskById } = useTaskStore();
+
+  const [open, setOpen] = useState(false);
+  const [assignedTo, setAssignedTo] = useState({});
+
+  const handleGetAssignedTo = async () => {
+    if (selectedTask?.assignedTo?.email) {
+      const response = await apiGetProfileByEmail({ email: selectedTask?.assignedTo?.email });
+      setAssignedTo(response);
+    }
+  };
+
+  useEffect(() => {
+    handleGetAssignedTo();
+  }, [selectedTask]);
 
   useEffect(() => {
     if (params.taskId) {
@@ -92,9 +109,15 @@ export const TaskDetailedView = () => {
                         No assignee found
                       </Typography>
                     ) : (
-                      <Typography color="#212529" fontWeight={500}>
-                        {selectedTask?.assignedTo}
-                      </Typography>
+                      <Box onClick={() => setOpen(true)} sx={{ cursor: 'pointer' }}>
+                        <Typography
+                          color="#212529"
+                          fontWeight={500}
+                          sx={{ ':hover': { textDecoration: 'underline' } }}
+                        >
+                          {selectedTask?.assignedTo?.name}
+                        </Typography>
+                      </Box>
                     )}
                   </Stack>
                 </Stack>
@@ -127,6 +150,8 @@ export const TaskDetailedView = () => {
           </Grid>
         )}
       </Box>
+
+      <CompanyDetailsDialog open={open} setOpen={setOpen} companyDetails={assignedTo} />
     </>
   );
 };
