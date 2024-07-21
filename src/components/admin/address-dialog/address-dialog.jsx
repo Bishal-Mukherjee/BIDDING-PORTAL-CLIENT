@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import * as yup from 'yup';
-import { useState } from 'react';
 import { useFormik } from 'formik';
 import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 
 import { LoadingButton } from '@mui/lab';
 import { Box, Chip, Stack, Alert, Dialog, Button, TextField, Typography } from '@mui/material';
@@ -28,11 +29,11 @@ export const AddressDialog = ({ user, handleAddAddress, disabled }) => {
   const formik = useFormik({
     validationSchema,
     initialValues: {
-      street: user?.address?.street,
-      apartment: user?.address?.apartment,
-      city: user?.address?.city,
-      state: user?.address?.state,
-      zip: user?.address?.zip,
+      street: '',
+      apartment: '',
+      city: '',
+      state: '',
+      zip: '',
     },
     onSubmit: async (values) => {
       setIsLoading(true);
@@ -46,6 +47,16 @@ export const AddressDialog = ({ user, handleAddAddress, disabled }) => {
       }
     },
   });
+
+  useEffect(() => {
+    if (user && user.address) {
+      formik.setFieldValue('street', user.address.street || '');
+      formik.setFieldValue('apartment', user.address.apartment || '');
+      formik.setFieldValue('city', user.address.city || '');
+      formik.setFieldValue('state', user.address.state || '');
+      formik.setFieldValue('zip', user.address.zip || '');
+    }
+  }, [user]);
 
   return (
     <Box>
@@ -140,7 +151,14 @@ export const AddressDialog = ({ user, handleAddAddress, disabled }) => {
                 />
 
                 <Stack direction="row" justifyContent="flex-start" width="100%" gap={1}>
-                  <Button variant="contained" color="error" onClick={() => setOpen(false)}>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => {
+                      setOpen(false);
+                      setShowAlert({ content: '', variant: '' });
+                    }}
+                  >
                     Close
                   </Button>
                   <LoadingButton
