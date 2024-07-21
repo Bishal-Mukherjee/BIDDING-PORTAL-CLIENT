@@ -178,15 +178,13 @@ export const CreateAnIssue = () => {
 
   const handleClientSelection = async (params) => {
     setSelectedClient({});
+    formik.setFieldValue('address', {});
     if (!isEmpty(params)) {
       const client = await apiGetClient({ phoneNumber: params.value });
-      setSelectedClient(client);
+      setSelectedClient({ ...client });
       if (!isEmpty(client?.address)) {
         handleAddAddress(client?.address);
       }
-    } else {
-      formik.setFieldValue('address', {});
-      setSelectedClient({});
     }
   };
 
