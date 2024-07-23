@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash';
+import { uniqBy, isEmpty } from 'lodash';
 import { Helmet } from 'react-helmet-async';
 import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
@@ -21,7 +21,9 @@ export const TaskDetailedView = () => {
 
   const [tabIndex, setTabIndex] = useState(0);
 
-  const totalBids = isEmpty(selectedTaskBids) ? 0 : selectedTaskBids?.length;
+  const totalBiddingCompanies = isEmpty(uniqBy(selectedTaskBids, 'bidder.email'))
+    ? 0
+    : uniqBy(selectedTaskBids, 'bidder.email')?.length;
 
   const handleChangeTab = (event, newValue) => {
     setTabIndex(newValue);
@@ -73,7 +75,7 @@ export const TaskDetailedView = () => {
                 <Tab
                   icon={<Iconify icon="pepicons-pencil:raise-hand-circle-filled" />}
                   iconPosition="start"
-                  label={`Bids (${totalBids})`}
+                  label={`Bids (${totalBiddingCompanies})`}
                   disableRipple
                 />
               </Tabs>
