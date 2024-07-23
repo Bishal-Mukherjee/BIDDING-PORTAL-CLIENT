@@ -5,9 +5,7 @@ import { LoadingButton } from '@mui/lab';
 import {
   Button,
   Dialog,
-  Tooltip,
   Typography,
-  IconButton,
   DialogTitle,
   DialogActions,
   DialogContent,
@@ -16,8 +14,6 @@ import {
 
 import { useTaskStore } from 'src/stores/admin';
 import { apiPutConfirmBid } from 'src/services/admin';
-
-import Iconify from 'src/components/iconify';
 
 export const BidConfirmationDialog = ({ selectedBid }) => {
   const { selectedTask, getTaskById } = useTaskStore();
@@ -48,11 +44,9 @@ export const BidConfirmationDialog = ({ selectedBid }) => {
 
   return (
     <>
-      <Tooltip title="Confirm Bid">
-        <IconButton onClick={handleClickOpen}>
-          <Iconify icon="icon-park-twotone:check-one" />
-        </IconButton>
-      </Tooltip>
+      <Button onClick={handleClickOpen} sx={{ width: '100%' }}>
+        Accept
+      </Button>
 
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
         <DialogTitle textAlign="center" variant="h5">

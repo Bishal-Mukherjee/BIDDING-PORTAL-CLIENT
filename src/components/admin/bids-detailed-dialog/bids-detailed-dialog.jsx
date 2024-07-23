@@ -5,18 +5,24 @@ import { Link } from 'react-router-dom';
 
 import { Box, Card, Stack, Paper, Dialog, Divider, Typography, IconButton } from '@mui/material';
 
+import { trimText } from 'src/utils';
+
 import Iconify from 'src/components/iconify';
+import { BidStatusChip } from 'src/components/commons';
+
+import { BidConfirmationDialog } from '../bid-confirmation-dialog/bid-confirmation-dialog';
 
 const BidCard = ({ bid }) => (
   <Card
     sx={{
-      minWidth: 120,
+      minWidth: 132,
       minHeight: 120,
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: 1,
+      p: 1,
     }}
     component={Paper}
     elevation={2}
@@ -24,16 +30,24 @@ const BidCard = ({ bid }) => (
     {isEmpty(bid?.attachment) ? (
       <Typography> - </Typography>
     ) : (
-      <a href={bid?.attachment} target="_blank" rel="noreferrer">
-        <Iconify icon="fa-solid:file-invoice" color="#000000" />
-      </a>
+      <Stack direction="column" alignItems="center" gap={1}>
+        <Link to={bid?.attachment} target="_blank" rel="noreferrer">
+          <Iconify icon="fa-solid:file-invoice" color="#000000" />
+        </Link>
+        <Box sx={{ width: 20, height: 2, background: '#000', mt: -1.4 }} />
+      </Stack>
     )}
     <Typography textTransform="uppercase" fontSize={14} mt={1}>
       {bid?.quality}
     </Typography>
-    <Typography textTransform="uppercase" fontSize={14}>
+    <Typography textTransform="uppercase" fontSize={14} mb={1}>
       {bid?.currency}&nbsp;&nbsp;{bid?.amount}
     </Typography>
+    {bid?.status !== 'pending' ? (
+      <BidStatusChip variant={bid?.status} />
+    ) : (
+      <BidConfirmationDialog selectedBid={bid} />
+    )}
   </Card>
 );
 
@@ -48,14 +62,14 @@ export const BidsDetailedDialog = ({ open, setOpen, placedBids, companyInfo, cli
       spacing={0}
     >
       <Stack direction="row" alignItems="flex-start" justifyContent="space-between" width="100%">
-        <Box>
-          <Typography variant="h5">
-            {clientInfo?.firstName} {clientInfo?.lastName}
+        <Stack alignItems="center" direction="row" gap={1}>
+          <Typography>
+            Customer Name:{' '}
+            <b>
+              {clientInfo?.firstName} {clientInfo?.lastName}
+            </b>
           </Typography>
-          <Typography color="#6c757d" variant="subtitle2">
-            {clientInfo?.email}
-          </Typography>
-        </Box>
+        </Stack>
         <IconButton>
           <Iconify icon="eva:close-fill" onClick={() => setOpen(false)} />
         </IconButton>
@@ -67,12 +81,23 @@ export const BidsDetailedDialog = ({ open, setOpen, placedBids, companyInfo, cli
         <img src={companyInfo?.metaInfo?.logo} alt={companyInfo?.firstName} />
       </Stack>
 
-      <Typography variant="h5" component={Link} to={companyInfo?.metaInfo?.link} target="_blank">
-        {companyInfo?.firstName} {companyInfo?.lastName}
+      <Typography>
+        Company Name:{' '}
+        <b>
+          {companyInfo?.firstName} {companyInfo?.lastName}
+        </b>
       </Typography>
-      <Typography color="#6c757d" variant="subtitle2">
-        {companyInfo?.email}
-      </Typography>
+
+      <Box sx={{ my: 1 }}>
+        <Typography variant="body2">{trimText(companyInfo?.metaInfo?.bio, 300)}</Typography>
+      </Box>
+
+      <Stack direction="row" alignItems="center" gap={1}>
+        <Iconify icon="mdi:internet" color="#000000" />
+        <Link to={companyInfo?.metaInfo?.link} target="_blank" rel="noreferrer">
+          Google Review
+        </Link>
+      </Stack>
 
       {!isEmpty(placedBids) && (
         <Stack direction="row" gap={2} alignItems="center" justifyContent="flex-start" mt={2}>
