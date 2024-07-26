@@ -43,10 +43,13 @@ export const TaskBids = () => {
       <Stack width="100%" justifyContent="center" mt={2}>
         <Grid container spacing={2} justifyContent="center" flexWrap="wrap">
           {filteredData?.map((bid) => (
-            <Grid item md={2}>
-              <Card sx={{ maxWidth: 345 }}>
+            <Grid item md={3} xs={10}>
+              <Card sx={{ maxWidth: 360 }}>
                 <Stack direction="row" justifyContent="center">
-                  <CardMedia sx={{ height: 132, width: 120 }} image={CompanySvg} />
+                  <CardMedia
+                    sx={{ height: 132, width: '100%' }}
+                    image={bid?.bidder?.logo || CompanySvg}
+                  />
                 </Stack>
                 <Divider />
                 <CardContent>

@@ -22,6 +22,7 @@ import {
 
 import { storage } from 'src/firebase/config';
 import { useTaskStore } from 'src/stores/company';
+import { useAuth } from 'src/context/authContext';
 import { QUALITY_MENU_OPTIONS } from 'src/constants';
 import { apiPostCreateBid } from 'src/services/company';
 
@@ -37,6 +38,7 @@ const validationSchema = yup.object().shape({
 });
 
 export const PlaceBidDialog = () => {
+  const { user } = useAuth();
   const { selectedTask, getTaskById } = useTaskStore();
 
   const [open, setOpen] = useState(false);
@@ -64,6 +66,7 @@ export const PlaceBidDialog = () => {
         amount: values.amount,
         attachment: uploadedFiles[0],
         quality: values.quality,
+        logo: user?.metaInfo?.logo,
       });
       setIsLoading(false);
       getTaskById({ id: selectedTask?.task?.id });

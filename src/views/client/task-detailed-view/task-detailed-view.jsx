@@ -137,18 +137,21 @@ export const TaskDetailedView = () => {
           </Grid>
         )}
 
-        {!isEmpty(selectedTask?.videos) && (
-          <Grid container spacing={2} justifyContent="center" flexWrap="wrap">
-            {selectedTask?.videos?.map((video, index) => (
-              <Grid item md={5} xs={12}>
-                <video width={308} height={240} controls key={`video-${index}`}>
-                  <track kind="captions" />
-                  <source src={video} type="video/mp4" />
-                </video>
-              </Grid>
-            ))}
-          </Grid>
-        )}
+        <Grid container spacing={2} justifyContent="center" flexWrap="wrap" mt={2}>
+          {!isEmpty(selectedTask?.attachments) && (
+            <Grid item xs={12} md={5}>
+              <Stack direction="column" gap={1}>
+                {selectedTask?.attachments?.map((attachment, index) => (
+                  <a href={attachment} target="_blank" rel="noreferrer">
+                    <Typography variant="body2">
+                      {index + 1}.&nbsp;{attachment}
+                    </Typography>
+                  </a>
+                ))}
+              </Stack>
+            </Grid>
+          )}
+        </Grid>
       </Box>
 
       <CompanyDetailsDialog open={open} setOpen={setOpen} companyDetails={assignedTo} />

@@ -50,14 +50,8 @@ export const CreateAnIssue = () => {
   const [showLoader, setShowLoader] = useState(false);
   const [showFileUploadError, setShowFileUploadError] = useState(false);
   const [selectedClient, setSelectedClient] = useState({});
-  const [linkInputs, setLinkInputs] = useState({
-    image: '',
-    video: '',
-  });
-  const [uploadedLinks, setUploadedLinks] = useState({
-    images: [],
-    videos: [],
-  });
+  const [linkInputs, setLinkInputs] = useState({ attachment: '' });
+  const [uploadedLinks, setUploadedLinks] = useState({ attachments: [] });
 
   const formik = useFormik({
     validationSchema,
@@ -76,13 +70,13 @@ export const CreateAnIssue = () => {
           title: values.title,
           description: values.description,
           address: values.address,
-          images: [...uploadedFiles, ...uploadedLinks.images],
-          videos: uploadedLinks.videos,
+          images: uploadedFiles,
+          attachments: uploadedLinks.attachments,
         });
         setIsLoading(false);
         formik.resetForm();
         setUploadedFiles([]);
-        setUploadedLinks({ images: [], videos: [] });
+        setUploadedLinks({ attachments: [] });
         getAllTasks({});
         setOpen(false);
       } catch (err) {
@@ -105,14 +99,12 @@ export const CreateAnIssue = () => {
     setLinkInputs({ ...linkInputs, [e.target.name]: e.target.value });
   };
 
-  const handleLinkSubmit = (input) => {
-    if (input === 'image' && !isEmpty(linkInputs.image)) {
-      setUploadedLinks({ ...uploadedLinks, images: [...uploadedLinks.images, linkInputs.image] });
-      setLinkInputs({ ...linkInputs, image: '' });
-    } else if (input === 'video' && !isEmpty(linkInputs.video)) {
-      setUploadedLinks({ ...uploadedLinks, videos: [...uploadedLinks.videos, linkInputs.video] });
-      setLinkInputs({ ...linkInputs, video: '' });
-    }
+  const handleLinkSubmit = () => {
+    setUploadedLinks({
+      ...uploadedLinks,
+      attachments: [...uploadedLinks.attachments, linkInputs.attachment],
+    });
+    setLinkInputs({ ...linkInputs, attachment: '' });
   };
 
   const handleAddAddress = async (paramsAddress) => {
@@ -325,36 +317,16 @@ export const CreateAnIssue = () => {
               <Typography textAlign="center"> OR </Typography>
 
               <TextField
-                label="Image Links"
-                name="image"
-                value={linkInputs.image}
+                label="Attachment Link"
+                name="attachment"
+                value={linkInputs.attachment}
                 onChange={handleLinkInputChange}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton
-                        onClick={() => handleLinkSubmit('image')}
-                        disabled={isEmpty(linkInputs.image)}
-                        edge="end"
-                      >
-                        <Iconify icon="icon-park-solid:check-one" />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-
-              <TextField
-                label="Video Links"
-                name="video"
-                value={linkInputs.video}
-                onChange={handleLinkInputChange}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => handleLinkSubmit('video')}
-                        disabled={isEmpty(linkInputs.video)}
+                        onClick={() => handleLinkSubmit()}
+                        disabled={isEmpty(linkInputs.attachment)}
                         edge="end"
                       >
                         <Iconify icon="icon-park-solid:check-one" />
@@ -366,10 +338,9 @@ export const CreateAnIssue = () => {
 
               <Stack direction="row" alignItems="center" justifyContent="flex-start" gap={2}>
                 <CountChip
-                  label="Images"
-                  value={parseInt(uploadedLinks?.images?.length, 10) + uploadedFiles.length}
+                  label="Attachments"
+                  value={parseInt(uploadedLinks?.attachments?.length, 10)}
                 />
-                <CountChip label="Videos" value={uploadedLinks?.videos?.length} />
               </Stack>
 
               {!isEmpty(selectedClient) && (
