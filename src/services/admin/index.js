@@ -38,7 +38,7 @@ export const apiPostCreateIssue = async ({
   description,
   images,
   address,
-  videos,
+  attachments,
 }) => {
   try {
     const response = await apiInstance.post('/admin/createTask', {
@@ -49,7 +49,7 @@ export const apiPostCreateIssue = async ({
       description,
       images,
       address,
-      videos,
+      attachments,
     });
     return response.data;
   } catch (err) {

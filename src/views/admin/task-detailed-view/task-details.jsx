@@ -50,7 +50,7 @@ export const TaskDetails = () => {
                     </Typography>
                   ) : (
                     <Typography color="#212529" fontWeight={500}>
-                      {selectedTask?.assignedTo}
+                      {selectedTask?.assignedTo?.name}
                     </Typography>
                   )}
                 </Stack>
@@ -70,18 +70,17 @@ export const TaskDetails = () => {
       </Grid>
 
       <Grid container spacing={2} justifyContent="center" flexWrap="wrap" px={2} mt={2}>
-        {!isEmpty(selectedTask?.videos) && (
+        {!isEmpty(selectedTask?.attachments) && (
           <Grid item xs={12} md={6}>
-            <Grid container gap={2}>
-              {selectedTask?.videos?.map((video, index) => (
-                <Grid item md={6} sm={12} xs={12}>
-                  <video width="100%" controls key={`video-${index}`}>
-                    <track kind="captions" />
-                    <source src={video} type="video/mp4" />
-                  </video>
-                </Grid>
+            <Stack direction="column" gap={1}>
+              {selectedTask?.attachments?.map((attachment, index) => (
+                <a href={attachment} target="_blank" rel="noreferrer">
+                  <Typography variant="body2">
+                    {index + 1}.&nbsp;{attachment}
+                  </Typography>
+                </a>
               ))}
-            </Grid>
+            </Stack>
           </Grid>
         )}
       </Grid>
