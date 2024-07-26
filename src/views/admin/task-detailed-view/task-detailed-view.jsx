@@ -69,7 +69,7 @@ export const TaskDetailedView = () => {
                 <Tab
                   icon={<Iconify icon="majesticons:tickets" />}
                   iconPosition="start"
-                  label="Ticket"
+                  label="Client"
                   disableRipple
                 />
                 <Tab

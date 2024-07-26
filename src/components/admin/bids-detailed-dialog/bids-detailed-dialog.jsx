@@ -3,7 +3,17 @@ import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { Box, Card, Stack, Paper, Dialog, Divider, Typography, IconButton } from '@mui/material';
+import {
+  Box,
+  Card,
+  Grid,
+  Stack,
+  Paper,
+  Dialog,
+  Divider,
+  Typography,
+  IconButton,
+} from '@mui/material';
 
 import { trimText } from 'src/utils';
 
@@ -52,7 +62,7 @@ const BidCard = ({ bid }) => (
 );
 
 export const BidsDetailedDialog = ({ open, setOpen, placedBids, companyInfo, clientInfo }) => (
-  <Dialog open={open} maxWidth="sm" fullWidth>
+  <Dialog open={open} maxWidth="" fullWidth>
     <Stack
       justifyContent="center"
       alignItems="flex-start"
@@ -77,8 +87,10 @@ export const BidsDetailedDialog = ({ open, setOpen, placedBids, companyInfo, cli
 
       <Divider sx={{ width: '100%', my: 2 }} />
 
-      <Stack direction="row" alignItems="center">
-        <img src={companyInfo?.metaInfo?.logo} alt={companyInfo?.firstName} />
+      <Stack direction="row" alignItems="center" justifyContent="center">
+        <Box sx={{ width: { sm: '100%', md: '64%' } }}>
+          <img src={companyInfo?.metaInfo?.logo} alt={companyInfo?.firstName} width="100%" />
+        </Box>
       </Stack>
 
       <Typography>
@@ -100,11 +112,13 @@ export const BidsDetailedDialog = ({ open, setOpen, placedBids, companyInfo, cli
       </Stack>
 
       {!isEmpty(placedBids) && (
-        <Stack direction="row" gap={2} alignItems="center" justifyContent="flex-start" mt={2}>
+        <Grid container mt={2} gap={2}>
           {placedBids?.map((bid) => (
-            <BidCard bid={bid} />
+            <Grid item xs={5} md={3}>
+              <BidCard bid={bid} />
+            </Grid>
           ))}
-        </Stack>
+        </Grid>
       )}
     </Stack>
   </Dialog>
