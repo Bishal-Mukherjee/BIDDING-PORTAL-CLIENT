@@ -37,7 +37,7 @@ import { OtpInput } from 'src/components/commons';
 
 const validationSchema = yup.object().shape({
   firstName: yup.string().required('First name is required'),
-  lastName: yup.string().required('Last name is required'),
+  lastName: yup.string(),
   phoneNumber: yup
     .string()
     .required('Phone number is required')
@@ -168,24 +168,39 @@ export function SignUpView({ setNavigationTab }) {
 
           <form onSubmit={formik.handleSubmit}>
             <Stack spacing={2}>
+              <Stack direction="row" alignItems="center">
+                <Checkbox
+                  checkedIcon={<Iconify icon="lets-icons:check-fill" />}
+                  icon={<Iconify icon="ic:baseline-radio-button-unchecked" />}
+                  onClick={() => setIsCompany(!isCompany)}
+                />{' '}
+                <Typography sx={{ color: '#6c757d' }} variant="body2">
+                  {' '}
+                  Are you a company ?{' '}
+                </Typography>
+              </Stack>
+
               <Stack direction="row" spacing={2}>
                 <TextField
                   name="firstName"
-                  label="First Name"
+                  label={isCompany ? 'Company Name' : 'First Name'}
+                  sx={{ width: isCompany ? '100%' : '56%' }}
                   value={formik.values.firstName}
                   onChange={formik.handleChange}
                   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
                   helperText={formik.touched.firstName && formik.errors.firstName}
                 />
 
-                <TextField
-                  label="Last Name"
-                  name="lastName"
-                  value={formik.values.lastName}
-                  onChange={formik.handleChange}
-                  error={formik.touched.lastName && Boolean(formik.errors.lastName)}
-                  helperText={formik.touched.lastName && formik.errors.lastName}
-                />
+                {!isCompany && (
+                  <TextField
+                    label="Last Name"
+                    name="lastName"
+                    value={formik.values.lastName}
+                    onChange={formik.handleChange}
+                    error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+                    helperText={formik.touched.lastName && formik.errors.lastName}
+                  />
+                )}
               </Stack>
 
               <TextField
@@ -224,18 +239,6 @@ export function SignUpView({ setNavigationTab }) {
                 error={formik.touched.password && Boolean(formik.errors.password)}
                 helperText={formik.touched.password && formik.errors.password}
               />
-
-              <Stack direction="row" alignItems="center">
-                <Checkbox
-                  checkedIcon={<Iconify icon="lets-icons:check-fill" />}
-                  icon={<Iconify icon="ic:baseline-radio-button-unchecked" />}
-                  onClick={() => setIsCompany(!isCompany)}
-                />{' '}
-                <Typography sx={{ color: '#6c757d' }} variant="body2">
-                  {' '}
-                  Are you a company ?{' '}
-                </Typography>
-              </Stack>
 
               <TextField
                 name="companyWebsite"

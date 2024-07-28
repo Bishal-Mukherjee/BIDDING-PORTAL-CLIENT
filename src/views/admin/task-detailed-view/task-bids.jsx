@@ -1,16 +1,7 @@
 import { uniqBy } from 'lodash';
 import React, { useState } from 'react';
 
-import {
-  Grid,
-  Card,
-  Stack,
-  Button,
-  Divider,
-  CardMedia,
-  Typography,
-  CardContent,
-} from '@mui/material';
+import { Grid, Card, Stack, Button, Divider, Typography, CardContent } from '@mui/material';
 
 import { useTaskStore } from 'src/stores/admin';
 import CompanySvg from 'src/assets/svgs/company.svg';
@@ -40,31 +31,35 @@ export const TaskBids = () => {
 
   return (
     <>
-      <Stack width="100%" justifyContent="center" mt={2}>
-        <Grid container spacing={2} justifyContent="center" flexWrap="wrap">
-          {filteredData?.map((bid) => (
-            <Grid item md={3} xs={10}>
-              <Card sx={{ maxWidth: 360 }}>
-                <Stack direction="row" justifyContent="center">
-                  <CardMedia
-                    sx={{ height: 132, width: '100%' }}
-                    image={bid?.bidder?.logo || CompanySvg}
-                  />
-                </Stack>
-                <Divider />
-                <CardContent>
-                  <Typography gutterBottom variant="h6">
-                    {bid?.bidder?.name}
-                  </Typography>
-                  <Button onClick={() => handleRowClick(bid)} variant="outlined" fullWidth>
-                    View
-                  </Button>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
+      <Grid container spacing={2} justifyContent="center" flexWrap="wrap" mt={1}>
+        <Grid item xs={12} md={6}>
+          <Grid
+            container
+            spacing={2}
+            justifyContent={{ md: 'flex-start', xs: 'center' }}
+            flexWrap="wrap"
+          >
+            {filteredData?.map((bid) => (
+              <Grid item md={4} xs={10}>
+                <Card sx={{ width: '100%' }}>
+                  <Stack direction="row" justifyContent="center">
+                    <img src={bid?.bidder?.logo || CompanySvg} alt={bid?.bidder?.name} />
+                  </Stack>
+                  <Divider />
+                  <CardContent>
+                    <Typography gutterBottom variant="h6">
+                      {bid?.bidder?.name}
+                    </Typography>
+                    <Button onClick={() => handleRowClick(bid)} variant="outlined" fullWidth>
+                      View
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
         </Grid>
-      </Stack>
+      </Grid>
 
       <BidsDetailedDialog
         open={open}

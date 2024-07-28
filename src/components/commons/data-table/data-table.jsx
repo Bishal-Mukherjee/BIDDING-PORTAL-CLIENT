@@ -10,6 +10,7 @@ import {
   TableBody,
   TableCell,
   TableHead,
+  Typography,
   TableContainer,
 } from '@mui/material';
 
@@ -27,7 +28,7 @@ export const DataTable = ({ columns = [], rows = [] }) => (
           </TableHead>
         )}
 
-        {!isEmpty(rows) && (
+        {!isEmpty(rows) ? (
           <TableBody>
             {rows?.map((row) => (
               <TableRow
@@ -42,6 +43,8 @@ export const DataTable = ({ columns = [], rows = [] }) => (
               </TableRow>
             ))}
           </TableBody>
+        ) : (
+          <Typography p={1}>No data</Typography>
         )}
       </Table>
     </TableContainer>

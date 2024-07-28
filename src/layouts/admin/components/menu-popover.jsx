@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
-import { Stack, Popover, IconButton } from '@mui/material';
+import { Stack, Popover, IconButton, Typography } from '@mui/material';
 
 import Iconify from 'src/components/iconify';
 
@@ -68,7 +68,7 @@ export const MenuPopover = () => {
           justifyContent="center"
           minWidth={200}
           minHeight={80}
-          pl={2}
+          p={2}
         >
           {navLinks.map((link) => (
             <Link
@@ -78,7 +78,7 @@ export const MenuPopover = () => {
               }}
               to={link.pathname}
             >
-              {link.label}
+              <Typography variant='subtitle2'>{link.label}</Typography>
             </Link>
           ))}
         </Stack>
