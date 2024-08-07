@@ -17,18 +17,15 @@ export const doCreateUserWithEmailAndPassword = async (
   email,
   password,
   firstName,
-  lastName,
   phoneNumber,
-  isCompany,
   companyWebsite
 ) => {
   await setDoc(doc(firestore, 'users', email), {
     firstName,
-    lastName,
     phoneNumber,
     email,
-    designation: isCompany ? 'COMPANY' : 'CLIENT',
-    ...(isCompany && { companyWebsite }),
+    designation: 'COMPANY',
+    companyWebsite,
   });
   const { user } = await createUserWithEmailAndPassword(auth, email, password);
   await sendEmailVerification(user);

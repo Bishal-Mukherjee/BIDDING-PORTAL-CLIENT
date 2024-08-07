@@ -19,7 +19,7 @@ import { NotificationsPopover } from './notifications-popover';
 const navLinks = [
   {
     id: 1,
-    label: 'Analytics',
+    label: 'Bids',
     pathname: '/admin/analytics',
   },
   {
