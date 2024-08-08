@@ -13,7 +13,6 @@ import {
   Card,
   Alert,
   Stack,
-  Checkbox,
   TextField,
   Typography,
   IconButton,
@@ -36,8 +35,7 @@ import { OtpInput } from 'src/components/commons';
 // ----------------------------------------------------------------------
 
 const validationSchema = yup.object().shape({
-  firstName: yup.string().required('First name is required'),
-  lastName: yup.string(),
+  companyName: yup.string().required('Company name is required'),
   phoneNumber: yup
     .string()
     .required('Phone number is required')
@@ -55,6 +53,7 @@ const validationSchema = yup.object().shape({
     .min(6, `Password must be at least 6 characters long`)
     .matches(/^[a-zA-Z0-9]+$/, 'Password can only contain letters and numbers')
     .required('Password is required'),
+  companyWebsite: yup.string().required('Company website is required'),
 });
 
 export function SignUpView({ setNavigationTab }) {
@@ -64,13 +63,11 @@ export function SignUpView({ setNavigationTab }) {
   const [showAlert, setShowAlert] = useState('');
   const [openOTPInput, setOpenOTPInput] = useState(false);
   const [otpVerficationLodaing, setOtpVerficationLodaing] = useState(false);
-  const [isCompany, setIsCompany] = useState(false);
 
   const formik = useFormik({
     validationSchema,
     initialValues: {
-      firstName: '',
-      lastName: '',
+      companyName: '',
       phoneNumber: '',
       email: '',
       password: '',
@@ -103,10 +100,8 @@ export function SignUpView({ setNavigationTab }) {
           const r = await doCreateUserWithEmailAndPassword(
             formik.values.email,
             formik.values.password,
-            formik.values.firstName,
-            formik.values.lastName,
+            formik.values.companyName,
             formik.values.phoneNumber,
-            isCompany,
             formik.values.companyWebsite
           );
 
@@ -168,40 +163,14 @@ export function SignUpView({ setNavigationTab }) {
 
           <form onSubmit={formik.handleSubmit}>
             <Stack spacing={2}>
-              <Stack direction="row" alignItems="center">
-                <Checkbox
-                  checkedIcon={<Iconify icon="lets-icons:check-fill" />}
-                  icon={<Iconify icon="ic:baseline-radio-button-unchecked" />}
-                  onClick={() => setIsCompany(!isCompany)}
-                />{' '}
-                <Typography sx={{ color: '#6c757d' }} variant="body2">
-                  {' '}
-                  Are you a company ?{' '}
-                </Typography>
-              </Stack>
-
-              <Stack direction="row" spacing={2}>
-                <TextField
-                  name="firstName"
-                  label={isCompany ? 'Company Name' : 'First Name'}
-                  sx={{ width: isCompany ? '100%' : '56%' }}
-                  value={formik.values.firstName}
-                  onChange={formik.handleChange}
-                  error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-                  helperText={formik.touched.firstName && formik.errors.firstName}
-                />
-
-                {!isCompany && (
-                  <TextField
-                    label="Last Name"
-                    name="lastName"
-                    value={formik.values.lastName}
-                    onChange={formik.handleChange}
-                    error={formik.touched.lastName && Boolean(formik.errors.lastName)}
-                    helperText={formik.touched.lastName && formik.errors.lastName}
-                  />
-                )}
-              </Stack>
+              <TextField
+                name="companyName"
+                label="Company Name"
+                value={formik.values.companyName}
+                onChange={formik.handleChange}
+                error={formik.touched.companyName && Boolean(formik.errors.companyName)}
+                helperText={formik.touched.companyName && formik.errors.companyName}
+              />
 
               <TextField
                 name="phoneNumber"
@@ -246,9 +215,8 @@ export function SignUpView({ setNavigationTab }) {
                 type="text"
                 value={formik.values.companyWebsite}
                 onChange={formik.handleChange}
-                error={isCompany && !formik.values.companyWebsite}
-                required={isCompany}
-                sx={{ display: isCompany ? 'flex' : 'none' }}
+                error={formik.touched.companyWebsite && Boolean(formik.errors.companyWebsite)}
+                helperText={formik.touched.companyWebsite && formik.errors.companyWebsite}
               />
             </Stack>
 

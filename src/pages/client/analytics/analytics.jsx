@@ -75,7 +75,7 @@ export function Analytics() {
         justifyContent="center"
       >
         <Typography variant="h3" fontFamily="Poppins">
-          Tickets Dashboard
+          Bids Dashboard
         </Typography>
         <Typography variant="body2" textAlign="center" fontFamily="Wix Madefor Display">
           Track and manage your tickets efficiently with real-time updates.

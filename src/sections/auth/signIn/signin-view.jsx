@@ -10,13 +10,11 @@ import { LoadingButton } from '@mui/lab';
 import { alpha, useTheme } from '@mui/material/styles';
 import {
   Box,
-  Link,
   Card,
   Stack,
   Alert,
   Button,
   Divider,
-  Checkbox,
   TextField,
   Typography,
   IconButton,
@@ -176,21 +174,6 @@ export function SignInView({ setNavigationTab }) {
               />
             </Stack>
 
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              sx={{ my: 2 }}
-            >
-              <Stack alignItems="center" direction="row">
-                <Checkbox />
-                <Typography variant="subtitle2">Remember Me?</Typography>
-              </Stack>
-              <Link variant="subtitle2" underline="hover">
-                Forgot password?
-              </Link>
-            </Stack>
-
             <LoadingButton
               fullWidth
               size="large"
@@ -198,6 +181,7 @@ export function SignInView({ setNavigationTab }) {
               variant="contained"
               color="inherit"
               loading={isLoading}
+              sx={{ mt: 4 }}
             >
               Sign In
             </LoadingButton>
