@@ -10,6 +10,7 @@ import {
   Backdrop,
   Container,
   Typography,
+  IconButton,
   ButtonGroup,
   OutlinedInput,
   InputAdornment,
@@ -21,6 +22,7 @@ import { useAdminManagementStore } from 'src/stores/admin';
 
 import Iconify from 'src/components/iconify/iconify';
 import { AddClientDialog, ClientDataTable as DataTable } from 'src/components/admin';
+import { ConfirmClientDeletion } from 'src/components/admin/confirm-client-deletion/confirm-client-deletion';
 
 const tabs = [
   {
@@ -29,33 +31,17 @@ const tabs = [
   },
 ];
 
-const activeClientColums = [
-  { label: 'Phone Number', key: 'phoneNumber' },
-  { label: 'First Name', key: 'firstName', align: 'right' },
-  { label: 'Last Name', key: 'lastName', align: 'right' },
-  { label: 'Email', key: 'email', align: 'right' },
-  { label: 'Address', key: 'address', align: 'right' },
-];
-
-const interestedClientColums = [
-  { label: 'First Name', key: 'firstName' },
-  { label: 'Last Name', key: 'lastName' },
-  { label: 'Email', key: 'email' },
-  { label: 'Phone Number', key: 'phoneNumber' },
-  { label: 'Message', key: 'message', align: 'right' },
-];
-
 export const ClientManagement = () => {
   const theme = useTheme();
 
-  const { getAllClients, getAllInterestedClients, isLoading } = useAdminManagementStore();
+  const { getAllClients, isLoading } = useAdminManagementStore();
 
   const [searchQuery, setSearchQuery] = useState({
     value: '',
     regex: /(?:)/i,
   });
-  const [tab, setTab] = useState(tabs[0].value);
-  const [columns, setColumns] = useState(activeClientColums);
+  const [open, setOpen] = useState(false);
+  const [selectedClient, setSelectedClient] = useState({});
 
   const handleSearch = (query) => {
     if (query.trim() !== '') {
@@ -66,16 +52,28 @@ export const ClientManagement = () => {
     }
   };
 
-  const handleTabToggle = (tempTab) => {
-    if (tempTab === 'active') {
-      setColumns(activeClientColums);
-      getAllClients();
-    } else if (tempTab === 'interested') {
-      setColumns(interestedClientColums);
-      getAllInterestedClients();
-    }
-    setTab(tempTab);
+  const handleDeleteClient = async (row) => {
+    setSelectedClient(row);
+    setOpen(true);
   };
+
+  const activeClientColums = [
+    { label: 'Phone Number', key: 'phoneNumber' },
+    { label: 'First Name', key: 'firstName', align: 'right' },
+    { label: 'Last Name', key: 'lastName', align: 'right' },
+    { label: 'Email', key: 'email', align: 'right' },
+    { label: 'Address', key: 'address', align: 'right' },
+    {
+      label: 'Action',
+      key: 'action',
+      align: 'right',
+      component: (row) => (
+        <IconButton onClick={() => handleDeleteClient(row)}>
+          <Iconify icon="mdi:trash" />
+        </IconButton>
+      ),
+    },
+  ];
 
   useEffect(() => {
     getAllClients();
@@ -135,8 +133,8 @@ export const ClientManagement = () => {
             {tabs.map((t) => (
               <Button
                 key={t.value}
-                onClick={() => handleTabToggle(t.value)}
-                variant={tab === t.value ? 'contained' : 'outlined'}
+                // onClick={() => handleTabToggle(t.value)}
+                // variant={tab === t.value ? 'contained' : 'outlined'}
               >
                 {t.label}
               </Button>
@@ -145,8 +143,12 @@ export const ClientManagement = () => {
           <AddClientDialog />
         </Stack>
 
-        <DataTable searchQuery={searchQuery} columns={columns} />
+        <DataTable searchQuery={searchQuery} columns={activeClientColums} />
       </Container>
+
+      {open && (
+        <ConfirmClientDeletion open={open} setOpen={setOpen} selectedClient={selectedClient} />
+      )}
     </Box>
   );
 };

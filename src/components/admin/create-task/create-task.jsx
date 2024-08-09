@@ -30,6 +30,7 @@ import { apiUpdateUserAddress } from 'src/firebase/firestore/client';
 import { useTaskStore, useAdminManagementStore } from 'src/stores/admin';
 
 import Iconify from 'src/components/iconify';
+import { AttachmentCard } from 'src/components/commons';
 
 import { AddressDialog } from '../address-dialog/address-dialog';
 
@@ -51,7 +52,7 @@ export const CreateAnIssue = () => {
   const [showFileUploadError, setShowFileUploadError] = useState(false);
   const [selectedClient, setSelectedClient] = useState({});
   const [linkInputs, setLinkInputs] = useState({ attachment: '' });
-  const [uploadedLinks, setUploadedLinks] = useState({ attachments: [] });
+  const [attachments, setAttachments] = useState([]);
 
   const formik = useFormik({
     validationSchema,
@@ -71,12 +72,12 @@ export const CreateAnIssue = () => {
           description: values.description,
           address: values.address,
           images: uploadedFiles,
-          attachments: uploadedLinks.attachments,
+          attachments,
         });
         setIsLoading(false);
         formik.resetForm();
         setUploadedFiles([]);
-        setUploadedLinks({ attachments: [] });
+        setAttachments([]);
         getAllTasks({});
         setOpen(false);
       } catch (err) {
@@ -100,10 +101,7 @@ export const CreateAnIssue = () => {
   };
 
   const handleLinkSubmit = () => {
-    setUploadedLinks({
-      ...uploadedLinks,
-      attachments: [...uploadedLinks.attachments, linkInputs.attachment],
-    });
+    setAttachments([...attachments, linkInputs.attachment]);
     setLinkInputs({ ...linkInputs, attachment: '' });
   };
 
@@ -168,6 +166,14 @@ export const CreateAnIssue = () => {
     accept: 'image/*',
   });
 
+  const handleDeleteAttachment = (index) => {
+    setAttachments(attachments.filter((_, i) => i !== index));
+  };
+
+  const handleDeleteUploadedFile = (index) => {
+    setUploadedFiles(uploadedFiles.filter((_, i) => i !== index));
+  };
+
   const handleClientSelection = async (params) => {
     setSelectedClient({});
     formik.setFieldValue('address', {});
@@ -193,7 +199,7 @@ export const CreateAnIssue = () => {
       </Tooltip>
 
       <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
-        <Box sx={{ minWidth: { lg: 400, sm: 360, xs: 360 }, m: 1 }}>
+        <Box sx={{ minWidth: { lg: 420, sm: 360, xs: 360 }, m: 1 }}>
           <Stack direction="row" alignItems="center" justifyContent="space-between" mt={2}>
             <Typography variant="h4" fontFamily="Poppins">
               Help Ticket
@@ -314,6 +320,19 @@ export const CreateAnIssue = () => {
                 </Box>
               </Box>
 
+              {!isEmpty(uploadedFiles) && (
+                <Stack direction="row" flexWrap="wrap" gap={1} maxWidth={420}>
+                  {uploadedFiles?.map((file, index) => (
+                    <AttachmentCard
+                      attachment={file}
+                      index={index + 1}
+                      onDelete={() => handleDeleteUploadedFile(index)}
+                      label="Image"
+                    />
+                  ))}
+                </Stack>
+              )}
+
               <Typography textAlign="center"> OR </Typography>
 
               <TextField
@@ -337,11 +356,20 @@ export const CreateAnIssue = () => {
               />
 
               <Stack direction="row" alignItems="center" justifyContent="flex-start" gap={2}>
-                <CountChip
-                  label="Attachments"
-                  value={parseInt(uploadedLinks?.attachments?.length, 10)}
-                />
+                <CountChip label="Attachments" value={parseInt(attachments?.length, 10)} />
               </Stack>
+
+              {!isEmpty(attachments) && (
+                <Stack direction="row" flexWrap="wrap" gap={1} maxWidth={420}>
+                  {attachments?.map((attachment, index) => (
+                    <AttachmentCard
+                      attachment={attachment}
+                      index={index + 1}
+                      onDelete={() => handleDeleteAttachment(index)}
+                    />
+                  ))}
+                </Stack>
+              )}
 
               {!isEmpty(selectedClient) && (
                 <AddressDialog
