@@ -27,10 +27,6 @@ const tabs = [
     label: 'Active Clients',
     value: 'active',
   },
-  {
-    label: 'Interested Clients',
-    value: 'interested',
-  },
 ];
 
 const activeClientColums = [

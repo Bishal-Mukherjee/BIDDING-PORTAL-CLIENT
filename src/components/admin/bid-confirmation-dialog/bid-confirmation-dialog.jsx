@@ -35,7 +35,7 @@ export const BidConfirmationDialog = ({ selectedBid }) => {
       await apiPutConfirmBid({ taskId: selectedTask?.id, bidId: selectedBid?.id });
       await getTaskById({ id: selectedTask?.id });
       setIsLoading(false);
-      setOpen(false);
+      window.location.reload();
     } catch (error) {
       console.log(error);
       setIsLoading(false);
