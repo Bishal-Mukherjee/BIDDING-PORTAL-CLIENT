@@ -86,7 +86,7 @@ export const apiUpdateTask = async ({ id, title, description, images, attachment
       title,
       description,
       images,
-	  attachments,
+      attachments,
     });
     return response.data;
   } catch (err) {
@@ -120,6 +120,16 @@ export const apiPostCreateClient = async ({
 export const apiGetAllInterestedClients = async () => {
   try {
     const response = await apiInstance.get('/admin/getInterestedClients');
+    return response.data;
+  } catch (err) {
+    console.log(err.message);
+    return null;
+  }
+};
+
+export const apiDeleteUserRelatedTasks = async ({ email }) => {
+  try {
+    const response = await apiInstance.delete(`/admin/clearUserRelatedTasks/${email}`);
     return response.data;
   } catch (err) {
     console.log(err.message);

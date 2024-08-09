@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React from 'react';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
@@ -37,7 +38,13 @@ export const DataTable = ({ columns = [], rows = [] }) => (
               >
                 {columns?.map((column) => (
                   <TableCell key={`column-${column.label}`} align={column.align || 'left'}>
-                    {row[column.key] ? <>{row[column.key]}</> : '-'}
+                    {row[column.key] ? (
+                      <>{row[column.key]}</>
+                    ) : column.key === 'action' ? (
+                      <>{column.component(row)}</>
+                    ) : (
+                      '-'
+                    )}
                   </TableCell>
                 ))}
               </TableRow>
