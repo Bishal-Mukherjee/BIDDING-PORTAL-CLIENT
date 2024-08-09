@@ -6,7 +6,7 @@ import { AuthLayout } from 'src/sections/auth';
 // -- ADMIN --
 import { routes as adminRoutes } from './proctectedRoutes/admin';
 // -- CLIENT --
-import { routes as clientRoutes } from './proctectedRoutes/client';
+// import { routes as clientRoutes } from './proctectedRoutes/client';
 // -- COMPANY --
 import { routes as companyRoutes } from './proctectedRoutes/company';
 
@@ -20,7 +20,7 @@ export default function Router() {
       path: '/',
       element: <AuthLayout />,
     },
-    ...clientRoutes,
+    // ...clientRoutes,
     ...adminRoutes,
     ...companyRoutes,
     {

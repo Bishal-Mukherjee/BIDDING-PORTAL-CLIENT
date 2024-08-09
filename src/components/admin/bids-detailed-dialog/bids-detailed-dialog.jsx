@@ -50,6 +50,9 @@ const BidCard = ({ bid }) => (
     <Typography textTransform="uppercase" fontSize={14} mt={1}>
       {bid?.quality}
     </Typography>
+    <Typography textTransform="uppercase" fontSize={12} mt={1}>
+      {bid?.estimatedCompletionDays} days
+    </Typography>
     <Typography textTransform="uppercase" fontSize={14} mb={1}>
       {bid?.currency}&nbsp;&nbsp;{bid?.amount}
     </Typography>

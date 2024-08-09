@@ -33,7 +33,7 @@ export const TaskDetailedView = () => {
     if (location.state?.resourceType === 'bid') {
       setTabIndex(1);
     }
-  }, [location.state.resourceType]);
+  }, [location.state]);
 
   useEffect(() => {
     if (params.taskId) {

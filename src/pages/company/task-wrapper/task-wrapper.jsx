@@ -19,7 +19,7 @@ import {
 import { useTaskStore } from 'src/stores/company';
 import { apiGetProfileByEmail } from 'src/firebase/firestore/commons';
 
-import { AttachmentList, TaskActiveBadge } from 'src/components/commons';
+import { AttachmentList, AttachmentCard, TaskActiveBadge } from 'src/components/commons';
 import {
   ActionDialog,
   ViewBidDialog,
@@ -194,13 +194,9 @@ export const TaskWrapper = () => {
         <Grid container spacing={2} justifyContent="center" flexWrap="wrap" mt={2}>
           {!isEmpty(selectedTask?.task?.attachments) && (
             <Grid item xs={12} md={5}>
-              <Stack direction="column" gap={1}>
+              <Stack direction="row" gap={1} flexWrap="wrap">
                 {selectedTask?.task?.attachments?.map((attachment, index) => (
-                  <a href={attachment} target="_blank" rel="noreferrer">
-                    <Typography variant="body2">
-                      {index + 1}.&nbsp;{attachment}
-                    </Typography>
-                  </a>
+                  <AttachmentCard attachment={attachment} index={index + 1} />
                 ))}
               </Stack>
             </Grid>

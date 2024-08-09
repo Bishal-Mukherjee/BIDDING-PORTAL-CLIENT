@@ -18,7 +18,7 @@ import { AccountPopover } from './account-popover';
 const navLinks = [
   {
     id: 1,
-    label: 'Analytics',
+    label: 'Bids',
     pathname: '/client/analytics',
   },
 ];

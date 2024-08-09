@@ -54,6 +54,7 @@ export const PlaceBidDialog = () => {
     initialValues: {
       amount: 0,
       quality: '',
+      estimatedCompletionDays: 0,
     },
     onSubmit: async (values) => {
       if (isEmpty(uploadedFiles)) {
@@ -65,6 +66,7 @@ export const PlaceBidDialog = () => {
         taskId: selectedTask?.task?.id,
         amount: values.amount,
         attachment: uploadedFiles[0],
+		estimatedCompletionDays: values.estimatedCompletionDays,
         quality: values.quality,
         logo: user?.metaInfo?.logo,
       });
@@ -138,6 +140,16 @@ export const PlaceBidDialog = () => {
     }
   }, [selectedTask?.bids]);
 
+  useEffect(
+    () => () => {
+      setPrevQualities([]);
+      setUploadedFiles([]);
+      setShowLoader(false);
+      setShowFileUploadError(false);
+    },
+    []
+  );
+
   return (
     <>
       <Button
@@ -149,7 +161,7 @@ export const PlaceBidDialog = () => {
         Place Bid
       </Button>
 
-      <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
+      <Drawer anchor="right" open={open}>
         <Box sx={{ minWidth: { lg: 400, sm: 360, xs: 360 }, m: 1, height: '100%' }}>
           <Stack direction="row" alignItems="center" justifyContent="space-between" mt={2}>
             <Typography variant="h4" fontFamily="Poppins">
@@ -251,6 +263,21 @@ export const PlaceBidDialog = () => {
               </Box>
 
               {inputErrors && <FormHelperText error>{inputErrors}</FormHelperText>}
+
+              <TextField
+                fullWidth
+                label="Estimated time (days)"
+                name="estimatedCompletionDays"
+                value={formik.values.estimatedCompletionDays}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.estimatedCompletionDays &&
+                  Boolean(formik.errors.estimatedCompletionDays)
+                }
+                helperText={
+                  formik.touched.estimatedCompletionDays && formik.errors.estimatedCompletionDays
+                }
+              />
 
               <Stack direction="row" gap={1} alignItems="center" justifyContent="flex-end" mt={0}>
                 <Button onClick={handleClose} color="warning">

@@ -8,3 +8,4 @@ export * from './task-active-badge';
 export * from './square-box';
 export * from './attachment-list';
 export * from './data-table';
+export * from "./attachment-card";

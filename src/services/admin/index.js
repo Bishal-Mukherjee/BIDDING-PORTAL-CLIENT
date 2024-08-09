@@ -80,12 +80,13 @@ export const apiPutActivateTask = async ({ id, suggestedBidders }) => {
   }
 };
 
-export const apiUpdateTask = async ({ id, title, description, images }) => {
+export const apiUpdateTask = async ({ id, title, description, images, attachments }) => {
   try {
     const response = await apiInstance.put(`/admin/updateTask/${id}`, {
       title,
       description,
       images,
+	  attachments,
     });
     return response.data;
   } catch (err) {
