@@ -23,7 +23,7 @@ export function AdminLayout({ children }) {
 
   useEffect(() => {
     if (!isEmpty(user) && user?.designation !== 'ADMIN') {
-      router.push('/auth');
+      router.push('/');
     }
   }, [location.pathname, router, user]);
 

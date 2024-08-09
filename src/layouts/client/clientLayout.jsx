@@ -26,7 +26,7 @@ export function ClientLayout({ children }) {
 
   useEffect(() => {
     if (!isEmpty(user) && user?.designation !== 'CLIENT') {
-      router.push('/auth');
+      router.push('/');
     }
   }, [location.pathname, router, user]);
 

@@ -17,7 +17,7 @@ export const Page404 = lazy(() => import('src/pages/page-not-found'));
 export default function Router() {
   const routes = useRoutes([
     {
-      path: '/auth',
+      path: '/',
       element: <AuthLayout />,
     },
     ...clientRoutes,
