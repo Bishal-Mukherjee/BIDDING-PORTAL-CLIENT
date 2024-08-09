@@ -59,7 +59,7 @@ export function Analytics() {
       }}
     >
       <Helmet>
-        <title> Client | Analytics </title>
+        <title> Client | Bids </title>
       </Helmet>
 
       <Backdrop sx={{ color: '#fff', zIndex: (t) => t.zIndex.drawer + 1 }} open={isLoading}>

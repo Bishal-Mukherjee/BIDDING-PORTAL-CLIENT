@@ -64,7 +64,7 @@ export const Analytics = () => {
       }}
     >
       <Helmet>
-        <title> Company | Analytics </title>
+        <title> Company | Bids </title>
       </Helmet>
 
       <Backdrop sx={{ color: '#fff', zIndex: (t) => t.zIndex.drawer + 1 }} open={isLoading}>

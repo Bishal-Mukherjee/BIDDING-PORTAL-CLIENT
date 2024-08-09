@@ -8,7 +8,7 @@ import Iconify from 'src/components/iconify';
 const navLinks = [
   {
     id: 1,
-    label: 'Analytics',
+    label: 'Bids',
     pathname: '/admin/analytics',
   },
   {

@@ -21,6 +21,8 @@ import {
   Backdrop,
   TextField,
   Typography,
+  IconButton,
+  InputAdornment,
   CircularProgress,
 } from '@mui/material';
 
@@ -32,7 +34,12 @@ import { apiUpdateTask, apiPutActivateTask } from 'src/services/admin';
 
 import Iconify from 'src/components/iconify';
 import { SuggestedBiddersDialog } from 'src/components/admin';
-import { StatusChip, AttachmentList, TaskActiveBadge } from 'src/components/commons';
+import {
+  StatusChip,
+  AttachmentList,
+  AttachmentCard,
+  TaskActiveBadge,
+} from 'src/components/commons';
 
 const validationSchema = yup.object().shape({
   title: yup.string().required('Title is required'),
@@ -48,6 +55,8 @@ export const TaskEditView = () => {
   const [showLoader, setShowLoader] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [existingFiles, setExistingFiles] = useState([]);
+  const [attachments, setAttachments] = useState([]);
+  const [attachment, setAttachment] = useState('');
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [submitLoader, setSubmitLoader] = useState(false);
@@ -66,6 +75,7 @@ export const TaskEditView = () => {
         title: values.title,
         description: values.description,
         images: uploadedFiles,
+        attachments,
       });
       if (response) {
         getTaskById({ id: selectedTask.id });
@@ -125,9 +135,23 @@ export const TaskEditView = () => {
   //     if (response) router.push('/client/analytics');
   //   };
 
+  const handleChange = (event) => {
+    setAttachment(event.target.value);
+  };
+
+  const handleAttachmentSubmit = () => {
+    setAttachments([...attachments, attachment]);
+    setAttachment('');
+  };
+
   const onDelete = (index) => {
     const images = existingFiles.filter((_, i) => i !== index);
     setExistingFiles([...images]);
+  };
+
+  const onRemoveAttachment = (index) => {
+    const attchmnts = attachments.filter((_, i) => i !== index);
+    setAttachments([...attchmnts]);
   };
 
   const handleActivateTask = async (suggestedBidders) => {
@@ -147,6 +171,7 @@ export const TaskEditView = () => {
       description: selectedTask?.description,
     });
     setExistingFiles(selectedTask?.images);
+    setAttachments(selectedTask?.attachments);
   }, [selectedTask]);
 
   useEffect(() => {
@@ -341,13 +366,53 @@ export const TaskEditView = () => {
                       </Box>
                     )}
 
-                    <Grid container gap={6} flexWrap="wrap">
-                      <AttachmentList
-                        images={existingFiles}
-                        onDelete={onDelete}
-                        hideDeleteIcon={selectedTask?.isActive}
-                      />
-                    </Grid>
+                    <TextField
+                      name="attachment"
+                      label="Attachment"
+                      onChange={handleChange}
+                      value={attachment}
+                      disabled={selectedTask?.isActive}
+                      fullWidth
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              onClick={() => handleAttachmentSubmit()}
+                              disabled={isEmpty(attachment)}
+                              edge="end"
+                            >
+                              <Iconify icon="icon-park-solid:check-one" />
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+
+                    {!isEmpty(existingFiles) && (
+                      <Grid container gap={6} flexWrap="wrap">
+                        <AttachmentList
+                          images={existingFiles}
+                          onDelete={onDelete}
+                          hideDeleteIcon={selectedTask?.isActive}
+                        />
+                      </Grid>
+                    )}
+
+                    {!isEmpty(attachments) && (
+                      <Grid container justifyContent="flex-start" flexWrap="wrap" mt={2}>
+                        <Grid item md={12}>
+                          <Stack direction="row" gap={1} flexWrap="wrap" width="100%">
+                            {attachments?.map((a, index) => (
+                              <AttachmentCard
+                                attachment={a}
+                                index={index + 1}
+                                onDelete={() => onRemoveAttachment(index)}
+                              />
+                            ))}
+                          </Stack>
+                        </Grid>
+                      </Grid>
+                    )}
 
                     <LoadingButton
                       fullWidth

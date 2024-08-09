@@ -32,11 +32,19 @@ export const apiUpdateAcceptOrRejectTask = async ({ taskId, status }) => {
   }
 };
 
-export const apiPostCreateBid = async ({ taskId, amount, attachment, quality, logo }) => {
+export const apiPostCreateBid = async ({
+  taskId,
+  amount,
+  attachment,
+  estimatedCompletionDays,
+  quality,
+  logo,
+}) => {
   try {
     const response = await apiInstance.post(`/company/createBid/${taskId}`, {
       amount,
       attachment,
+      estimatedCompletionDays,
       quality,
       logo,
     });
