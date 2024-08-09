@@ -26,7 +26,7 @@ export function CompanyLayout({ children }) {
 
   useEffect(() => {
     if (!isEmpty(user) && user?.designation !== 'COMPANY') {
-      router.push('/auth');
+      router.push('/');
     }
   }, [location.pathname, router, user]);
 

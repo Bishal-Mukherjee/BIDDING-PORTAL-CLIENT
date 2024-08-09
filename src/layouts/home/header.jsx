@@ -125,7 +125,7 @@ const Header = () => {
                   color: '#ffffff',
                 },
               }}
-              onClick={() => navigate('/auth')}
+              onClick={() => navigate('/')}
             >
               <Typography fontSize={18}>LOGIN</Typography>
             </Button>

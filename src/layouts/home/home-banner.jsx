@@ -41,7 +41,7 @@ const EntityCard = ({ icon, label }) => (
       bottom={0}
       textAlign="center"
       component={Link}
-      to="/auth"
+      to="/"
       sx={{ textDecoration: 'none' }}
     >
       <Typography color="#ffffff" variant="body1">

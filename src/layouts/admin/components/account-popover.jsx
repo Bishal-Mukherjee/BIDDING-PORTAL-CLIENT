@@ -40,7 +40,7 @@ export const AccountPopover = () => {
     setAnchorEl(null);
     setUser(null);
     doSignOut();
-    router.push('/auth');
+    router.push('/');
   };
 
   return (
