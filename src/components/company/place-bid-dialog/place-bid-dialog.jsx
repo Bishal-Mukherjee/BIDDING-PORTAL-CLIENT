@@ -224,6 +224,10 @@ export const PlaceBidDialog = () => {
                     justifyContent="center"
                     alignItems="center"
                   >
+                    <a href={uploadedFiles[0]} target="_blank" rel="noreferrer">
+                      Preview
+                    </a>
+
                     <Button onClick={() => setUploadedFiles([])}>
                       <Iconify icon="mdi:close" />
                       <Typography>Clear</Typography>
