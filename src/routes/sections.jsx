@@ -1,8 +1,6 @@
 import { lazy } from 'react';
 import { Navigate, useRoutes } from 'react-router-dom';
 
-import { Home } from 'src/pages/home';
-
 import { AuthLayout } from 'src/sections/auth';
 
 // -- ADMIN --
@@ -18,10 +16,6 @@ export const Page404 = lazy(() => import('src/pages/page-not-found'));
 
 export default function Router() {
   const routes = useRoutes([
-    {
-      path: '/',
-      element: <Home />,
-    },
     {
       path: '/auth',
       element: <AuthLayout />,
