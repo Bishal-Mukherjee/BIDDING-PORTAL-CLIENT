@@ -35,6 +35,7 @@ const validationSchema = yup.object().shape({
     .typeError('Must be a number')
     .required('Required'),
   quality: yup.string().required('Required'),
+  estimatedCompletionDays: yup.number().required('Required'),
 });
 
 export const PlaceBidDialog = () => {
@@ -66,7 +67,7 @@ export const PlaceBidDialog = () => {
         taskId: selectedTask?.task?.id,
         amount: values.amount,
         attachment: uploadedFiles[0],
-		estimatedCompletionDays: values.estimatedCompletionDays,
+        estimatedCompletionDays: values.estimatedCompletionDays,
         quality: values.quality,
         logo: user?.metaInfo?.logo,
       });
@@ -215,51 +216,74 @@ export const PlaceBidDialog = () => {
                   borderColor: isDragActive ? '#007B55' : '#919EAB',
                 }}
               >
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    flexDirection: 'column',
-                    width: '100%',
-                    height: '100%',
-                    cursor: 'pointer',
-                  }}
-                  {...getRootProps({ className: 'dropzone' })}
-                >
-                  <input {...getInputProps()} />
-                  {isDragActive ? (
-                    <Typography>Drop the files here ...</Typography>
-                  ) : (
-                    <>
-                      {uploadedFiles.length > 0 ? (
-                        <Box sx={{ display: 'flex' }}>
-                          <Iconify icon="tabler:file-filled" width={20} />
-                          <Typography>{uploadedFiles.length} files</Typography>
-                        </Box>
-                      ) : (
-                        <>
-                          {showLoader ? (
-                            <CircularProgress size={15} sx={{ color: 'black' }} />
-                          ) : (
-                            <>
-                              {showFileUploadError ? (
-                                <Typography textAlign="center" color="#d90429" variant="subtitle2">
-                                  Invalid file type. Only image / pdf are allowed.
-                                </Typography>
-                              ) : (
-                                <Typography textAlign="center" color="#6c757d" variant="subtitle2">
-                                  Drag &apos;n&apos; drop invoice/receipt here, <br /> or click to
-                                  select files
-                                </Typography>
-                              )}
-                            </>
-                          )}
-                        </>
-                      )}
-                    </>
-                  )}
-                </Box>
+                {!isEmpty(uploadedFiles) ? (
+                  <Stack
+                    direction="row"
+                    width="100%"
+                    height="100%"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Button onClick={() => setUploadedFiles([])}>
+                      <Iconify icon="mdi:close" />
+                      <Typography>Clear</Typography>
+                    </Button>
+                  </Stack>
+                ) : (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      flexDirection: 'column',
+                      width: '100%',
+                      height: '100%',
+                      cursor: 'pointer',
+                    }}
+                    {...getRootProps({ className: 'dropzone' })}
+                  >
+                    <input {...getInputProps()} />
+                    {isDragActive ? (
+                      <Typography>Drop the files here ...</Typography>
+                    ) : (
+                      <>
+                        {uploadedFiles.length > 0 ? (
+                          <Box sx={{ display: 'flex' }}>
+                            <Iconify icon="tabler:file-filled" width={20} />
+                            <Typography>{uploadedFiles.length} files</Typography>
+                          </Box>
+                        ) : (
+                          <>
+                            {showLoader ? (
+                              <CircularProgress size={15} sx={{ color: 'black' }} />
+                            ) : (
+                              <>
+                                {showFileUploadError ? (
+                                  <Typography
+                                    textAlign="center"
+                                    color="#d90429"
+                                    variant="subtitle2"
+                                  >
+                                    Invalid file type. Only image / pdf are allowed.
+                                  </Typography>
+                                ) : (
+                                  <Typography
+                                    textAlign="center"
+                                    color="#6c757d"
+                                    variant="subtitle2"
+                                  >
+                                    Drag &apos;n&apos; drop invoice/receipt here, <br /> or click to
+                                    select files
+                                  </Typography>
+                                )}
+                              </>
+                            )}
+                          </>
+                        )}
+                      </>
+                    )}
+                  </Box>
+                )}
               </Box>
 
               {inputErrors && <FormHelperText error>{inputErrors}</FormHelperText>}
