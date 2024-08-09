@@ -164,7 +164,7 @@ const OurServices = () => {
                 color: '#ffffff',
               },
             }}
-            onClick={() => navigate('/auth')}
+            onClick={() => navigate('/')}
           >
             <Typography fontSize={14}>REQUEST ESTIMASTES</Typography>
           </Button>
