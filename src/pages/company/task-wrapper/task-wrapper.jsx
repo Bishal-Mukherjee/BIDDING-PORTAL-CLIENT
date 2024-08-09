@@ -79,7 +79,7 @@ export const TaskWrapper = () => {
         justifyContent="center"
       >
         <Typography variant="h3" fontFamily="Poppins">
-          Ticket Overview
+          Bid Overview
         </Typography>
         <Typography variant="body2" textAlign="center" fontFamily="Wix Madefor Display">
           Get an overview of the client ticket.
