@@ -223,7 +223,7 @@ export const PlaceBidDialog = () => {
                     height="100%"
                     justifyContent="center"
                     alignItems="center"
-                    gap={1}
+                    gap={2}
                   >
                     <a href={uploadedFiles[0]} target="_blank" rel="noreferrer">
                       Preview

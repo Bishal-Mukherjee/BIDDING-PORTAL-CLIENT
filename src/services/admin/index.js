@@ -95,6 +95,18 @@ export const apiUpdateTask = async ({ id, title, description, images, attachment
   }
 };
 
+export const apiUpdateTaskStatus = async ({ id, status }) => {
+  try {
+    const response = await apiInstance.put(`/admin/updateTaskStatus/${id}`, {
+      status,
+    });
+    return response.data;
+  } catch (err) {
+    console.log(err.message);
+    return null;
+  }
+};
+
 export const apiPostCreateClient = async ({
   email,
   password,

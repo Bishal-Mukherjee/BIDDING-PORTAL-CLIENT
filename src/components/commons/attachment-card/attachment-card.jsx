@@ -15,7 +15,7 @@ export const AttachmentCard = ({ index, label = 'Attachment', attachment, onDele
       padding: 1,
       borderRadius: 1,
       overflow: 'hidden',
-      border: 'solid 1px #808080',
+      border: 'solid 1px #ced4da',
     }}
   >
     <a href={attachment} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>

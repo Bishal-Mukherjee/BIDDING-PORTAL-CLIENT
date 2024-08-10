@@ -6,10 +6,13 @@ import { Box, Grid, Stack, Divider, Typography } from '@mui/material';
 
 import { useTaskStore } from 'src/stores/admin';
 
+import { MarkAsCompleted } from 'src/components/admin';
 import { AttachmentList, AttachmentCard } from 'src/components/commons';
 
 export const TaskDetails = () => {
   const { selectedTask } = useTaskStore();
+  const showMarkAsCompleted =
+    selectedTask?.status === 'assigned' || selectedTask?.status === 'in-progress';
   return (
     <>
       <Grid container spacing={2} justifyContent="center" flexWrap="wrap" mt={1} px={2}>
@@ -54,13 +57,15 @@ export const TaskDetails = () => {
                     </Typography>
                   )}
                 </Stack>
+
+                {showMarkAsCompleted && <MarkAsCompleted />}
               </Stack>
             </Stack>
           </Stack>
         </Grid>
       </Grid>
 
-      <Grid container spacing={2} justifyContent="center" flexWrap="wrap" mt={4} px={2}>
+      <Grid container spacing={2} justifyContent="center" flexWrap="wrap" mt={0} px={2}>
         {!isEmpty(selectedTask?.images) && (
           <Grid item xs={12} md={6}>
             <Typography variant="h5">Attachments</Typography>

@@ -6,3 +6,4 @@ export * from './task-filter/task-filter';
 export * from './view-bid-dialog/view-bid-dialog';
 export * from './meta-info-dialog/meta-info-dilaog';
 export * from './client-details-dialog/client-details-dialog';
+export * from "./mark-as-in-progress/mark-as-in-progress"

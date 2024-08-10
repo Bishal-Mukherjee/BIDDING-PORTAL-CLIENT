@@ -27,11 +27,11 @@ export const TaskCard = ({
   const navigate = useNavigate();
 
   const handleViewClick = () => {
-    navigate(`/admin/analytics/${id}`, { state: { mode: 'view' } });
+    navigate(`/admin/analytics/${id}?mode=view`);
   };
 
   const handleEditClick = () => {
-    navigate(`/admin/analytics/${id}`, { state: { mode: 'edit' } });
+    navigate(`/admin/analytics/${id}?mode=edit`);
   };
 
   return (

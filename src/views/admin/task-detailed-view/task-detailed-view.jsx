@@ -15,7 +15,10 @@ import { TaskDetails } from './task-details';
 
 export const TaskDetailedView = () => {
   const params = useParams();
-  const location = useLocation();
+
+  const { search } = useLocation();
+  const searchParams = new URLSearchParams(search);
+  const resourceType = searchParams.get('resourceType') || 'task';
 
   const { isLoading, getTaskById, selectedTask, selectedTaskBids } = useTaskStore();
 
@@ -30,10 +33,10 @@ export const TaskDetailedView = () => {
   };
 
   useEffect(() => {
-    if (location.state?.resourceType === 'bid') {
+    if (resourceType === 'bid') {
       setTabIndex(1);
     }
-  }, [location.state]);
+  }, [resourceType]);
 
   useEffect(() => {
     if (params.taskId) {

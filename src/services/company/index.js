@@ -64,3 +64,15 @@ export const apiGetRecentTaskAcceptances = async () => {
     return null;
   }
 };
+
+export const apiUpdateTaskStatus = async ({ id, status }) => {
+  try {
+    const response = await apiInstance.put(`/company/updateTaskStatus/${id}`, {
+      status,
+    });
+    return response.data;
+  } catch (err) {
+    console.log(err.message);
+    return null;
+  }
+};
