@@ -20,7 +20,6 @@ export const routes = [
       { path: 'analytics/:taskId', element: <TaskWrapper /> },
       { path: 'clients', element: <ClientManagement /> },
       { path: 'companies', element: <CompanyManagement /> },
-      //   { path: 'reports', element: <Reports /> },
     ],
   },
 ];

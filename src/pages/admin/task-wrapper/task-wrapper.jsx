@@ -6,7 +6,11 @@ import { Stack, Typography } from '@mui/material';
 import { TaskEditView, TaskDetailedView } from 'src/views/admin';
 
 export const TaskWrapper = () => {
-  const location = useLocation();
+  const { search } = useLocation();
+
+  const searchParams = new URLSearchParams(search);
+  const mode = searchParams.get('mode') || 'view';
+
   return (
     <>
       <Stack
@@ -24,8 +28,7 @@ export const TaskWrapper = () => {
           Track and manage ticket details.
         </Typography>
       </Stack>
-
-      {location?.state?.mode === 'edit' ? <TaskEditView /> : <TaskDetailedView />}
+      {mode === 'edit' ? <TaskEditView /> : <TaskDetailedView />}
     </>
   );
 };

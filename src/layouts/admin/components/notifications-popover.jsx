@@ -83,9 +83,9 @@ export const NotificationsPopover = () => {
   //   };
 
   const handleRedirection = (notification) => {
-    navigate(`/admin/analytics/${notification.resourceId}`, {
-      state: { resourceType: notification.resourceType },
-    });
+    navigate(
+      `/admin/analytics/${notification.resourceId}?resourceType=${notification.resourceType}`
+    );
   };
 
   const handleMarkAsRead = (event, id) => {

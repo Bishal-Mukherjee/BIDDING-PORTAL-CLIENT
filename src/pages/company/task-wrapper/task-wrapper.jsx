@@ -25,6 +25,7 @@ import {
   ViewBidDialog,
   PlaceBidDialog,
   ClientDetailsDialog,
+  MarkAsInProgressDialog,
 } from 'src/components/company';
 
 const EXPIRY_IN_HOURS = 72; // need to place a bid within 72 hours
@@ -38,9 +39,12 @@ export const TaskWrapper = () => {
   const remainingTime = dayjs().diff(activationTime, 'hours');
 
   const [open, setOpen] = useState(false);
+  const [openMarkInProgressDialog, setOpenMarkInProgressDialog] = useState(false);
   const [clientInfo, setClientInfo] = useState({});
 
+  const isOpen = selectedTask?.task?.status === 'open';
   const isAssigned = selectedTask?.task?.status === 'assigned';
+  const isInProgress = selectedTask?.task?.status === 'in-progress';
 
   const handleGetClientInfo = async () => {
     if (selectedTask?.task) {
@@ -58,6 +62,9 @@ export const TaskWrapper = () => {
 
   useEffect(() => {
     handleGetClientInfo();
+    if (isAssigned) {
+      setOpenMarkInProgressDialog(true);
+    }
   }, [selectedTask]);
 
   return (
@@ -115,7 +122,7 @@ export const TaskWrapper = () => {
                       ) : (
                         <>
                           <ViewBidDialog />
-                          {selectedTask?.bids?.length < 3 && <PlaceBidDialog />}
+                          {selectedTask?.bids?.length < 3 && isOpen && <PlaceBidDialog />}
                         </>
                       )}
                     </Stack>
@@ -164,7 +171,7 @@ export const TaskWrapper = () => {
                     </Typography>
                   </Stack>
 
-                  {isAssigned && (
+                  {(isAssigned || isInProgress) && (
                     <Stack direction="row" alignItems="center" gap={2}>
                       <Typography color="#6c757d" variant="body2">
                         Client details:
@@ -182,7 +189,7 @@ export const TaskWrapper = () => {
           </Grid>
         </Grid>
 
-        <Grid container spacing={2} justifyContent="center" flexWrap="wrap" mt={4}>
+        <Grid container spacing={2} justifyContent="center" flexWrap="wrap" mt={1}>
           {!isEmpty(selectedTask?.task?.images) && (
             <Grid item xs={12} md={5}>
               <Typography variant="h5">Attachments</Typography>
@@ -204,6 +211,11 @@ export const TaskWrapper = () => {
         </Grid>
 
         <ClientDetailsDialog open={open} setOpen={setOpen} clientDetails={clientInfo} />
+
+        <MarkAsInProgressDialog
+          open={openMarkInProgressDialog}
+          setOpen={setOpenMarkInProgressDialog}
+        />
       </Box>
     </>
   );
