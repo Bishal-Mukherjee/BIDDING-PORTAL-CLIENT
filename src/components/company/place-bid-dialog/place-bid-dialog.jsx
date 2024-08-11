@@ -85,6 +85,8 @@ export const PlaceBidDialog = () => {
     setOpen(false);
     setInputErrors('');
     formik.resetForm();
+    setUploadedFiles([]);
+    setShowFileUploadError(false);
   };
 
   const handleDrop = useCallback(async (acceptedFiles) => {
@@ -93,10 +95,10 @@ export const PlaceBidDialog = () => {
       (file) =>
         new Promise((resolve, reject) => {
           const fileType = file.type;
-          if (!fileType.includes('image') && !fileType.includes('pdf')) {
+          if (fileType.includes('video')) {
             setShowLoader(false);
             setShowFileUploadError(true);
-            reject(new Error('Invalid file type. Only image/pdf are allowed.'));
+            reject(new Error('Invalid file type. Video files are not allowed.'));
             return;
           }
 
@@ -269,7 +271,8 @@ export const PlaceBidDialog = () => {
                                     color="#d90429"
                                     variant="subtitle2"
                                   >
-                                    Invalid file type. Only image / pdf are allowed.
+                                    Invalid file type. <br /> Only image / docx / doc / pdf are
+                                    allowed.
                                   </Typography>
                                 ) : (
                                   <Typography

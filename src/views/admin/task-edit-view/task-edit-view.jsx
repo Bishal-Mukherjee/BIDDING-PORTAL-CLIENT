@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import dayjs from 'dayjs';
 import * as yup from 'yup';
-import { isEmpty } from 'lodash';
 import { v4 as uuid } from 'uuid';
 import { useFormik } from 'formik';
+import { uniq, isEmpty } from 'lodash';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
@@ -48,7 +48,6 @@ const validationSchema = yup.object().shape({
 
 export const TaskEditView = () => {
   const params = useParams();
-  //   const router = useRouter();
 
   const { selectedTask, getTaskById } = useTaskStore();
 
@@ -74,13 +73,16 @@ export const TaskEditView = () => {
         id: selectedTask.id,
         title: values.title,
         description: values.description,
-        images: uploadedFiles,
+        images: uniq([...existingFiles, ...uploadedFiles]),
         attachments,
       });
       if (response) {
         getTaskById({ id: selectedTask.id });
       }
       setSubmitLoader(false);
+      setUploadedFiles([]);
+      setShowFileUploadError(false);
+      setAttachments([]);
     },
   });
 
@@ -144,9 +146,14 @@ export const TaskEditView = () => {
     setAttachment('');
   };
 
-  const onDelete = (index) => {
+  const onDeleteExistingFiles = (index) => {
     const images = existingFiles.filter((_, i) => i !== index);
     setExistingFiles([...images]);
+  };
+
+  const onDeleteUploadedFiles = (index) => {
+    const files = uploadedFiles.filter((_, i) => i !== index);
+    setUploadedFiles([...files]);
   };
 
   const onRemoveAttachment = (index) => {
@@ -366,6 +373,19 @@ export const TaskEditView = () => {
                       </Box>
                     )}
 
+                    {!isEmpty(uploadedFiles) && (
+                      <Stack direction="row" gap={1} flexWrap="wrap" width="100%">
+                        {uploadedFiles.map((file, index) => (
+                          <AttachmentCard
+                            index={index + 1}
+                            label="Image"
+                            attachment={file.url}
+                            onDelete={() => onDeleteUploadedFiles(index)}
+                          />
+                        ))}
+                      </Stack>
+                    )}
+
                     <TextField
                       name="attachment"
                       label="Attachment"
@@ -388,16 +408,6 @@ export const TaskEditView = () => {
                       }}
                     />
 
-                    {!isEmpty(existingFiles) && (
-                      <Grid container gap={6} flexWrap="wrap">
-                        <AttachmentList
-                          images={existingFiles}
-                          onDelete={onDelete}
-                          hideDeleteIcon={selectedTask?.isActive}
-                        />
-                      </Grid>
-                    )}
-
                     {!isEmpty(attachments) && (
                       <Grid container justifyContent="flex-start" flexWrap="wrap" mt={2}>
                         <Grid item md={12}>
@@ -406,11 +416,23 @@ export const TaskEditView = () => {
                               <AttachmentCard
                                 attachment={a}
                                 index={index + 1}
-                                onDelete={() => onRemoveAttachment(index)}
+                                {...(selectedTask?.isActive
+                                  ? {}
+                                  : { onDelete: () => onRemoveAttachment(index) })}
                               />
                             ))}
                           </Stack>
                         </Grid>
+                      </Grid>
+                    )}
+
+                    {!isEmpty(existingFiles) && (
+                      <Grid container gap={6} flexWrap="wrap">
+                        <AttachmentList
+                          images={existingFiles}
+                          onDelete={onDeleteExistingFiles}
+                          hideDeleteIcon={selectedTask?.isActive}
+                        />
                       </Grid>
                     )}
 
@@ -458,6 +480,7 @@ export const TaskEditView = () => {
           </Grid>
         </Grid>
       </Box>
+
       <SuggestedBiddersDialog
         open={open}
         onClose={() => setOpen(false)}

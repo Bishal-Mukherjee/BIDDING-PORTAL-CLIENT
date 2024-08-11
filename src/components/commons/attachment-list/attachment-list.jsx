@@ -2,11 +2,30 @@ import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
-import { Grid, Stack, Dialog, IconButton, Typography, DialogContent } from '@mui/material';
+import { alpha } from '@mui/material/styles';
+import {
+  Grid,
+  Card,
+  Stack,
+  Dialog,
+  styled,
+  IconButton,
+  Typography,
+  DialogContent,
+} from '@mui/material';
 
 import Iconify from 'src/components/iconify';
 
 import { ImageViewer } from '../attachment-viewer';
+
+const Item = styled(Card)(({ theme }) => ({
+  ...theme.typography.body2,
+  bgcolor: alpha(theme.palette.grey[900], 0.72),
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+  borderRadius: 5,
+}));
 
 const AttachmentSliderDialog = ({ images, open, setIsOpen, selectedImageIndex }) => {
   const [imageIndex, setImageIndex] = useState(selectedImageIndex || 0);
@@ -85,17 +104,17 @@ export const AttachmentList = ({ images, onDelete, hideDeleteIcon }) => {
           No attachments
         </Typography>
       ) : (
-        <Grid container gap={2} flexWrap="wrap" mt={1}>
-          {images?.map((image) => (
-            <Grid
-              item
-              md={4}
-              sm={12}
-              xs={12}
-              key={image}
-              onClick={() => handleImgClick(images.indexOf(image))}
-            >
-              <ImageViewer imageURL={image} onDelete={onDelete} hideDeleteIcon={hideDeleteIcon} />
+        <Grid container spacing={2} flexWrap="wrap" mt={1}>
+          {images?.map((image, index) => (
+            <Grid item md={4} sm={12} xs={12} key={image}>
+              <Item elevation={0} py={4} px={4}>
+                <ImageViewer
+                  imageURL={image}
+                  onDelete={() => onDelete(index)}
+                  hideDeleteIcon={hideDeleteIcon}
+                  onClick={() => handleImgClick(images.indexOf(image))}
+                />
+              </Item>
             </Grid>
           ))}
         </Grid>

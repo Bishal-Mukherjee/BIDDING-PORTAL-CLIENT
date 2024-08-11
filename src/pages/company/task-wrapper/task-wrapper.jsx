@@ -42,7 +42,7 @@ export const TaskWrapper = () => {
   const [openMarkInProgressDialog, setOpenMarkInProgressDialog] = useState(false);
   const [clientInfo, setClientInfo] = useState({});
 
-  const isOpen = selectedTask?.task?.status === 'open';
+  const isOpen = selectedTask?.task?.status === 'created';
   const isAssigned = selectedTask?.task?.status === 'assigned';
   const isInProgress = selectedTask?.task?.status === 'in-progress';
 
