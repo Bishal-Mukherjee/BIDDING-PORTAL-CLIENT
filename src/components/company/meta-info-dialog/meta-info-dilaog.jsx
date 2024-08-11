@@ -7,7 +7,16 @@ import { useState, useEffect, useCallback } from 'react';
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 
 import { LoadingButton } from '@mui/lab';
-import { Box, Stack, Alert, Dialog, TextField, Typography, CircularProgress } from '@mui/material';
+import {
+  Box,
+  Stack,
+  Alert,
+  Dialog,
+  Button,
+  TextField,
+  Typography,
+  CircularProgress,
+} from '@mui/material';
 
 import { storage } from 'src/firebase/config';
 import { useAuth } from 'src/context/authContext';
@@ -40,6 +49,7 @@ export const MetaInfoDialog = () => {
       if (!isEmpty(uploadedFiles)) {
         setIsLoading(true);
         apiPostCompanyMetaInfo({ email: user.email, logo: uploadedFiles[0], ...values });
+        setOpen(false);
         setIsLoading(false);
       } else {
         setAlert('Please upload company logo');
@@ -148,50 +158,70 @@ export const MetaInfoDialog = () => {
                 borderColor: isDragActive ? '#007B55' : '#919EAB',
               }}
             >
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  flexDirection: 'column',
-                  width: '100%',
-                  height: '100%',
-                  cursor: 'pointer',
-                }}
-                {...getRootProps({ className: 'dropzone' })}
-              >
-                <input {...getInputProps()} />
-                {isDragActive ? (
-                  <Typography>Drop the files here ...</Typography>
-                ) : (
-                  <>
-                    {uploadedFiles.length > 0 ? (
-                      <Box sx={{ display: 'flex' }}>
-                        <Iconify icon="tabler:file-filled" width={20} />
-                        <Typography>{uploadedFiles.length} files</Typography>
-                      </Box>
-                    ) : (
-                      <>
-                        {showLoader ? (
-                          <CircularProgress size={15} sx={{ color: 'black' }} />
-                        ) : (
-                          <>
-                            {showFileUploadError ? (
-                              <Typography textAlign="center" color="#d90429" variant="subtitle1">
-                                Invalid file type. Only images are allowed.
-                              </Typography>
-                            ) : (
-                              <Typography textAlign="center" color="#6c757d" variant="subtitle1">
-                                Drag &apos;n&apos; drop or click to select company logo
-                              </Typography>
-                            )}
-                          </>
-                        )}
-                      </>
-                    )}
-                  </>
-                )}
-              </Box>
+              {!isEmpty(uploadedFiles) ? (
+                <Stack
+                  direction="row"
+                  width="100%"
+                  height="100%"
+                  justifyContent="center"
+                  alignItems="center"
+                  gap={2}
+                >
+                  <a href={uploadedFiles[0]} target="_blank" rel="noreferrer">
+                    Preview
+                  </a>
+
+                  <Button onClick={() => setUploadedFiles([])}>
+                    <Iconify icon="mdi:close" />
+                    <Typography>Clear</Typography>
+                  </Button>
+                </Stack>
+              ) : (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'column',
+                    width: '100%',
+                    height: '100%',
+                    cursor: 'pointer',
+                  }}
+                  {...getRootProps({ className: 'dropzone' })}
+                >
+                  <input {...getInputProps()} />
+                  {isDragActive ? (
+                    <Typography>Drop the files here ...</Typography>
+                  ) : (
+                    <>
+                      {uploadedFiles.length > 0 ? (
+                        <Box sx={{ display: 'flex' }}>
+                          <Iconify icon="tabler:file-filled" width={20} />
+                          <Typography>{uploadedFiles.length} files</Typography>
+                        </Box>
+                      ) : (
+                        <>
+                          {showLoader ? (
+                            <CircularProgress size={15} sx={{ color: 'black' }} />
+                          ) : (
+                            <>
+                              {showFileUploadError ? (
+                                <Typography textAlign="center" color="#d90429" variant="subtitle1">
+                                  Invalid file type. Only images are allowed.
+                                </Typography>
+                              ) : (
+                                <Typography textAlign="center" color="#6c757d" variant="subtitle1">
+                                  Drag &apos;n&apos; drop or click to select company logo
+                                </Typography>
+                              )}
+                            </>
+                          )}
+                        </>
+                      )}
+                    </>
+                  )}
+                </Box>
+              )}
             </Box>
             <LoadingButton type="submit" variant="contained" color="inherit" loading={isLoading}>
               Submit

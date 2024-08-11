@@ -50,6 +50,14 @@ export const PlaceBidDialog = () => {
   const [inputErrors, setInputErrors] = useState('');
   const [prevQualities, setPrevQualities] = useState([]);
 
+  const handleClose = () => {
+    setOpen(false);
+    setInputErrors('');
+    formik.resetForm();
+    setUploadedFiles([]);
+    setShowFileUploadError(false);
+  };
+
   const formik = useFormik({
     validationSchema,
     initialValues: {
@@ -73,20 +81,12 @@ export const PlaceBidDialog = () => {
       });
       setIsLoading(false);
       getTaskById({ id: selectedTask?.task?.id });
-      setOpen(false);
+      handleClose();
     },
   });
 
   const handleClickOpen = () => {
     setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setInputErrors('');
-    formik.resetForm();
-    setUploadedFiles([]);
-    setShowFileUploadError(false);
   };
 
   const handleDrop = useCallback(async (acceptedFiles) => {
