@@ -25,9 +25,8 @@ import {
 
 import { storage } from 'src/firebase/config';
 import { apiPostCreateIssue } from 'src/services/admin';
-import { apiGetClient } from 'src/firebase/firestore/admin';
-import { apiUpdateUserAddress } from 'src/firebase/firestore/client';
 import { useTaskStore, useAdminManagementStore } from 'src/stores/admin';
+import { apiGetClient, apiUpdateUserAddress } from 'src/firebase/firestore/admin';
 
 import Iconify from 'src/components/iconify';
 import { AttachmentCard } from 'src/components/commons';
