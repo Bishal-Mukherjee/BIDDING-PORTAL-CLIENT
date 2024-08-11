@@ -53,6 +53,14 @@ export const CreateAnIssue = () => {
   const [linkInputs, setLinkInputs] = useState({ attachment: '' });
   const [attachments, setAttachments] = useState([]);
 
+  const handleClose = () => {
+    setOpen(false);
+    setIsLoading(false);
+    formik.resetForm();
+    setUploadedFiles([]);
+    setAttachments([]);
+  };
+
   const formik = useFormik({
     validationSchema,
     initialValues: {
@@ -197,13 +205,13 @@ export const CreateAnIssue = () => {
         </IconButton>
       </Tooltip>
 
-      <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
-        <Box sx={{ minWidth: { lg: 420, sm: 360, xs: 360 }, m: 1 }}>
+      <Drawer anchor="right" open={open} onClose={handleClose}>
+        <Box sx={{ minWidth: { lg: 432, sm: 360, xs: 360 }, m: 1 }}>
           <Stack direction="row" alignItems="center" justifyContent="space-between" mt={2}>
             <Typography variant="h4" fontFamily="Poppins">
               Help Ticket
             </Typography>
-            <IconButton onClick={() => setOpen(false)}>
+            <IconButton onClick={handleClose}>
               <Iconify icon="mdi:close" />
             </IconButton>
           </Stack>
@@ -353,10 +361,6 @@ export const CreateAnIssue = () => {
                   ),
                 }}
               />
-
-              <Stack direction="row" alignItems="center" justifyContent="flex-start" gap={2}>
-                <CountChip label="Attachments" value={parseInt(attachments?.length, 10)} />
-              </Stack>
 
               {!isEmpty(attachments) && (
                 <Stack direction="row" flexWrap="wrap" gap={1} maxWidth={420}>

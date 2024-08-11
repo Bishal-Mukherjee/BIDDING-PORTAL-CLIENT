@@ -39,10 +39,14 @@ const validationSchema = yup.object().shape({
   phoneNumber: yup
     .string()
     .required('Phone number is required')
+    .matches(/^[0-9]+$/, 'Must be only digits')
+    .min(10, 'Must be exactly 10 digits')
+    .max(10, 'Must be exactly 10 digits')
     .test('is-valid-us-phone', 'Invalid phone number', (value) => {
       try {
         const util = PhoneNumberUtil.getInstance();
-        return util.isValidNumberForRegion(util.parse(value, 'US'), 'US');
+        const number = util.parse(`+1${value}`, 'US');
+        return util.isValidNumber(number);
       } catch (e) {
         return false;
       }
@@ -76,7 +80,7 @@ export function SignUpView({ setNavigationTab }) {
     onSubmit: async (values) => {
       try {
         const recaptcha = new RecaptchaVerifier(auth, 'recaptcha', {});
-        const response = await doSignInWithPhoneNumber(values.phoneNumber, recaptcha);
+        const response = await doSignInWithPhoneNumber(`+1${values.phoneNumber}`, recaptcha);
         setOpenOTPInput(true);
         if (response) {
           window.otpConfirmationResponse = response;
@@ -101,7 +105,7 @@ export function SignUpView({ setNavigationTab }) {
             formik.values.email,
             formik.values.password,
             formik.values.companyName,
-            formik.values.phoneNumber,
+            `+1${formik.values.phoneNumber}`,
             formik.values.companyWebsite
           );
 
@@ -177,6 +181,15 @@ export function SignUpView({ setNavigationTab }) {
                 label="Phone Number"
                 value={formik.values.phoneNumber}
                 onChange={formik.handleChange}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Typography sx={{ mr: 1 }} color="text.secondary" variant="body1">
+                        +1
+                      </Typography>
+                    </InputAdornment>
+                  ),
+                }}
                 error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
                 helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
               />
@@ -234,7 +247,7 @@ export function SignUpView({ setNavigationTab }) {
 
           <OtpInput
             open={openOTPInput}
-            phoneNumber={formik.values.phoneNumber}
+            phoneNumber={`+1${formik.values.phoneNumber}`}
             isLoading={otpVerficationLodaing}
             onSubmit={handleOTPSubmit}
           />
