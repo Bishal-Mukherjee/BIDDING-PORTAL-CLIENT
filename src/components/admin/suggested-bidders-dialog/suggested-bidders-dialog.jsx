@@ -100,7 +100,9 @@ export const SuggestedBiddersDialog = ({ open = true, onClose, setSelectedBidder
           >
             Save
           </Button>
-          <Button onClick={() => setSelectedBidders([])}>Open to all</Button>
+          <Button onClick={() => setSelectedBidders([])} disabled={!isEmpty(selectedCompanies)}>
+            Open to all
+          </Button>
         </Stack>
       </Stack>
     </Dialog>
