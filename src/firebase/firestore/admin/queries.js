@@ -75,7 +75,7 @@ export const apiUpdateUserAddress = async ({ email, address }) => {
   }
 };
 
-export const apiDeleteClient = async ({ email }) => {
+export const apiDeleteUser = async ({ email }) => {
   try {
     const usersRef = collection(firestore, 'users');
     const q = query(usersRef, where('email', '==', email));

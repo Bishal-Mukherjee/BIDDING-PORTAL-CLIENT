@@ -18,7 +18,7 @@ const navLinks = [
   },
   {
     id: 2,
-    label: 'Company Management',
+    label: 'Partner Management',
     pathname: '/admin/companies',
   },
   //   {

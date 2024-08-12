@@ -149,6 +149,16 @@ export const apiDeleteUserRelatedTasks = async ({ email }) => {
   }
 };
 
+export const apiDeleteCompanyRelatedDetails= async ({ email }) => {
+  try {
+	const response = await apiInstance.delete(`/admin/clearCompanyRelatedDetails/${email}`);
+	return response.data;
+  } catch (err) {
+	console.log(err.message);
+	return null;
+  }
+}
+
 // export const apiPostCreateIssue = async ({ title, description, images }) => {
 //   try {
 //     const response = await apiInstance.post('/client/createTask', {
