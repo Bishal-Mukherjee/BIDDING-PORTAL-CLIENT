@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 
 import { LoadingButton } from '@mui/lab';
 import {
@@ -12,23 +13,16 @@ import {
   DialogContentText,
 } from '@mui/material';
 
-import { apiDeleteClient } from 'src/firebase/firestore/admin';
-import { apiDeleteUserRelatedTasks } from 'src/services/admin';
+import { StatusLabel } from 'src/constants';
 
-export const ConfirmClientDeletion = ({ open, setOpen, selectedClient }) => {
-  const [isLoading, setIsLoading] = React.useState(false);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleDeleteClient = async () => {
-    setIsLoading(true);
-    await apiDeleteClient({ email: selectedClient.email });
-    await apiDeleteUserRelatedTasks({ email: selectedClient.email });
-    setIsLoading(false);
-  };
-
+export const UpdateTaskStatus = ({
+  open,
+  onClose,
+  requiredStatus = 'completed',
+  onConfirmation,
+  isLoading,
+}) => {
+  const params = useParams();
   return (
     <Dialog open={open} maxWidth="sm" fullWidth>
       <DialogTitle textAlign="center" variant="h5">
@@ -36,21 +30,23 @@ export const ConfirmClientDeletion = ({ open, setOpen, selectedClient }) => {
       </DialogTitle>
       <DialogContent>
         <DialogContentText textAlign="center" color="text.secondary" variant="body2">
-          Are you sure you want to remove{' '}
+          Are you sure you want to mark task{' '}
           <Typography color="primary" component="span">
-            {selectedClient?.firstName} {selectedClient?.lastName}&nbsp;?
+            #{params?.taskId}
           </Typography>{' '}
+          as <b>{StatusLabel[requiredStatus]}</b> ?
+          <Typography>This action cannot be undone. </Typography>
         </DialogContentText>
       </DialogContent>
       <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Button onClick={handleClose} color="warning">
+        <Button onClick={onClose} color="warning">
           Close
         </Button>
         <LoadingButton
           color="inherit"
           variant="contained"
           loading={isLoading}
-          onClick={handleDeleteClient}
+          onClick={onConfirmation}
         >
           Confirm
         </LoadingButton>
@@ -59,8 +55,10 @@ export const ConfirmClientDeletion = ({ open, setOpen, selectedClient }) => {
   );
 };
 
-ConfirmClientDeletion.propTypes = {
-  open: PropTypes.bool,
-  setOpen: PropTypes.func,
-  selectedClient: PropTypes.object,
+UpdateTaskStatus.propTypes = {
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  requiredStatus: PropTypes.string.isRequired,
+  onConfirmation: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool,
 };

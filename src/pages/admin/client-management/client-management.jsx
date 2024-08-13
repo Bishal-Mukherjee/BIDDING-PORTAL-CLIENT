@@ -1,17 +1,18 @@
+import { isEmpty } from 'lodash';
 import { Helmet } from 'react-helmet-async';
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 
 import { alpha, useTheme } from '@mui/material/styles';
 import {
   Box,
   Stack,
   Paper,
-  Button,
+  Alert,
+  Tooltip,
   Backdrop,
   Container,
   Typography,
   IconButton,
-  ButtonGroup,
   OutlinedInput,
   InputAdornment,
   CircularProgress,
@@ -19,29 +20,63 @@ import {
 
 import { bgGradient } from 'src/theme/css';
 import { useAdminManagementStore } from 'src/stores/admin';
+import { apiDisassociateClient } from 'src/services/admin';
+import { apiDeleteUser } from 'src/firebase/firestore/admin';
 
+import { DataTable } from 'src/components/commons';
 import Iconify from 'src/components/iconify/iconify';
-import { AddClientDialog, ClientDataTable as DataTable } from 'src/components/admin';
-import { ConfirmClientDeletion } from 'src/components/admin/confirm-client-deletion/confirm-client-deletion';
-
-const tabs = [
-  {
-    label: 'Active Clients',
-    value: 'active',
-  },
-];
+import { AddClientDialog, ConfirmDeletion } from 'src/components/admin';
 
 export const ClientManagement = () => {
   const theme = useTheme();
 
-  const { getAllClients, isLoading } = useAdminManagementStore();
+  const { clients, isLoading, getAllClients } = useAdminManagementStore();
 
+  const [loading, setLoading] = useState(false);
+  const [selectedClient, setSelectedClient] = useState({});
+  const [showAlert, setShowAlert] = useState('');
   const [searchQuery, setSearchQuery] = useState({
     value: '',
     regex: /(?:)/i,
   });
-  const [open, setOpen] = useState(false);
-  const [selectedClient, setSelectedClient] = useState({});
+
+  const rows = useMemo(
+    () =>
+      clients
+        ?.filter(
+          (task) =>
+            searchQuery.regex &&
+            (searchQuery.regex.test(task.firstName) ||
+              searchQuery.regex.test(task.lastName) ||
+              searchQuery.regex.test(task.email) ||
+              searchQuery.regex.test(task.phoneNumber))
+        )
+        .map((row) => ({
+          phoneNumber: row.phoneNumber,
+          firstName: row.firstName,
+          lastName: row.lastName,
+          email: row.email,
+          address: isEmpty(row?.address) ? '' : `${row?.address?.street}, ${row?.address?.city}`,
+        })),
+    [searchQuery, clients]
+  );
+
+  const onClose = () => {
+    setSelectedClient({});
+  };
+
+  const onDelete = async () => {
+    setLoading(true);
+    try {
+      await apiDisassociateClient({ email: selectedClient.email });
+      await apiDeleteUser({ email: selectedClient.email });
+      getAllClients();
+    } catch (err) {
+      setShowAlert(err.response.data.message);
+    }
+    setLoading(false);
+    onClose();
+  };
 
   const handleSearch = (query) => {
     if (query.trim() !== '') {
@@ -54,10 +89,9 @@ export const ClientManagement = () => {
 
   const handleDeleteClient = async (row) => {
     setSelectedClient(row);
-    setOpen(true);
   };
 
-  const activeClientColums = [
+  const columns = [
     { label: 'Phone Number', key: 'phoneNumber' },
     { label: 'First Name', key: 'firstName', align: 'right' },
     { label: 'Last Name', key: 'lastName', align: 'right' },
@@ -68,12 +102,20 @@ export const ClientManagement = () => {
       key: 'action',
       align: 'right',
       component: (row) => (
-        <IconButton onClick={() => handleDeleteClient(row)}>
-          <Iconify icon="mdi:trash" />
-        </IconButton>
+        <Tooltip title="Delete Client">
+          <IconButton onClick={() => handleDeleteClient(row)}>
+            <Iconify icon="mdi:trash" />
+          </IconButton>
+        </Tooltip>
       ),
     },
   ];
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowAlert('');
+    }, 3000);
+  }, [showAlert]);
 
   useEffect(() => {
     getAllClients();
@@ -128,27 +170,35 @@ export const ClientManagement = () => {
           />
         </Box>
 
-        <Stack direction="row" justifyContent="space-between" alignItems="center" mx={{ lg: 8 }}>
-          <ButtonGroup variant="outlined" sx={{ mt: 2 }}>
-            {tabs.map((t) => (
-              <Button
-                key={t.value}
-                // onClick={() => handleTabToggle(t.value)}
-                // variant={tab === t.value ? 'contained' : 'outlined'}
-              >
-                {t.label}
-              </Button>
-            ))}
-          </ButtonGroup>
+        <Stack direction="row" justifyContent="flex-end" alignItems="center" mx={{ lg: 8 }}>
           <AddClientDialog />
         </Stack>
 
-        <DataTable searchQuery={searchQuery} columns={activeClientColums} />
+        <Alert
+          severity="error"
+          sx={{
+            fontFamily: 'Wix Madefor Display',
+            fontWeight: 600,
+            display: showAlert ? 'flex' : 'none',
+            mx: { lg: 8 },
+            mt: 1,
+          }}
+        >
+          {showAlert}
+        </Alert>
+
+        <Box sx={{ mx: { lg: 0 } }}>
+          <DataTable columns={columns} rows={rows} />
+        </Box>
       </Container>
 
-      {open && (
-        <ConfirmClientDeletion open={open} setOpen={setOpen} selectedClient={selectedClient} />
-      )}
+      <ConfirmDeletion
+        open={!isEmpty(selectedClient)}
+        onClose={() => onClose()}
+        selectedEntity={selectedClient}
+        onDelete={onDelete}
+        isLoading={loading}
+      />
     </Box>
   );
 };

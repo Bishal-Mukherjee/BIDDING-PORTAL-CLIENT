@@ -379,7 +379,7 @@ export const TaskEditView = () => {
                           <AttachmentCard
                             index={index + 1}
                             label="Image"
-                            attachment={file.url}
+                            attachment={file}
                             onDelete={() => onDeleteUploadedFiles(index)}
                           />
                         ))}

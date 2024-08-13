@@ -1,14 +1,18 @@
+import { isEmpty } from 'lodash';
 import { Helmet } from 'react-helmet-async';
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 
 import { alpha, useTheme } from '@mui/material/styles';
 import {
   Box,
   Stack,
   Paper,
+  Alert,
+  Tooltip,
   Backdrop,
   Container,
   Typography,
+  IconButton,
   OutlinedInput,
   InputAdornment,
   CircularProgress,
@@ -16,19 +20,37 @@ import {
 
 import { bgGradient } from 'src/theme/css';
 import { useAdminManagementStore } from 'src/stores/admin';
+import { apiDisassociateCompany } from 'src/services/admin';
+import { apiDeleteUser } from 'src/firebase/firestore/admin';
 
+import { DataTable } from 'src/components/commons';
 import Iconify from 'src/components/iconify/iconify';
-import { CompanyDataTable as DataTable } from 'src/components/admin';
+import { ConfirmDeletion } from 'src/components/admin';
 
 export const CompanyManagement = () => {
   const theme = useTheme();
 
-  const { getAllCompanies, isLoading } = useAdminManagementStore();
+  const { companies, isLoading, getAllCompanies } = useAdminManagementStore();
 
+  const [loading, setLoading] = useState(false);
+  const [selectedCompany, setSelectedCompany] = useState({});
+  const [showAlert, setShowAlert] = useState('');
   const [searchQuery, setSearchQuery] = useState({
     value: '',
     regex: /(?:)/i,
   });
+
+  const rows = useMemo(
+    () =>
+      companies?.filter(
+        (task) =>
+          searchQuery.regex &&
+          (searchQuery.regex.test(task.firstName) ||
+            searchQuery.regex.test(task.phoneNumber) ||
+            searchQuery.regex.test(task.email))
+      ),
+    [searchQuery, companies]
+  );
 
   const handleSearch = (query) => {
     if (query.trim() !== '') {
@@ -38,6 +60,51 @@ export const CompanyManagement = () => {
       setSearchQuery({ value: '', regex: /(?:)/i });
     }
   };
+
+  const handleDeleteCompany = async (row) => {
+    setSelectedCompany(row);
+  };
+
+  const onClose = () => {
+    setSelectedCompany({});
+  };
+
+  const onDelete = async () => {
+    setLoading(true);
+    try {
+      await apiDisassociateCompany({ email: selectedCompany.email });
+      await apiDeleteUser({ email: selectedCompany.email });
+      getAllCompanies();
+    } catch (err) {
+      setShowAlert(err.response.data.message);
+    }
+    setLoading(false);
+    onClose();
+  };
+
+  const columns = [
+    { label: 'Name', key: 'firstName', align: 'left' },
+    { label: 'Phone Number', key: 'phoneNumber', align: 'left' },
+    { label: 'Email', key: 'email', align: 'left' },
+    {
+      label: 'Action',
+      key: 'action',
+      align: 'right',
+      component: (row) => (
+        <Tooltip title="Delete Company">
+          <IconButton onClick={() => handleDeleteCompany(row)}>
+            <Iconify icon="mdi:trash" />
+          </IconButton>
+        </Tooltip>
+      ),
+    },
+  ];
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowAlert('');
+    }, 3000);
+  }, [showAlert]);
 
   useEffect(() => {
     getAllCompanies();
@@ -54,7 +121,7 @@ export const CompanyManagement = () => {
       }}
     >
       <Helmet>
-        <title> Admin | Client Management </title>
+        <title> Admin | Partner Management </title>
       </Helmet>
 
       <Backdrop sx={{ color: '#fff', zIndex: (t) => t.zIndex.drawer + 1 }} open={isLoading}>
@@ -70,7 +137,7 @@ export const CompanyManagement = () => {
         justifyContent="center"
       >
         <Typography variant="h3" fontFamily="Poppins">
-          Company Management
+          Partner Management
         </Typography>
         <Typography variant="body2" textAlign="center" fontFamily="Wix Madefor Display">
           Manage company details, manage your business.
@@ -87,13 +154,35 @@ export const CompanyManagement = () => {
                 <Iconify icon="material-symbols:search" />
               </InputAdornment>
             }
-            placeholder="Search companies..."
+            placeholder="Search partners..."
             fullWidth
           />
         </Box>
 
-        <DataTable searchQuery={searchQuery} />
+        <Alert
+          severity="error"
+          sx={{
+            fontFamily: 'Wix Madefor Display',
+            fontWeight: 600,
+            display: showAlert ? 'flex' : 'none',
+            mx: { lg: 8 },
+          }}
+        >
+          {showAlert}
+        </Alert>
+
+        <Box sx={{ mx: { lg: 0 } }}>
+          <DataTable columns={columns} rows={rows} />
+        </Box>
       </Container>
+
+      <ConfirmDeletion
+        open={!isEmpty(selectedCompany)}
+        onClose={() => onClose()}
+        selectedEntity={selectedCompany}
+        onDelete={onDelete}
+        isLoading={loading}
+      />
     </Box>
   );
 };

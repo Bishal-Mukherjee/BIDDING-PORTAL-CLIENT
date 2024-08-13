@@ -1,18 +1,58 @@
 import dayjs from 'dayjs';
-import React from 'react';
 import { isEmpty } from 'lodash';
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-import { Box, Grid, Stack, Divider, Typography } from '@mui/material';
+import { Box, Grid, Stack, Divider, MenuItem, TextField, Typography } from '@mui/material';
 
 import { useTaskStore } from 'src/stores/admin';
+import { apiUnassignTask, apiUpdateTaskStatus } from 'src/services/admin';
 
-import { MarkAsCompleted } from 'src/components/admin';
+import { UpdateTaskStatus } from 'src/components/admin';
 import { AttachmentList, AttachmentCard } from 'src/components/commons';
 
+const Status = [
+  { label: 'Open', value: 'created' },
+  { label: 'Completed', value: 'completed' },
+];
+
 export const TaskDetails = () => {
+  const params = useParams();
+
   const { selectedTask } = useTaskStore();
-  const showMarkAsCompleted =
-    selectedTask?.status === 'assigned' || selectedTask?.status === 'in-progress';
+  const isAssigned = selectedTask?.status === 'assigned';
+
+  const [status, setStatus] = useState('');
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const handleChange = (value) => {
+    setStatus(value);
+  };
+
+  const onConfirmation = async (tempStatus) => {
+    if (tempStatus === 'completed') {
+      setIsLoading(true);
+      try {
+        await apiUpdateTaskStatus({ id: params?.taskId, status: 'completed' });
+        setIsLoading(false);
+        window.location.reload();
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false);
+      }
+    } else if (tempStatus === 'created') {
+      setIsLoading(true);
+      try {
+        await apiUnassignTask({ id: params?.taskId });
+        setIsLoading(false);
+        window.location.reload();
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false);
+      }
+    }
+  };
+
   return (
     <>
       <Grid container spacing={2} justifyContent="center" flexWrap="wrap" mt={1} px={2}>
@@ -58,7 +98,34 @@ export const TaskDetails = () => {
                   )}
                 </Stack>
 
-                {showMarkAsCompleted && <MarkAsCompleted />}
+                <Stack justifyContent="space-between">
+                  {isAssigned && (
+                    <TextField
+                      select
+                      value={status}
+                      size="small"
+                      sx={{ width: 240, mt: 2 }}
+                      label="Status"
+                      onChange={(e) => handleChange(e.target.value)}
+                    >
+                      {Status.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  )}
+
+                  {status && (
+                    <UpdateTaskStatus
+                      open={status}
+                      onClose={() => setStatus('')}
+                      requiredStatus={status}
+                      onConfirmation={() => onConfirmation(status)}
+                      isLoading={isLoading}
+                    />
+                  )}
+                </Stack>
               </Stack>
             </Stack>
           </Stack>

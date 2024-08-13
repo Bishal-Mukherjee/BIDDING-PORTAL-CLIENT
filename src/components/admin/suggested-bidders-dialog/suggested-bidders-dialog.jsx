@@ -23,7 +23,7 @@ export const SuggestedBiddersDialog = ({ open = true, onClose, setSelectedBidder
   const handleGetCompanies = async () => {
     const response = await apiGetUsersByDesignation('COMPANY');
     const c = response.map((company) => ({
-      label: `${company.firstName} ${company.lastName}`,
+      label: company.firstName,
       value: company.email,
     }));
     setCompanies(c);

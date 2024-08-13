@@ -29,7 +29,7 @@ const navLinks = [
   },
   {
     id: 2,
-    label: 'Companies',
+    label: 'Partners',
     pathname: '/admin/companies',
   },
   //   {

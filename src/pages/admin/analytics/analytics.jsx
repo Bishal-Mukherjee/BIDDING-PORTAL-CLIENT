@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
@@ -129,8 +130,8 @@ export function Analytics() {
         <Grid container spacing={2} px={{ lg: 8, sm: 0, xs: 0 }} height={480} mt={0}>
           <Grid item xs={2.6} sx={{ display: { lg: 'block', sm: 'none', xs: 'none' } }}>
             <Item sx={{ height: '100%', pt: 2 }}>
-              <Typography textAlign="left" variant="h6" fontWeight={500}>
-                Recent tickets
+              <Typography textAlign="left" variant="h6" fontWeight={400}>
+                Recent tasks
               </Typography>
               <Stack
                 width="100%"
@@ -138,41 +139,48 @@ export function Analytics() {
                 direction="column"
                 alignItems="flex-start"
                 spacing={1}
-                mt={2}
+                mt={1}
               >
-                {recentTasks.map((task) => (
-                  <Stack
-                    key={`recent-task-${task.id}`}
-                    component={Paper}
-                    elevation={0}
-                    width="100%"
-                    height={32}
-                    overflow="hidden"
-                    justifyItems="space-between"
-                    direction="row"
-                    onClick={() => handleViewClick(task.id)}
-                    m={1}
-                    pl={1}
-                    py={1}
-                    borderRadius={0}
-                    bgcolor="#f8f9fa"
-                    sx={{
-                      cursor: 'pointer',
-                      ':hover': {
-                        transform: 'scale(1.01)',
-                      },
-                    }}
-                  >
-                    <Typography
-                      key={task.id}
-                      textAlign="left"
-                      fontSize={14}
-                      sx={{ cursor: 'pointer' }}
-                    >
-                      {task.title}
-                    </Typography>
-                  </Stack>
-                ))}
+                {isEmpty(recentTasks) && (
+                  <Typography variant="body2">No recent tasks found</Typography>
+                )}
+                {!isEmpty(recentTasks) && (
+                  <>
+                    {recentTasks.map((task) => (
+                      <Stack
+                        key={`recent-task-${task.id}`}
+                        component={Paper}
+                        elevation={0}
+                        width="100%"
+                        height={32}
+                        overflow="hidden"
+                        justifyItems="space-between"
+                        direction="row"
+                        onClick={() => handleViewClick(task.id)}
+                        m={1}
+                        pl={1}
+                        py={1}
+                        borderRadius={0}
+                        bgcolor="#f8f9fa"
+                        sx={{
+                          cursor: 'pointer',
+                          ':hover': {
+                            transform: 'scale(1.01)',
+                          },
+                        }}
+                      >
+                        <Typography
+                          key={task.id}
+                          textAlign="left"
+                          fontSize={14}
+                          sx={{ cursor: 'pointer' }}
+                        >
+                          {task.title}
+                        </Typography>
+                      </Stack>
+                    ))}
+                  </>
+                )}
               </Stack>
             </Item>
           </Grid>
