@@ -107,21 +107,9 @@ export const apiUpdateTaskStatus = async ({ id, status }) => {
   }
 };
 
-export const apiPostCreateClient = async ({
-  email,
-  password,
-  firstName,
-  lastName,
-  phoneNumber,
-}) => {
+export const apiUnassignTask = async ({ id }) => {
   try {
-    const response = await apiInstance.post('/admin/createClient', {
-      email,
-      password,
-      firstName,
-      lastName,
-      phoneNumber,
-    });
+    const response = await apiInstance.put(`/admin/unassignTask/${id}`);
     return response.data;
   } catch (err) {
     console.log(err.message);
@@ -139,39 +127,25 @@ export const apiGetAllInterestedClients = async () => {
   }
 };
 
-export const apiDeleteUserRelatedTasks = async ({ email }) => {
+export const apiDisassociateClient = async ({ email }) => {
   try {
-    const response = await apiInstance.delete(`/admin/clearUserRelatedTasks/${email}`);
+    const response = await apiInstance.delete(`/admin/disassociateClient/${email}`);
     return response.data;
   } catch (err) {
     console.log(err.message);
-    return null;
+    throw err;
   }
 };
 
-export const apiDeleteCompanyRelatedDetails= async ({ email }) => {
+export const apiDisassociateCompany = async ({ email }) => {
   try {
-	const response = await apiInstance.delete(`/admin/clearCompanyRelatedDetails/${email}`);
-	return response.data;
+    const response = await apiInstance.delete(`/admin/disassociateCompany/${email}`);
+    return response.data;
   } catch (err) {
-	console.log(err.message);
-	return null;
+    console.log(err.message);
+    throw err;
   }
-}
-
-// export const apiPostCreateIssue = async ({ title, description, images }) => {
-//   try {
-//     const response = await apiInstance.post('/client/createTask', {
-//       title,
-//       description,
-//       images,
-//     });
-//     return response.data;
-//   } catch (err) {
-//     console.log(err.message);
-//     return null;
-//   }
-// };
+};
 
 // export const apiDeleteTask = async ({ id }) => {
 //   try {

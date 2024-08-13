@@ -7,6 +7,7 @@ import {
   Box,
   Stack,
   Paper,
+  Alert,
   Tooltip,
   Backdrop,
   Container,
@@ -19,8 +20,8 @@ import {
 
 import { bgGradient } from 'src/theme/css';
 import { useAdminManagementStore } from 'src/stores/admin';
+import { apiDisassociateCompany } from 'src/services/admin';
 import { apiDeleteUser } from 'src/firebase/firestore/admin';
-import { apiDeleteCompanyRelatedDetails } from 'src/services/admin';
 
 import { DataTable } from 'src/components/commons';
 import Iconify from 'src/components/iconify/iconify';
@@ -33,6 +34,7 @@ export const CompanyManagement = () => {
 
   const [loading, setLoading] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState({});
+  const [showAlert, setShowAlert] = useState('');
   const [searchQuery, setSearchQuery] = useState({
     value: '',
     regex: /(?:)/i,
@@ -69,8 +71,13 @@ export const CompanyManagement = () => {
 
   const onDelete = async () => {
     setLoading(true);
-    await apiDeleteUser({ email: selectedCompany.email });
-    await apiDeleteCompanyRelatedDetails({ email: selectedCompany.email });
+    try {
+      await apiDisassociateCompany({ email: selectedCompany.email });
+      await apiDeleteUser({ email: selectedCompany.email });
+      getAllCompanies();
+    } catch (err) {
+      setShowAlert(err.response.data.message);
+    }
     setLoading(false);
     onClose();
   };
@@ -92,6 +99,12 @@ export const CompanyManagement = () => {
       ),
     },
   ];
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowAlert('');
+    }, 3000);
+  }, [showAlert]);
 
   useEffect(() => {
     getAllCompanies();
@@ -146,7 +159,19 @@ export const CompanyManagement = () => {
           />
         </Box>
 
-        <Box sx={{ mx: { lg: 0 }, mt: 4, mb: 2 }}>
+        <Alert
+          severity="error"
+          sx={{
+            fontFamily: 'Wix Madefor Display',
+            fontWeight: 600,
+            display: showAlert ? 'flex' : 'none',
+            mx: { lg: 8 },
+          }}
+        >
+          {showAlert}
+        </Alert>
+
+        <Box sx={{ mx: { lg: 0 } }}>
           <DataTable columns={columns} rows={rows} />
         </Box>
       </Container>

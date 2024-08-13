@@ -5,5 +5,5 @@ export * from './add-client-dialog/add-client-dialog';
 export * from './create-task/create-task';
 export * from './suggested-bidders-dialog/suggested-bidders-dialog';
 export * from './bids-detailed-dialog/bids-detailed-dialog';
-export * from './mark-as-completed/mark-as-completed';
+export * from './update-task-status/update-task-status';
 export * from './confirm-deletion/confirm-deletion';

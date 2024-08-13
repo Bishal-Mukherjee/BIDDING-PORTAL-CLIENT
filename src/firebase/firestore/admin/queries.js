@@ -27,14 +27,15 @@ export const apiGetUsersByDesignation = async (designation = 'CLIENT') => {
   }
 };
 
-export const apiAddClientDoc = async ({ email, firstName, lastName, phoneNumber }) => {
+export const apiAddClientDoc = async ({ email, firstName, lastName, phoneNumber, address }) => {
   try {
-    await setDoc(doc(firestore, 'users', email), {
+    return await setDoc(doc(firestore, 'users', email), {
       firstName,
       lastName,
       phoneNumber,
       email,
       designation: 'CLIENT',
+      address,
     });
   } catch (error) {
     console.error('Error adding document: ', error);

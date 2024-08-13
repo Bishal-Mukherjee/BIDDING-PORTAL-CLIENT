@@ -7,6 +7,7 @@ import {
   Box,
   Stack,
   Paper,
+  Alert,
   Tooltip,
   Backdrop,
   Container,
@@ -19,8 +20,8 @@ import {
 
 import { bgGradient } from 'src/theme/css';
 import { useAdminManagementStore } from 'src/stores/admin';
+import { apiDisassociateClient } from 'src/services/admin';
 import { apiDeleteUser } from 'src/firebase/firestore/admin';
-import { apiDeleteUserRelatedTasks } from 'src/services/admin';
 
 import { DataTable } from 'src/components/commons';
 import Iconify from 'src/components/iconify/iconify';
@@ -33,6 +34,7 @@ export const ClientManagement = () => {
 
   const [loading, setLoading] = useState(false);
   const [selectedClient, setSelectedClient] = useState({});
+  const [showAlert, setShowAlert] = useState('');
   const [searchQuery, setSearchQuery] = useState({
     value: '',
     regex: /(?:)/i,
@@ -65,8 +67,13 @@ export const ClientManagement = () => {
 
   const onDelete = async () => {
     setLoading(true);
-    await apiDeleteUser({ email: selectedClient.email });
-    await apiDeleteUserRelatedTasks({ email: selectedClient.email });
+    try {
+      await apiDisassociateClient({ email: selectedClient.email });
+      await apiDeleteUser({ email: selectedClient.email });
+      getAllClients();
+    } catch (err) {
+      setShowAlert(err.response.data.message);
+    }
     setLoading(false);
     onClose();
   };
@@ -103,6 +110,12 @@ export const ClientManagement = () => {
       ),
     },
   ];
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowAlert('');
+    }, 3000);
+  }, [showAlert]);
 
   useEffect(() => {
     getAllClients();
@@ -161,7 +174,20 @@ export const ClientManagement = () => {
           <AddClientDialog />
         </Stack>
 
-        <Box sx={{ mx: { lg: 0 }, mt: 4, mb: 2 }}>
+        <Alert
+          severity="error"
+          sx={{
+            fontFamily: 'Wix Madefor Display',
+            fontWeight: 600,
+            display: showAlert ? 'flex' : 'none',
+            mx: { lg: 8 },
+            mt: 1,
+          }}
+        >
+          {showAlert}
+        </Alert>
+
+        <Box sx={{ mx: { lg: 0 } }}>
           <DataTable columns={columns} rows={rows} />
         </Box>
       </Container>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 
 import { alpha } from '@mui/material/styles';
-import { Box, Card, Grid, styled, Typography } from '@mui/material';
+import { Box, Card, Grid, Stack, styled, Typography } from '@mui/material';
 
 import { useTaskStore } from 'src/stores/company';
 
@@ -46,11 +46,14 @@ export const SearchableTaskList = ({ searchQuery, appliedStatusFilter }) => {
       </Box>
 
       {isEmpty(filteredData) && (
-        <Box sx={{ width: '100%' }} mt={4}>
-          <Typography variant="body1" textAlign="center">
-            No tickets found
+        <Stack sx={{ width: '100%' }} mt={4}>
+          <Typography variant="body2" textAlign="center">
+            No tasks of current status found.
           </Typography>
-        </Box>
+          <Typography variant="body2" textAlign="center">
+            Try changing the status filter.
+          </Typography>
+        </Stack>
       )}
 
       <Grid container spacing={2} flexWrap="wrap" sx={{ px: { lg: 8 }, mt: 0 }}>
