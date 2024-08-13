@@ -7,6 +7,8 @@ import { PhoneNumberUtil } from 'google-libphonenumber';
 import { LoadingButton } from '@mui/lab';
 import { Stack, Alert, Button, TextField } from '@mui/material';
 
+import { apiGetClient } from 'src/firebase/firestore/admin';
+
 const validationSchema = yup.object().shape({
   firstName: yup.string().required('*required'),
   lastName: yup.string(),
@@ -41,6 +43,11 @@ export const PersonalDetails = ({ setTab, setOpen, userDetails, setUserDetails }
     },
     onSubmit: async (values) => {
       try {
+        const isExistingClient = await apiGetClient({ phoneNumber: values.phoneNumber });
+        if (isExistingClient) {
+          setShowAlert({ variant: 'error', content: 'Client already exists' });
+          return;
+        }
         setUserDetails((prevDetails) => ({ ...prevDetails, ...values }));
         setTab(1);
       } catch (err) {

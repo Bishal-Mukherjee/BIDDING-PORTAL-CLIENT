@@ -22,6 +22,7 @@ import {
 import { bgGradient } from 'src/theme/css';
 import { auth } from 'src/firebase/config';
 import Logo from 'src/assets/images/favicon.png';
+import { apiPostSendEmail } from 'src/services/admin';
 import HvacLogo from 'src/assets/images/hvac-logo.png';
 import {
   doDeleteUser,
@@ -110,6 +111,11 @@ export function SignUpView({ setNavigationTab }) {
           );
 
           if (r) {
+            await apiPostSendEmail({
+              email: formik.values.email,
+              action: 'company-sign-up',
+              context: { name: formik.values.companyName },
+            });
             window.location.reload();
           }
         }

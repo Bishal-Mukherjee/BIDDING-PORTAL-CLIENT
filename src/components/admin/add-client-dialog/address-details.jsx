@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { LoadingButton } from '@mui/lab';
 import { Stack, Button, TextField } from '@mui/material';
 
+import { apiPostSendEmail } from 'src/services/admin';
 import { apiAddClientDoc } from 'src/firebase/firestore/admin';
 
 const validationSchema = yup.object().shape({
@@ -33,6 +34,11 @@ export const AddressDetails = ({ userDetails, setUserDetails, setTab, setShowAle
       try {
         setIsLoading(true);
         await apiAddClientDoc({ ...userDetails, address: values });
+        await apiPostSendEmail({
+          email: userDetails.email,
+          action: 'client-sign-up',
+          context: { name: `${userDetails?.firstName} ${userDetails?.lastName}` },
+        });
         setShowAlert({ variant: 'success', content: 'User added successfully!' });
       } catch (err) {
         setShowAlert({ variant: 'error', content: 'Something went wrong!' });
