@@ -25,7 +25,7 @@ export const TaskWrapper = () => {
           Bid Overview
         </Typography>
         <Typography variant="body2" textAlign="center" fontFamily="Wix Madefor Display">
-          Track and manage ticket details.
+          Track and manage task details.
         </Typography>
       </Stack>
       {mode === 'edit' ? <TaskEditView /> : <TaskDetailedView />}

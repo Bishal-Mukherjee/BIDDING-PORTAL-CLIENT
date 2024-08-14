@@ -101,6 +101,11 @@ export const CreateAnIssue = () => {
     },
   });
 
+  const onSelectionClear = () => {
+    setSelectedClient({});
+    formik.setFieldValue('address', {});
+  };
+
   const clientOptions = useMemo(
     () =>
       clients.map((client) => ({
@@ -193,8 +198,7 @@ export const CreateAnIssue = () => {
       router.push('/admin/clients?add=true');
       return;
     }
-    setSelectedClient({});
-    formik.setFieldValue('address', {});
+    onSelectionClear();
     if (!isEmpty(params)) {
       const client = await apiGetClient({ phoneNumber: params.value });
       setSelectedClient({ ...client });
@@ -239,6 +243,9 @@ export const CreateAnIssue = () => {
               <Autocomplete
                 options={clientOptions}
                 onChange={(_, value) => handleClientSelection(value)}
+                onInputChange={(_, value) => {
+                  if (!value) onSelectionClear();
+                }}
                 renderInput={(params) => <TextField {...params} label="Select Client" />}
                 ListboxProps={{
                   sx: {
@@ -323,8 +330,14 @@ export const CreateAnIssue = () => {
                     <>
                       {uploadedFiles.length > 0 ? (
                         <Box sx={{ display: 'flex' }}>
-                          <Iconify icon="tabler:file-filled" width={20} />
-                          <Typography>{uploadedFiles.length} files</Typography>
+                          {showLoader ? (
+                            <CircularProgress size={15} sx={{ color: 'black' }} />
+                          ) : (
+                            <>
+                              <Iconify icon="tabler:file-filled" width={20} />
+                              <Typography>{uploadedFiles.length} files</Typography>
+                            </>
+                          )}
                         </Box>
                       ) : (
                         <>
@@ -352,13 +365,14 @@ export const CreateAnIssue = () => {
               </Box>
 
               {!isEmpty(uploadedFiles) && (
-                <Stack direction="row" flexWrap="wrap" gap={1} maxWidth={420}>
+                <Stack direction="row" flexWrap="wrap" gap={1} maxWidth={432}>
                   {uploadedFiles?.map((file, index) => (
                     <AttachmentCard
                       attachment={file}
                       index={index + 1}
                       onDelete={() => handleDeleteUploadedFile(index)}
                       label="Image"
+                      width={210}
                     />
                   ))}
                 </Stack>
@@ -387,12 +401,13 @@ export const CreateAnIssue = () => {
               />
 
               {!isEmpty(attachments) && (
-                <Stack direction="row" flexWrap="wrap" gap={1} maxWidth={420}>
+                <Stack direction="row" flexWrap="wrap" gap={1} maxWidth={432}>
                   {attachments?.map((attachment, index) => (
                     <AttachmentCard
                       attachment={attachment}
                       index={index + 1}
                       onDelete={() => handleDeleteAttachment(index)}
+                      width={210}
                     />
                   ))}
                 </Stack>

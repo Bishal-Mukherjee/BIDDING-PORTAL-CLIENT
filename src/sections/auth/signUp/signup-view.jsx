@@ -3,7 +3,6 @@ import * as yup from 'yup';
 import { useState } from 'react';
 import { useFormik } from 'formik';
 import { Helmet } from 'react-helmet-async';
-import { RecaptchaVerifier } from 'firebase/auth';
 import { PhoneNumberUtil } from 'google-libphonenumber';
 
 import { LoadingButton } from '@mui/lab';
@@ -20,18 +19,11 @@ import {
 } from '@mui/material';
 
 import { bgGradient } from 'src/theme/css';
-import { auth } from 'src/firebase/config';
 import Logo from 'src/assets/images/favicon.png';
-import { apiPostSendEmail } from 'src/services/admin';
 import HvacLogo from 'src/assets/images/hvac-logo.png';
-import {
-  doDeleteUser,
-  doSignInWithPhoneNumber,
-  doCreateUserWithEmailAndPassword,
-} from 'src/firebase/auth/auth';
+import { doCreateUserWithEmailAndPassword } from 'src/firebase/auth/auth';
 
 import Iconify from 'src/components/iconify';
-import { OtpInput } from 'src/components/commons';
 
 // ----------------------------------------------------------------------
 
@@ -66,8 +58,6 @@ export function SignUpView({ setNavigationTab }) {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showAlert, setShowAlert] = useState('');
-  const [openOTPInput, setOpenOTPInput] = useState(false);
-  const [otpVerficationLodaing, setOtpVerficationLodaing] = useState(false);
 
   const formik = useFormik({
     validationSchema,
@@ -80,54 +70,19 @@ export function SignUpView({ setNavigationTab }) {
     },
     onSubmit: async (values) => {
       try {
-        const recaptcha = new RecaptchaVerifier(auth, 'recaptcha', {});
-        const response = await doSignInWithPhoneNumber(`+1${values.phoneNumber}`, recaptcha);
-        setOpenOTPInput(true);
-        if (response) {
-          window.otpConfirmationResponse = response;
-        }
+        await doCreateUserWithEmailAndPassword(
+          values.email,
+          values.password,
+          values.companyName,
+          `+1${values.phoneNumber}`,
+          values.companyWebsite
+        );
       } catch (err) {
         console.log(err.message);
         setShowAlert('Signup Failed! Please try again');
       }
     },
   });
-
-  const handleOTPSubmit = async (tempOTP) => {
-    setOtpVerficationLodaing(true);
-    try {
-      if (tempOTP) {
-        const response = await window.otpConfirmationResponse.confirm(tempOTP);
-        if (response) {
-          // deleting user, created by OTP confirmation
-          await doDeleteUser(response.user);
-
-          const r = await doCreateUserWithEmailAndPassword(
-            formik.values.email,
-            formik.values.password,
-            formik.values.companyName,
-            `+1${formik.values.phoneNumber}`,
-            formik.values.companyWebsite
-          );
-
-          if (r) {
-            await apiPostSendEmail({
-              email: formik.values.email,
-              action: 'company-sign-up',
-              context: { name: formik.values.companyName },
-            });
-            window.location.reload();
-          }
-        }
-      }
-    } catch (err) {
-      console.log(err);
-      setShowAlert('Signup Failed! Please try again');
-    } finally {
-      setOtpVerficationLodaing(false);
-      setOpenOTPInput(false);
-    }
-  };
 
   return (
     <Box
@@ -250,15 +205,6 @@ export function SignUpView({ setNavigationTab }) {
               Sign Up
             </LoadingButton>
           </form>
-
-          <OtpInput
-            open={openOTPInput}
-            phoneNumber={`+1${formik.values.phoneNumber}`}
-            isLoading={otpVerficationLodaing}
-            onSubmit={handleOTPSubmit}
-          />
-
-          <div id="recaptcha" style={{ marginTop: 8 }} />
 
           <Typography mt={2} textAlign="center">
             Already have an account?{' '}

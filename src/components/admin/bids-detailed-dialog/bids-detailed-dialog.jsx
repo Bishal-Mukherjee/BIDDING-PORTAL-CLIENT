@@ -18,7 +18,7 @@ import {
 import { trimText } from 'src/utils';
 
 import Iconify from 'src/components/iconify';
-import { BidStatusChip } from 'src/components/commons';
+import { StatusChip } from 'src/components/commons';
 
 import { BidConfirmationDialog } from '../bid-confirmation-dialog/bid-confirmation-dialog';
 
@@ -57,7 +57,7 @@ const BidCard = ({ bid }) => (
       {bid?.currency}&nbsp;&nbsp;{bid?.amount}
     </Typography>
     {bid?.status !== 'pending' ? (
-      <BidStatusChip variant={bid?.status} />
+      <StatusChip variant={bid?.status} />
     ) : (
       <BidConfirmationDialog selectedBid={bid} />
     )}

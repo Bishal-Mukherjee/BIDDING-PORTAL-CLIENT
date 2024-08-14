@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 
 import { alpha } from '@mui/material/styles';
-import { Box, Grid, Card, Stack, styled, Typography } from '@mui/material';
+import { Grid, Card, Stack, styled, Typography } from '@mui/material';
 
 import { useTaskStore } from 'src/stores/admin';
 
@@ -33,13 +33,11 @@ export const SearchableTaskList = ({ searchQuery }) => {
 
   return (
     <>
-      <Box>
-        {!isEmpty(searchQuery.value) && (
-          <Typography variant="body2" pb={1}>
-            {filteredData.length} results for &quot;{searchQuery.value}&quot;
-          </Typography>
-        )}
-      </Box>
+      {!isEmpty(searchQuery.value) && (
+        <Typography variant="body2" pb={1}>
+          {filteredData.length} results for &quot;{searchQuery.value}&quot;
+        </Typography>
+      )}
 
       {isEmpty(filteredData) && (
         <Stack sx={{ width: '100%' }} mt={4}>
@@ -52,25 +50,40 @@ export const SearchableTaskList = ({ searchQuery }) => {
         </Stack>
       )}
 
-      <Grid container spacing={2} flexWrap="wrap">
-        {filteredData.map((task) => (
-          <Grid key={`task-${task.id}`} item md={4} sm={12} xs={12} minHeight={250} maxHeight={400}>
-            <Item elevation={2} py={4} px={4} sx={{ height: '100%', ':hover': { scale: '1.01' } }}>
-              <TaskCard
-                id={task.id}
-                name={task.name}
-                title={task.title}
-                description={task.description}
-                status={task.status}
-                previewImage={task.previewImage}
-                createdAt={task.createdAt}
-                handleTaskSelection={() => setSelectedTask(task.id)}
-                isActive={task.isActive}
-              />
-            </Item>
-          </Grid>
-        ))}
-      </Grid>
+      {!isEmpty(filteredData) && (
+        <Grid container spacing={2} flexWrap="wrap">
+          {filteredData.map((task) => (
+            <Grid
+              key={`task-${task.id}`}
+              item
+              md={4}
+              sm={12}
+              xs={12}
+              minHeight={250}
+              maxHeight={400}
+            >
+              <Item
+                elevation={2}
+                py={4}
+                px={4}
+                sx={{ height: '100%', ':hover': { scale: '1.01' } }}
+              >
+                <TaskCard
+                  id={task.id}
+                  name={task.name}
+                  title={task.title}
+                  description={task.description}
+                  status={task.status}
+                  previewImage={task.previewImage}
+                  createdAt={task.createdAt}
+                  handleTaskSelection={() => setSelectedTask(task.id)}
+                  isActive={task.isActive}
+                />
+              </Item>
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </>
   );
 };

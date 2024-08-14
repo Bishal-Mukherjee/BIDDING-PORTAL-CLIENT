@@ -20,6 +20,7 @@ import {
 
 import { storage } from 'src/firebase/config';
 import { useAuth } from 'src/context/authContext';
+import { apiPostSendEmail } from 'src/services/admin';
 import { apiPostCompanyMetaInfo } from 'src/firebase/firestore/company';
 
 import Iconify from 'src/components/iconify';
@@ -48,7 +49,12 @@ export const MetaInfoDialog = () => {
     onSubmit: async (values) => {
       if (!isEmpty(uploadedFiles)) {
         setIsLoading(true);
-        apiPostCompanyMetaInfo({ email: user.email, logo: uploadedFiles[0], ...values });
+        await apiPostCompanyMetaInfo({ email: user.email, logo: uploadedFiles[0], ...values });
+        await apiPostSendEmail({
+          email: user.email,
+          action: 'company-sign-up',
+          context: { name: user.firstName },
+        });
         setOpen(false);
         setIsLoading(false);
       } else {

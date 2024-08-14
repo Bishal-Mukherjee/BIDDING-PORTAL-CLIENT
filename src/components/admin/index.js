@@ -7,3 +7,4 @@ export * from './suggested-bidders-dialog/suggested-bidders-dialog';
 export * from './bids-detailed-dialog/bids-detailed-dialog';
 export * from './update-task-status/update-task-status';
 export * from './confirm-deletion/confirm-deletion';
+export * from './recent-task-card/recent-task-card';

@@ -11,6 +11,7 @@ import { useRouter } from 'src/routes/hooks';
 import { useAuth } from 'src/context/authContext';
 
 import { MetaInfoDialog } from 'src/components/company';
+import { EmailUnverifiedDialog } from 'src/components/commons';
 
 import Main from './components/main';
 import Header from './components/header';
@@ -22,7 +23,7 @@ CompanyLayout.propTypes = {
 export function CompanyLayout({ children }) {
   const location = useLocation();
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, isEmailVerified } = useAuth();
 
   useEffect(() => {
     if (!isEmpty(user) && user?.designation !== 'COMPANY') {
@@ -36,7 +37,8 @@ export function CompanyLayout({ children }) {
       <Box sx={{ minHeight: 1, display: 'flex', mt: { lg: 0, sm: 4, xs: 4 } }}>
         <Main>{children}</Main>
       </Box>
-      <MetaInfoDialog />
+      <EmailUnverifiedDialog />
+      {isEmailVerified && <MetaInfoDialog />}
     </>
   );
 }

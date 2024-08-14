@@ -23,7 +23,12 @@ import { bgGradient } from 'src/theme/css';
 import { useTaskStore } from 'src/stores/admin';
 
 import Iconify from 'src/components/iconify/iconify';
-import { TaskFilter, CreateAnIssue, SearchableTaskList } from 'src/components/admin';
+import {
+  TaskFilter,
+  CreateAnIssue,
+  RecentTaskCard,
+  SearchableTaskList,
+} from 'src/components/admin';
 
 const Item = styled(Card)(({ theme }) => ({
   //   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -97,7 +102,7 @@ export function Analytics() {
           Bids Dashboard
         </Typography>
         <Typography variant="body2" textAlign="center" fontFamily="Wix Madefor Display">
-          Track and manage tickets efficiently with real-time updates.
+          Track and manage tasks efficiently with real-time updates.
         </Typography>
       </Stack>
 
@@ -133,55 +138,31 @@ export function Analytics() {
               <Typography textAlign="left" variant="h6" fontWeight={400}>
                 Recent tasks
               </Typography>
-              <Stack
-                width="100%"
-                height="100%"
-                direction="column"
-                alignItems="flex-start"
-                spacing={1}
-                mt={1}
-              >
-                {isEmpty(recentTasks) && (
-                  <Typography variant="body2">No recent tasks found</Typography>
-                )}
-                {!isEmpty(recentTasks) && (
-                  <>
-                    {recentTasks.map((task) => (
-                      <Stack
-                        key={`recent-task-${task.id}`}
-                        component={Paper}
-                        elevation={0}
-                        width="100%"
-                        height={32}
-                        overflow="hidden"
-                        justifyItems="space-between"
-                        direction="row"
-                        onClick={() => handleViewClick(task.id)}
-                        m={1}
-                        pl={1}
-                        py={1}
-                        borderRadius={0}
-                        bgcolor="#f8f9fa"
-                        sx={{
-                          cursor: 'pointer',
-                          ':hover': {
-                            transform: 'scale(1.01)',
-                          },
-                        }}
-                      >
-                        <Typography
-                          key={task.id}
-                          textAlign="left"
-                          fontSize={14}
-                          sx={{ cursor: 'pointer' }}
-                        >
-                          {task.title}
-                        </Typography>
-                      </Stack>
-                    ))}
-                  </>
-                )}
-              </Stack>
+
+              {isEmpty(recentTasks) && (
+                <Typography variant="body2" textAlign="left">
+                  No recent tasks found
+                </Typography>
+              )}
+
+              {!isEmpty(recentTasks) && (
+                <Stack
+                  width="100%"
+                  height="100%"
+                  direction="column"
+                  alignItems="flex-start"
+                  spacing={1}
+                  mt={1}
+                >
+                  {recentTasks.map((task) => (
+                    <RecentTaskCard
+                      id={task.id}
+                      title={task.title}
+                      onClick={() => handleViewClick(task.id)}
+                    />
+                  ))}
+                </Stack>
+              )}
             </Item>
           </Grid>
 
