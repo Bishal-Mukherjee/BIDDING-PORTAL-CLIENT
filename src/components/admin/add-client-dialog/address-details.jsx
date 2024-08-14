@@ -33,7 +33,11 @@ export const AddressDetails = ({ userDetails, setUserDetails, setTab, setShowAle
     onSubmit: async (values) => {
       try {
         setIsLoading(true);
-        await apiAddClientDoc({ ...userDetails, address: values });
+        await apiAddClientDoc({
+          ...userDetails,
+          phoneNumber: `+1${userDetails.phoneNumber}`,
+          address: values,
+        });
         await apiPostSendEmail({
           email: userDetails.email,
           action: 'client-sign-up',

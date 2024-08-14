@@ -21,7 +21,10 @@ import {
   FormHelperText,
   InputAdornment,
   CircularProgress,
+  createFilterOptions,
 } from '@mui/material';
+
+import { useRouter } from 'src/routes/hooks';
 
 import { storage } from 'src/firebase/config';
 import { apiPostCreateIssue } from 'src/services/admin';
@@ -40,7 +43,11 @@ const validationSchema = yup.object().shape({
   description: yup.string(),
 });
 
+const filterOptions = createFilterOptions();
+
 export const CreateAnIssue = () => {
+  const router = useRouter();
+
   const { getAllTasks } = useTaskStore();
   const { getAllClients, clients } = useAdminManagementStore();
 
@@ -182,6 +189,10 @@ export const CreateAnIssue = () => {
   };
 
   const handleClientSelection = async (params) => {
+    if (params.label.includes('Add')) {
+      router.push('/admin/clients?add=true');
+      return;
+    }
     setSelectedClient({});
     formik.setFieldValue('address', {});
     if (!isEmpty(params)) {
@@ -236,6 +247,19 @@ export const CreateAnIssue = () => {
                     borderTop: 0,
                     borderRadius: 1,
                   },
+                }}
+                filterOptions={(options, params) => {
+                  const filtered = filterOptions(options, params);
+                  const { inputValue } = params;
+                  const isExisting = options.some((option) => inputValue === option.label);
+                  if (inputValue !== '' && !isExisting) {
+                    filtered.push({
+                      inputValue,
+                      label: `Add "${inputValue}"`,
+                    });
+                  }
+
+                  return filtered;
                 }}
               />
 

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import { Box, Stack, Alert, Dialog, Button, Typography } from '@mui/material';
 
@@ -8,6 +9,11 @@ import { AddressDetails } from './address-details';
 import { PersonalDetails } from './personal-details';
 
 export const AddClientDialog = () => {
+  const { search } = useLocation();
+
+  const searchParams = new URLSearchParams(search);
+  const isAddingNewClient = searchParams.get('add') === 'true' || false;
+
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState(0);
   const [userDetails, setUserDetails] = useState({});
@@ -15,6 +21,10 @@ export const AddClientDialog = () => {
     variant: '',
     content: '',
   });
+
+  useEffect(() => {
+    if (isAddingNewClient) setOpen(true);
+  }, [isAddingNewClient]);
 
   useEffect(() => {
     setTimeout(() => {
