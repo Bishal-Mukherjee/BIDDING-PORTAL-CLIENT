@@ -4,10 +4,16 @@ import { Card, IconButton, Typography } from '@mui/material';
 
 import Iconify from 'src/components/iconify/iconify';
 
-export const AttachmentCard = ({ index, label = 'Attachment', attachment, onDelete }) => (
+export const AttachmentCard = ({
+  index,
+  label = 'Attachment',
+  attachment,
+  onDelete,
+  width = 180,
+}) => (
   <Card
     sx={{
-      width: onDelete ? 180 : 140,
+      width: onDelete ? width : 140,
       height: 52,
       display: 'flex',
       justifyContent: 'space-between',
@@ -37,4 +43,5 @@ AttachmentCard.propTypes = {
   label: PropTypes.string,
   index: PropTypes.number,
   onDelete: PropTypes.func,
+  width: PropTypes.number,
 };

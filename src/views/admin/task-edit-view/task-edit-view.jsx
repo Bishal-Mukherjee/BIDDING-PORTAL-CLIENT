@@ -15,7 +15,6 @@ import {
   Box,
   Grid,
   Stack,
-  //   styled,
   Switch,
   Tooltip,
   Backdrop,
@@ -25,8 +24,6 @@ import {
   InputAdornment,
   CircularProgress,
 } from '@mui/material';
-
-// import { useRouter } from 'src/routes/hooks';
 
 import { storage } from 'src/firebase/config';
 import { useTaskStore } from 'src/stores/admin';
@@ -324,8 +321,14 @@ export const TaskEditView = () => {
                             <>
                               {uploadedFiles.length > 0 ? (
                                 <Box sx={{ display: 'flex' }}>
-                                  <Iconify icon="tabler:file-filled" width={20} />
-                                  <Typography>{uploadedFiles.length} files</Typography>
+                                  {showLoader ? (
+                                    <CircularProgress size={15} sx={{ color: 'black' }} />
+                                  ) : (
+                                    <>
+                                      <Iconify icon="tabler:file-filled" width={20} />
+                                      <Typography>{uploadedFiles.length} files</Typography>
+                                    </>
+                                  )}
                                 </Box>
                               ) : (
                                 <>

@@ -18,5 +18,13 @@ export const StatusChip = ({ variant }) => (
 );
 
 StatusChip.propTypes = {
-  variant: PropTypes.oneOf(['created', 'assigned', 'in-progress', 'completed']),
+  variant: PropTypes.oneOf([
+    'created',
+    'assigned',
+    'in-progress',
+    'completed',
+    'pending',
+    'accepted',
+    'rejected',
+  ]),
 };
