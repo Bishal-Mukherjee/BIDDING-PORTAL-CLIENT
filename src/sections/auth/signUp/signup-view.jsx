@@ -18,6 +18,8 @@ import {
   InputAdornment,
 } from '@mui/material';
 
+import { useRouter } from 'src/routes/hooks';
+
 import { bgGradient } from 'src/theme/css';
 import Logo from 'src/assets/images/favicon.png';
 import HvacLogo from 'src/assets/images/hvac-logo.png';
@@ -55,6 +57,7 @@ const validationSchema = yup.object().shape({
 
 export function SignUpView({ setNavigationTab }) {
   const theme = useTheme();
+  const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showAlert, setShowAlert] = useState('');
@@ -77,6 +80,7 @@ export function SignUpView({ setNavigationTab }) {
           `+1${values.phoneNumber}`,
           values.companyWebsite
         );
+        router.push('/company/analytics');
       } catch (err) {
         console.log(err.message);
         setShowAlert('Signup Failed! Please try again');
