@@ -51,21 +51,25 @@ const BidCard = ({ bid }) => (
       {bid?.quality}
     </Typography>
     <Typography textTransform="uppercase" fontSize={12} mt={1}>
-      {bid?.estimatedCompletionDays} days
+      {bid?.estimatedCompletionDays} {bid?.estimatedCompletionDays === 1 ? 'day' : 'days'}
     </Typography>
     <Typography textTransform="uppercase" fontSize={14} mb={1}>
       {bid?.currency}&nbsp;&nbsp;{bid?.amount}
     </Typography>
     {bid?.status !== 'pending' ? (
-      <StatusChip variant={bid?.status} />
+      <Box sx={{ mt: 1 }}>
+        <StatusChip variant={bid?.status} />
+      </Box>
     ) : (
-      <BidConfirmationDialog selectedBid={bid} />
+      <Box sx={{ mt: 1 }}>
+        <BidConfirmationDialog selectedBid={bid} />
+      </Box>
     )}
   </Card>
 );
 
 export const BidsDetailedDialog = ({ open, setOpen, placedBids, companyInfo, clientInfo }) => (
-  <Dialog open={open} maxWidth="" fullWidth>
+  <Dialog open={open} maxWidth="lg" fullWidth>
     <Stack
       justifyContent="center"
       alignItems="flex-start"
@@ -90,10 +94,8 @@ export const BidsDetailedDialog = ({ open, setOpen, placedBids, companyInfo, cli
 
       <Divider sx={{ width: '100%', my: 2 }} />
 
-      <Stack direction="row" alignItems="center" justifyContent="center">
-        <Box sx={{ width: { sm: '100%', md: '64%' } }}>
-          <img src={companyInfo?.metaInfo?.logo} alt={companyInfo?.firstName} width="100%" />
-        </Box>
+      <Stack direction="row" alignItems="center" justifyContent="center" width="100%">
+        <img src={companyInfo?.metaInfo?.logo} alt={companyInfo?.firstName} width={240} />
       </Stack>
 
       <Typography>
@@ -103,9 +105,9 @@ export const BidsDetailedDialog = ({ open, setOpen, placedBids, companyInfo, cli
         </b>
       </Typography>
 
-      <Box sx={{ my: 1 }}>
-        <Typography variant="body2">{trimText(companyInfo?.metaInfo?.bio, 300)}</Typography>
-      </Box>
+      <Typography variant="body2" color="text.secondary" width="100%" noWrap my={1}>
+        {trimText(companyInfo?.metaInfo?.bio, 300)}
+      </Typography>
 
       <Stack direction="row" alignItems="center" gap={1}>
         <Iconify icon="mdi:internet" color="#000000" />
@@ -115,9 +117,9 @@ export const BidsDetailedDialog = ({ open, setOpen, placedBids, companyInfo, cli
       </Stack>
 
       {!isEmpty(placedBids) && (
-        <Grid container mt={2} gap={2}>
+        <Grid container mt={2} gap={4} justifyContent="center" alignItems="center">
           {placedBids?.map((bid) => (
-            <Grid item xs={5} md={3}>
+            <Grid item xs={5} md={2}>
               <BidCard bid={bid} />
             </Grid>
           ))}

@@ -1,5 +1,5 @@
-import { uniqBy } from 'lodash';
 import React, { useState } from 'react';
+import { uniqBy, isEmpty } from 'lodash';
 
 import { Grid, Card, Stack, Button, Divider, Typography, CardContent } from '@mui/material';
 
@@ -31,35 +31,47 @@ export const TaskBids = () => {
 
   return (
     <>
-      <Grid container spacing={2} justifyContent="center" flexWrap="wrap" mt={1}>
-        <Grid item xs={12} md={6}>
-          <Grid
-            container
-            spacing={2}
-            justifyContent={{ md: 'flex-start', xs: 'center' }}
-            flexWrap="wrap"
-          >
-            {filteredData?.map((bid) => (
-              <Grid item md={4} xs={10}>
-                <Card sx={{ width: '100%' }}>
-                  <Stack direction="row" justifyContent="center">
-                    <img src={bid?.bidder?.logo || CompanySvg} alt={bid?.bidder?.name} />
-                  </Stack>
-                  <Divider />
-                  <CardContent>
-                    <Typography gutterBottom variant="h6">
-                      {bid?.bidder?.name}
-                    </Typography>
-                    <Button onClick={() => handleRowClick(bid)} variant="outlined" fullWidth>
-                      View
-                    </Button>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
+      {isEmpty(filteredData) && (
+        <Typography variant="body1" textAlign="center" mt={4}>
+          No bids found
+        </Typography>
+      )}
+
+      {!isEmpty(filteredData) && (
+        <Grid container spacing={2} justifyContent="center" flexWrap="wrap" mt={1}>
+          <Grid item xs={12} md={6}>
+            <Grid
+              container
+              spacing={2}
+              justifyContent={{ md: 'flex-start', xs: 'center' }}
+              flexWrap="wrap"
+            >
+              {filteredData?.map((bid) => (
+                <Grid item md={4} xs={10}>
+                  <Card sx={{ width: '100%', borderRadius: 2 }}>
+                    <Stack direction="row" justifyContent="center" p={1}>
+                      <img
+                        src={bid?.bidder?.logo || CompanySvg}
+                        alt={bid?.bidder?.name}
+                        width={120}
+                      />
+                    </Stack>
+                    <Divider />
+                    <CardContent>
+                      <Typography gutterBottom variant="h6">
+                        {bid?.bidder?.name}
+                      </Typography>
+                      <Button onClick={() => handleRowClick(bid)} variant="outlined" fullWidth>
+                        View
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      )}
 
       <BidsDetailedDialog
         open={open}

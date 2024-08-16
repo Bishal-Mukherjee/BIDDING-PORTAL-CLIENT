@@ -25,9 +25,14 @@ import { apiPostCompanyMetaInfo } from 'src/firebase/firestore/company';
 
 import Iconify from 'src/components/iconify';
 
+const MAX_LENGTH = 120;
+
 const validationSchema = yup.object().shape({
   searchLink: yup.string().required('*required'),
-  companyBio: yup.string().required('*required'),
+  companyBio: yup
+    .string()
+    .max(MAX_LENGTH, `Must be ${MAX_LENGTH} characters or less`)
+    .required('*required'),
 });
 
 export const MetaInfoDialog = () => {
@@ -130,9 +135,12 @@ export const MetaInfoDialog = () => {
       >
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <Stack direction="column" width="100%" gap={2} px={4}>
-            <Typography variant="h5">Add Company Info</Typography>
+            <Typography variant="h5" fontFamily="Wix Madefor Display">
+              Add Company Info
+            </Typography>
 
             {alert && <Alert severity="error">{alert}</Alert>}
+
             <TextField
               name="searchLink"
               placeholder="Paste your company's search link ( https://g.co/kgs/abcd )"
@@ -142,16 +150,22 @@ export const MetaInfoDialog = () => {
               helperText={formik.touched.searchLink && formik.errors.searchLink}
             />
 
-            <TextField
-              multiline
-              rows={2}
-              name="companyBio"
-              placeholder="Tell us about your company's mission and values..."
-              value={formik.values.companyBio}
-              onChange={formik.handleChange}
-              error={formik.touched.companyBio && Boolean(formik.errors.companyBio)}
-              helperText={formik.touched.companyBio && formik.errors.companyBio}
-            />
+            <Stack direction="column" alignItems="flex-end" width="100%">
+              <TextField
+                multiline
+                rows={3}
+                name="companyBio"
+                placeholder="Tell us about your company's mission and values..."
+                value={formik.values.companyBio}
+                onChange={formik.handleChange}
+                error={formik.touched.companyBio && Boolean(formik.errors.companyBio)}
+                helperText={formik.touched.companyBio && formik.errors.companyBio}
+                fullWidth
+              />
+              <Typography color="text.secondary" variant="body2" mt={0}>
+                {formik.values.companyBio.length} / {MAX_LENGTH}
+              </Typography>
+            </Stack>
 
             <Box
               sx={{
