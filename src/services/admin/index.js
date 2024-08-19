@@ -147,16 +147,6 @@ export const apiDisassociateCompany = async ({ email }) => {
   }
 };
 
-export const apiPostSendEmail = async ({ email, action, context }) => {
-  try {
-    const response = await apiInstance.post(`/admin/email/${action}`, { context, email });
-    return response.data;
-  } catch (err) {
-    console.log(err.message);
-    throw err;
-  }
-};
-
 // export const apiDeleteTask = async ({ id }) => {
 //   try {
 //     const response = await apiInstance.delete(`/client/deleteTask/${id}`);

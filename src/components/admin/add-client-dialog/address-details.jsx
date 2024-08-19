@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { LoadingButton } from '@mui/lab';
 import { Stack, Button, TextField } from '@mui/material';
 
-import { apiPostSendEmail } from 'src/services/admin';
+import { apiPostSendEmail } from 'src/services/commons';
 import { apiAddClientDoc } from 'src/firebase/firestore/admin';
 
 const validationSchema = yup.object().shape({
@@ -39,7 +39,7 @@ export const AddressDetails = ({ userDetails, setUserDetails, setTab, setShowAle
           address: values,
         });
         await apiPostSendEmail({
-          email: userDetails.email,
+          emails: [userDetails.email],
           action: 'client-sign-up',
           context: { name: `${userDetails?.firstName} ${userDetails?.lastName}` },
         });
