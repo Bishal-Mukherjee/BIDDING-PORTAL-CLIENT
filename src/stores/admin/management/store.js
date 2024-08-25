@@ -10,8 +10,12 @@ export const useAdminManagementStore = create((set) => ({
   companies: [],
   getAllClients: async () => {
     set((state) => ({ ...state, isLoading: true }));
-    const response = await apiGetUsersByDesignation('CLIENT');
-    set((state) => ({ ...state, clients: isEmpty(response) ? [] : response, isLoading: false }));
+    try {
+      const response = await apiGetUsersByDesignation('CLIENT');
+      set((state) => ({ ...state, clients: isEmpty(response) ? [] : response, isLoading: false }));
+    } catch (err) {
+      set((state) => ({ ...state, clients: [], isLoading: false }));
+    }
   },
   getAllInterestedClients: async () => {
     set((state) => ({ ...state, clients: [], isLoading: true }));
@@ -20,7 +24,15 @@ export const useAdminManagementStore = create((set) => ({
   },
   getAllCompanies: async () => {
     set((state) => ({ ...state, isLoading: true }));
-    const response = await apiGetUsersByDesignation('COMPANY');
-    set((state) => ({ ...state, companies: isEmpty(response) ? [] : response, isLoading: false }));
+    try {
+      const response = await apiGetUsersByDesignation('COMPANY');
+      set((state) => ({
+        ...state,
+        companies: isEmpty(response) ? [] : response,
+        isLoading: false,
+      }));
+    } catch (err) {
+      set((state) => ({ ...state, companies: [], isLoading: false }));
+    }
   },
 }));
