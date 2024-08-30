@@ -25,7 +25,7 @@ import { apiPostCompanyMetaInfo } from 'src/firebase/firestore/company';
 
 import Iconify from 'src/components/iconify';
 
-const MAX_LENGTH = 120;
+const MAX_LENGTH = 300;
 
 const validationSchema = yup.object().shape({
   searchLink: yup.string().required('*required'),
