@@ -27,6 +27,7 @@ import { bgGradient } from 'src/theme/css';
 import Logo from 'src/assets/images/favicon.png';
 import { useAuth } from 'src/context/authContext';
 import HvacLogo from 'src/assets/images/hvac-logo.png';
+import { apiGetProfileByEmail } from 'src/firebase/firestore/commons';
 import { doSignInWithGoogle, doSignInWithEmailAndPassword } from 'src/firebase/auth/auth';
 
 import Iconify from 'src/components/iconify';
@@ -61,7 +62,10 @@ export function SignInView({ setNavigationTab }) {
     onSubmit: async (values) => {
       try {
         setIsLoading(true);
-        await doSignInWithEmailAndPassword(values.email, values.password);
+        const response = await apiGetProfileByEmail({ email: values.email });
+        if (!isEmpty(response)) {
+          await doSignInWithEmailAndPassword(values.email, values.password);
+        }
         setIsLoading(false);
       } catch (err) {
         console.log(err);

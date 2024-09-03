@@ -80,6 +80,7 @@ export const AddClientDialog = () => {
                 setUserDetails={setUserDetails}
                 setTab={setTab}
                 setShowAlert={setShowAlert}
+				setOpen={setOpen}
               />
             )}
           </Stack>

@@ -8,6 +8,7 @@ import { LoadingButton } from '@mui/lab';
 import { Stack, Button, TextField } from '@mui/material';
 
 import { apiPostSendEmail } from 'src/services/commons';
+import { useAdminManagementStore } from 'src/stores/admin';
 import { apiAddClientDoc } from 'src/firebase/firestore/admin';
 
 const validationSchema = yup.object().shape({
@@ -18,7 +19,9 @@ const validationSchema = yup.object().shape({
   zip: yup.string().required('*required'),
 });
 
-export const AddressDetails = ({ userDetails, setUserDetails, setTab, setShowAlert }) => {
+export const AddressDetails = ({ userDetails, setUserDetails, setTab, setShowAlert, setOpen }) => {
+  const { getAllClients } = useAdminManagementStore();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const formik = useFormik({
@@ -50,6 +53,8 @@ export const AddressDetails = ({ userDetails, setUserDetails, setTab, setShowAle
       setTab(0);
       setIsLoading(false);
       setUserDetails({});
+      setOpen(false);
+      await getAllClients();
     },
   });
 
@@ -140,4 +145,5 @@ AddressDetails.propTypes = {
   setUserDetails: PropTypes.func,
   setTab: PropTypes.func,
   setShowAlert: PropTypes.func,
+  setOpen: PropTypes.func,
 };
