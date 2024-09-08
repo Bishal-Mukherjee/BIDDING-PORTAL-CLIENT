@@ -31,7 +31,9 @@ const validationSchema = yup.object().shape({
   searchLink: yup.string().required('*required'),
   companyBio: yup
     .string()
-    .max(MAX_LENGTH, `Must be ${MAX_LENGTH} characters or less`)
+    .test('wordCount', `Must be ${MAX_LENGTH} words or less`, (value) =>
+      value ? value.trim().split(/\s+/).length <= MAX_LENGTH : true
+    )
     .required('*required'),
 });
 
@@ -52,18 +54,24 @@ export const MetaInfoDialog = () => {
       companyBio: '',
     },
     onSubmit: async (values) => {
-      if (!isEmpty(uploadedFiles)) {
-        setIsLoading(true);
-        await apiPostCompanyMetaInfo({ email: user.email, logo: uploadedFiles[0], ...values });
-        await apiPostSendEmail({
-          emails: [user.email],
-          action: 'company-sign-up',
-          context: { name: user.firstName },
-        });
+      try {
+        if (!isEmpty(uploadedFiles)) {
+          setIsLoading(true);
+          await apiPostCompanyMetaInfo({ email: user.email, logo: uploadedFiles[0], ...values });
+          await apiPostSendEmail({
+            emails: [user.email],
+            action: 'company-sign-up',
+            context: { name: user.firstName },
+          });
+          setOpen(false);
+          setIsLoading(false);
+        } else {
+          setAlert('Please upload company logo');
+        }
+      } catch (err) {
+        console.log(err.message);
         setOpen(false);
         setIsLoading(false);
-      } else {
-        setAlert('Please upload company logo');
       }
     },
   });
@@ -130,7 +138,7 @@ export const MetaInfoDialog = () => {
         alignItems="center"
         direction="column"
         width="100%"
-        py={4}
+        py={2}
         spacing={6}
       >
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
@@ -153,7 +161,7 @@ export const MetaInfoDialog = () => {
             <Stack direction="column" alignItems="flex-end" width="100%">
               <TextField
                 multiline
-                rows={3}
+                rows={8}
                 name="companyBio"
                 placeholder="Tell us about your company's mission and values..."
                 value={formik.values.companyBio}
@@ -162,9 +170,6 @@ export const MetaInfoDialog = () => {
                 helperText={formik.touched.companyBio && formik.errors.companyBio}
                 fullWidth
               />
-              <Typography color="text.secondary" variant="body2" mt={0}>
-                {formik.values.companyBio.length} / {MAX_LENGTH}
-              </Typography>
             </Stack>
 
             <Box
