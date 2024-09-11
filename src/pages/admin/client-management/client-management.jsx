@@ -20,8 +20,8 @@ import {
 
 import { bgGradient } from 'src/theme/css';
 import { useAdminManagementStore } from 'src/stores/admin';
-import { apiDisassociateClient } from 'src/services/admin';
 import { apiDeleteUser } from 'src/firebase/firestore/admin';
+import { apiDisassociateClient, apiDeleteUserFromAuth } from 'src/services/admin';
 
 import { DataTable } from 'src/components/commons';
 import Iconify from 'src/components/iconify/iconify';
@@ -70,6 +70,7 @@ export const ClientManagement = () => {
     try {
       await apiDisassociateClient({ email: selectedClient.email });
       await apiDeleteUser({ email: selectedClient.email });
+      await apiDeleteUserFromAuth({ email: selectedClient.email });
       getAllClients();
     } catch (err) {
       setShowAlert(err.response.data.message);

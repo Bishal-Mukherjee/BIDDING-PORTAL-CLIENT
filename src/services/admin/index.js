@@ -147,6 +147,16 @@ export const apiDisassociateCompany = async ({ email }) => {
   }
 };
 
+export const apiDeleteUserFromAuth = async ({ email }) => {
+  try {
+    const response = await apiInstance.delete(`/admin/deleteUser/${email}`);
+    return response.data;
+  } catch (err) {
+    console.log(err.message);
+    throw err;
+  }
+};
+
 // export const apiDeleteTask = async ({ id }) => {
 //   try {
 //     const response = await apiInstance.delete(`/client/deleteTask/${id}`);
