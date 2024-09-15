@@ -1,6 +1,6 @@
-import React from 'react';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
@@ -15,7 +15,7 @@ import {
   IconButton,
 } from '@mui/material';
 
-import { trimText } from 'src/utils';
+import { wrapDescriptionText } from 'src/utils';
 
 import Iconify from 'src/components/iconify';
 import { StatusChip } from 'src/components/commons';
@@ -68,66 +68,83 @@ const BidCard = ({ bid }) => (
   </Card>
 );
 
-export const BidsDetailedDialog = ({ open, setOpen, placedBids, companyInfo, clientInfo }) => (
-  <Dialog open={open} maxWidth="lg" fullWidth>
-    <Stack
-      justifyContent="center"
-      alignItems="flex-start"
-      direction="column"
-      width="100%"
-      p={4}
-      spacing={0}
-    >
-      <Stack direction="row" alignItems="flex-start" justifyContent="space-between" width="100%">
-        <Stack alignItems="center" direction="row" gap={1}>
-          <Typography>
-            Customer Name:{' '}
-            <b>
-              {clientInfo?.firstName} {clientInfo?.lastName}
-            </b>
-          </Typography>
+export const BidsDetailedDialog = ({ open, setOpen, placedBids, companyInfo, clientInfo }) => {
+  const isUnspacedDescription = useMemo(() => {
+    if (!isEmpty(companyInfo?.metaInfo?.bio)) {
+      if (!companyInfo?.metaInfo?.bio.includes(' ')) {
+        return true;
+      }
+    }
+    return false;
+  }, [companyInfo?.metaInfo?.bio]);
+
+  return (
+    <Dialog open={open} maxWidth="lg" fullWidth>
+      <Stack
+        justifyContent="center"
+        alignItems="flex-start"
+        direction="column"
+        width="100%"
+        p={4}
+        spacing={0}
+      >
+        <Stack direction="row" alignItems="flex-start" justifyContent="space-between" width="100%">
+          <Stack alignItems="center" direction="row" gap={1}>
+            <Typography>
+              Customer Name:{' '}
+              <b>
+                {clientInfo?.firstName} {clientInfo?.lastName}
+              </b>
+            </Typography>
+          </Stack>
+          <IconButton>
+            <Iconify icon="eva:close-fill" onClick={() => setOpen(false)} />
+          </IconButton>
         </Stack>
-        <IconButton>
-          <Iconify icon="eva:close-fill" onClick={() => setOpen(false)} />
-        </IconButton>
+
+        <Divider sx={{ width: '100%', my: 2 }} />
+
+        <Stack direction="row" alignItems="center" justifyContent="center" width="100%">
+          <img src={companyInfo?.metaInfo?.logo} alt={companyInfo?.firstName} width={240} />
+        </Stack>
+
+        <Typography>
+          Company Name:{' '}
+          <b>
+            {companyInfo?.firstName} {companyInfo?.lastName}
+          </b>
+        </Typography>
+
+        {isUnspacedDescription ? (
+          <Typography variant="body2" color="text.secondary" width="100%" my={1}>
+            {wrapDescriptionText(companyInfo?.metaInfo?.bio, 144)}
+          </Typography>
+        ) : (
+          <Typography variant="body2" color="text.secondary" width="100%" noWrap my={1}>
+            {companyInfo?.metaInfo?.bio}
+          </Typography>
+        )}
+
+        <Stack direction="row" alignItems="center" gap={1}>
+          <Iconify icon="mdi:internet" color="#000000" />
+          <Link to={companyInfo?.metaInfo?.link} target="_blank" rel="noreferrer">
+            Google Review
+          </Link>
+        </Stack>
+
+        {!isEmpty(placedBids) && (
+          <Grid container mt={2} gap={4} justifyContent="center" alignItems="center">
+            {placedBids?.map((bid) => (
+              <Grid item xs={5} md={2}>
+                <BidCard bid={bid} />
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Stack>
-
-      <Divider sx={{ width: '100%', my: 2 }} />
-
-      <Stack direction="row" alignItems="center" justifyContent="center" width="100%">
-        <img src={companyInfo?.metaInfo?.logo} alt={companyInfo?.firstName} width={240} />
-      </Stack>
-
-      <Typography>
-        Company Name:{' '}
-        <b>
-          {companyInfo?.firstName} {companyInfo?.lastName}
-        </b>
-      </Typography>
-
-      <Typography variant="body2" color="text.secondary" width="100%" noWrap my={1}>
-        {trimText(companyInfo?.metaInfo?.bio, 300)}
-      </Typography>
-
-      <Stack direction="row" alignItems="center" gap={1}>
-        <Iconify icon="mdi:internet" color="#000000" />
-        <Link to={companyInfo?.metaInfo?.link} target="_blank" rel="noreferrer">
-          Google Review
-        </Link>
-      </Stack>
-
-      {!isEmpty(placedBids) && (
-        <Grid container mt={2} gap={4} justifyContent="center" alignItems="center">
-          {placedBids?.map((bid) => (
-            <Grid item xs={5} md={2}>
-              <BidCard bid={bid} />
-            </Grid>
-          ))}
-        </Grid>
-      )}
-    </Stack>
-  </Dialog>
-);
+    </Dialog>
+  );
+};
 
 BidsDetailedDialog.propTypes = {
   open: PropTypes.bool.isRequired,

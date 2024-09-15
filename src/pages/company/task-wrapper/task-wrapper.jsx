@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { isEmpty } from 'lodash';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 
 import {
   Box,
@@ -16,7 +16,9 @@ import {
   CircularProgress,
 } from '@mui/material';
 
+import { wrapDescriptionText } from 'src/utils';
 import { useTaskStore } from 'src/stores/company';
+import { useAuth } from 'src/context/authContext';
 import { apiGetProfileByEmail } from 'src/firebase/firestore/commons';
 
 import { AttachmentList, AttachmentCard, TaskActiveBadge } from 'src/components/commons';
@@ -33,6 +35,7 @@ const EXPIRY_IN_HOURS = 72; // need to place a bid within 72 hours
 export const TaskWrapper = () => {
   const params = useParams();
 
+  const { user } = useAuth();
   const { selectedTask, isLoading, getTaskById } = useTaskStore();
 
   const activationTime = dayjs(selectedTask?.task?.activationDate);
@@ -54,6 +57,15 @@ export const TaskWrapper = () => {
     }
   };
 
+  const isUnspacedDescription = useMemo(() => {
+    if (!isEmpty(selectedTask?.task?.description)) {
+      if (!selectedTask?.task?.description.includes(' ')) {
+        return true;
+      }
+    }
+    return false;
+  }, [selectedTask?.task?.description]);
+
   useEffect(() => {
     if (params.taskId) {
       getTaskById({ id: params.taskId });
@@ -62,10 +74,10 @@ export const TaskWrapper = () => {
 
   useEffect(() => {
     handleGetClientInfo();
-    if (isAssigned) {
+    if (isAssigned && selectedTask?.task?.assignedTo?.email === user.email) {
       setOpenMarkInProgressDialog(true);
     }
-  }, [selectedTask]);
+  }, [selectedTask, user]);
 
   return (
     <>
@@ -155,9 +167,15 @@ export const TaskWrapper = () => {
 
                 <Box width="100%">
                   <Typography sx={{ mt: 0 }} fontSize={16} variant="body1" textAlign="left">
-                    {isEmpty(selectedTask?.task?.description)
-                      ? 'No description found'
-                      : selectedTask?.task?.description}
+                    {isEmpty(selectedTask?.task?.description) ? (
+                      'No description found'
+                    ) : (
+                      <>
+                        {isUnspacedDescription
+                          ? wrapDescriptionText(selectedTask?.task?.description)
+                          : selectedTask?.task?.description}
+                      </>
+                    )}
                   </Typography>
                 </Box>
 

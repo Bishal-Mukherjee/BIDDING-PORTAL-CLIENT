@@ -1,10 +1,11 @@
 import dayjs from 'dayjs';
 import { isEmpty } from 'lodash';
-import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import React, { useMemo, useState } from 'react';
 
 import { Box, Grid, Stack, Divider, MenuItem, TextField, Typography } from '@mui/material';
 
+import { wrapDescriptionText } from 'src/utils';
 import { useTaskStore } from 'src/stores/admin';
 import { apiUnassignTask, apiUpdateTaskStatus } from 'src/services/admin';
 
@@ -24,6 +25,15 @@ export const TaskDetails = () => {
 
   const [status, setStatus] = useState('');
   const [isLoading, setIsLoading] = React.useState(false);
+
+  const isUnspacedDescription = useMemo(() => {
+    if (!isEmpty(selectedTask?.description)) {
+      if (!selectedTask?.description.includes(' ')) {
+        return true;
+      }
+    }
+    return false;
+  }, [selectedTask?.description]);
 
   const handleChange = (value) => {
     setStatus(value);
@@ -67,9 +77,15 @@ export const TaskDetails = () => {
 
               <Box width="100%">
                 <Typography sx={{ mt: 0 }} fontSize={16} variant="body1" textAlign="left">
-                  {isEmpty(selectedTask?.description)
-                    ? 'No description found'
-                    : selectedTask?.description}
+                  {isEmpty(selectedTask?.description) ? (
+                    'No description found'
+                  ) : (
+                    <>
+                      {isUnspacedDescription
+                        ? wrapDescriptionText(selectedTask?.description)
+                        : selectedTask?.description}
+                    </>
+                  )}
                 </Typography>
               </Box>
 
