@@ -120,7 +120,7 @@ export const BidsDetailedDialog = ({ open, setOpen, placedBids, companyInfo, cli
             {wrapDescriptionText(companyInfo?.metaInfo?.bio, 144)}
           </Typography>
         ) : (
-          <Typography variant="body2" color="text.secondary" width="100%" noWrap my={1}>
+          <Typography variant="body2" color="text.secondary" width="100%" my={1}>
             {companyInfo?.metaInfo?.bio}
           </Typography>
         )}
