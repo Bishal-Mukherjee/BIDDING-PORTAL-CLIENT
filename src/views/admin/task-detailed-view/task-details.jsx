@@ -22,6 +22,7 @@ export const TaskDetails = () => {
 
   const { selectedTask } = useTaskStore();
   const isAssigned = selectedTask?.status === 'assigned';
+  const isInProgress = selectedTask?.status === 'in-progress';
 
   const [status, setStatus] = useState('');
   const [isLoading, setIsLoading] = React.useState(false);
@@ -115,7 +116,7 @@ export const TaskDetails = () => {
                 </Stack>
 
                 <Stack justifyContent="space-between">
-                  {isAssigned && (
+                  {(isAssigned || isInProgress) && (
                     <TextField
                       select
                       value={status}
