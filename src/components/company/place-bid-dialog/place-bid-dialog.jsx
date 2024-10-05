@@ -298,7 +298,7 @@ export const PlaceBidDialog = () => {
 
               <TextField
                 fullWidth
-                label="Estimated time (days)"
+                label="Day's out until install"
                 name="estimatedCompletionDays"
                 value={formik.values.estimatedCompletionDays}
                 onChange={formik.handleChange}
